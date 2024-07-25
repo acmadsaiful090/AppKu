@@ -17,26 +17,34 @@ const Stack = createNativeStackNavigator();
 const Navbar = ({ currentRoute }) => {
   const navigation = useNavigation();
   const styles = useStyleSheet(themedStyles);
+  const getIcon = (name, route) => (
+    <Icon
+      name={name}
+      width={24}
+      height={24}
+      fill={currentRoute === route ? "#2196F3" : "#757575"}
+    />
+  );
   return (
     <View style={styles.navbar}>
       <TouchableOpacity style={styles.navItem} onPress={() => navigation.navigate('Home')}>
-        <Icon name='home-outline' width={24} height={24} fill="#757575" />
-        <Text style={styles.navLabel}>Home</Text>
+        {getIcon('home-outline', 'Home')}
+        <Text style={[styles.navLabel, { color: currentRoute === 'Home' ? "#2196F3" : "#757575" }]}>Home</Text>
       </TouchableOpacity>
       <TouchableOpacity style={styles.navItem} onPress={() => navigation.navigate('Leave')}>
-        <Icon name='paper-plane-outline' width={24} height={24} fill="#757575" />
-        <Text style={styles.navLabel}>Leave</Text>
+        {getIcon('paper-plane-outline', 'Leave')}
+        <Text style={[styles.navLabel, { color: currentRoute === 'Leave' ? "#2196F3" : "#757575" }]}>Leave</Text>
       </TouchableOpacity>
       <TouchableOpacity style={styles.cameraButton} onPress={() => navigation.navigate('Camera')}>
-        <Icon name='camera-outline' width={24} height={24} fill="#fff" />
+        {getIcon('camera-outline', 'Camera')}
       </TouchableOpacity>
       <TouchableOpacity style={styles.navItem} onPress={() => navigation.navigate('Attendance')}>
-        <Icon name='calendar-outline' width={24} height={24} fill="#757575" />
-        <Text style={styles.navLabel}>Attendance</Text>
+        {getIcon('calendar-outline', 'Attendance')}
+        <Text style={[styles.navLabel, { color: currentRoute === 'Attendance' ? "#2196F3" : "#757575" }]}>Attendance</Text>
       </TouchableOpacity>
       <TouchableOpacity style={styles.navItem} onPress={() => navigation.navigate('Paycheck')}>
-        <Icon name='credit-card-outline' width={24} height={24} fill="#757575" />
-        <Text style={styles.navLabel}>Paycheck</Text>
+        {getIcon('credit-card-outline', 'Paycheck')}
+        <Text style={[styles.navLabel, { color: currentRoute === 'Paycheck' ? "#2196F3" : "#757575" }]}>Paycheck</Text>
       </TouchableOpacity>
     </View>
   );
@@ -92,7 +100,6 @@ const themedStyles = StyleService.create({
   },
   navLabel: {
     fontSize: 12,
-    color: '#757575',
   },
   cameraButton: {
     top: -20,
