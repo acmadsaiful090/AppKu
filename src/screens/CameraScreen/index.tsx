@@ -4,7 +4,6 @@ import { CameraView, CameraType, useCameraPermissions } from 'expo-camera';
 import { View, Text, Button, Image, Dimensions, TouchableOpacity, Alert, ActivityIndicator } from 'react-native';
 import * as Location from 'expo-location';
 import Facial from '../../assets/icons/Facial_Recognition.png';
-import axios from 'axios';
 import moment from 'moment-timezone';
 import * as eva from '@eva-design/eva';
 import {
@@ -67,8 +66,9 @@ export default function App() {
     useEffect(() => {
       const fetchJakartaTime = async () => {
         try {
-          const response = await axios.get('http://worldtimeapi.org/api/timezone/Asia/Jakarta');
-          const time = response.data.datetime;
+          const response = await fetch('http://worldtimeapi.org/api/timezone/Asia/Jakarta');
+          const data = await response.json();
+          const time = data.datetime;
           setJakartaTime(moment(time).format('HH:mm'));
         } catch (error) {
           console.error("Error fetching Jakarta time:", error);
@@ -188,7 +188,6 @@ const themedStyles = StyleService.create({
     alignItems: 'center',
     paddingHorizontal: 16,
   },
-  leftButton: {},
   cameraButton: {
     alignItems: 'center',
     width: 80,

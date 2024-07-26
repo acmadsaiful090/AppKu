@@ -77,7 +77,8 @@ function AppContainer() {
               <Stack.Screen name="Paycheck" component={PaycheckScreen} />
               <Stack.Screen name="ApplyLeave" component={ApplyLeaveScreen} />
             </Stack.Navigator>
-            {currentRoute !== 'Camera' && <Navbar currentRoute={currentRoute} />}
+            {!(currentRoute === 'Camera' || currentRoute === 'ApplyLeave') && <Navbar currentRoute={currentRoute} />}
+
           </Layout>
         </NavigationContainer>
       </ApplicationProvider>

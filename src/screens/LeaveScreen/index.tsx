@@ -1,36 +1,18 @@
 import React, { useState } from 'react';
 import { ScrollView, View, TouchableOpacity } from 'react-native';
-import { ApplicationProvider, Layout, Text, Card, Button, StyleService, useStyleSheet, Modal } from '@ui-kitten/components';
+import { ApplicationProvider, Layout, Text, Card, Button, StyleService, useStyleSheet, Modal, Icon } from '@ui-kitten/components';
 import * as eva from '@eva-design/eva';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
-import {useNavigation } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 
-
-const leaveTypes = [
-  { id: '1',type: 'Casual leave', days: 3, expDays: 5, bgColor: '#CCF2F4' },
-  { id: '2',type: 'Cuti Tahunan', days: 12, expDays: 0, bgColor: '#CCF2F4' }, // Paid time off
-  { id: '3',type: 'Cuti Sakit', days: 14, expDays: 3, bgColor: '#F7F0C4' },   // Sick leave
-  { id: '4',type: 'Cuti Melahirkan', days: 90, expDays: 0, bgColor: '#FFC2C2' },  // Maternity leave
-  { id: '5',type: 'Cuti Paternity', days: 7, expDays: 0, bgColor: '#C2F7C4' },   // Paternity leave
-  { id: '6',type: 'Cuti Besar', days: 60, expDays: 0, bgColor: '#FFEBCC' },      // Long service leave
-  { id: '7',type: 'Cuti Bersama', days: 1, expDays: 0, bgColor: '#D8BFD8' },     // Public holiday
-  { id: '8',type: 'Cuti Duka Cita', days: 3, expDays: 0, bgColor: '#A9A9A9' },   // Bereavement leave
-  { id: '9',type: 'Cuti Menikah', days: 3, expDays: 0, bgColor: '#FFA07A' },     // Marriage leave
-  { id: '10',type: 'Cuti Studi', days: 0, expDays: 0, bgColor: '#ADD8E6' },        // Study leave
-];
-
-const leaveHistory = [
-  { id: '1', type: 'Sick Leave', leaveType: 'Medical Leave', start: '16-07-2024', end: '17-07-2024', status: 'DiSetujui', applied: '13-07-2024' },
-  { id: '2', type: 'Liburan', leaveType: 'Casual Leave', start: '16-07-2024', end: '17-07-2024', status: 'DiSetujui', applied: '13-07-2024' },
-  { id: '3', type: 'Sick Leave', leaveType: 'Medical Leave', start: '16-07-2024', end: '17-07-2024', status: 'DiSetujui', applied: '13-07-2024' },
-  { id: '4', type: 'Sick Leave', leaveType: 'Medical Leave', start: '16-07-2024', end: '17-07-2024', status: 'DiSetujui', applied: '13-07-2024' },
-  { id: '5', type: 'Sick Leave', leaveType: 'Medical Leave', start: '16-07-2024', end: '17-07-2024', status: 'DiSetujui', applied: '13-07-2024' },
-];
+// Import data
+import leaveTypes from '../../assets/data/leaveTypes';
+import leaveHistory from '../../assets/data/leaveHistory';
 
 const LeaveCard = ({ leaveType, days, expDays, color, onPress }) => {
   const styles = useStyleSheet(themedStyles);
   return (
-    <TouchableOpacity onPress={onPress}> 
+    <TouchableOpacity onPress={onPress}>
       <Card style={[styles.card, { backgroundColor: color }]}>
         <Text category='label'>{leaveType}</Text>
         <Text category='label'>Days: {days}</Text>
@@ -46,19 +28,37 @@ const LeaveScreen = () => {
   const styles = useStyleSheet(themedStyles);
   const navigation = useNavigation();
 
-  const renderLeaveHistoryItem = (item) => (
-    <Card key={item.id} style={styles.leaveHistoryItem}>
-      <View> 
-      <Text category='s1'>{item.type}</Text>
-      <Text category='s2'>{item.leaveType}</Text>
-      <Text category='c1'>Start: {item.start} End: {item.end}</Text>
+  const renderLeaveHistoryItem = (item) => {
+    let statusColor;
+  
+    switch (item.status) {
+      case 'In Progress':
+        statusColor = 'yellow';
+        break;
+      case 'Rejected':
+        statusColor = 'red';
+        break;
+      case 'Approved':
+        statusColor = 'green';
+        break;
+      default:
+        statusColor = 'black';
+    }
+  
+    return (
+      <View key={item.id} style={[styles.infoItem, { borderColor: item.color }]}>
+        <View style={styles.infoText}>
+          <Text category='s1'>{item.type}</Text>
+          <Text category='s2'>{item.leaveType}</Text>
+          <Text category='c1'>Start: {item.start} End: {item.end}</Text>
+        </View>
+        <View style={styles.StatusText}>
+          <Text category='c1' style={{ color: statusColor }}>{item.status}</Text>
+          <Text category='c1'>Applied: {item.applied}</Text>
+        </View>
       </View>
-      <View>
-      <Text category='c1'>Status: {item.status}</Text>
-      <Text category='c1'>Applied on {item.applied}</Text>
-      </View>
-    </Card>
-  );
+    );
+  };  
 
   const renderLeaveType = (type) => (
     <LeaveCard
@@ -96,10 +96,10 @@ const LeaveScreen = () => {
               <Text category='h1' style={styles.headerText}>Leave Management</Text>
             </Layout>
             <Layout style={styles.leaveType}>
-            <Text category='h5' style={styles.title}>Leave Type</Text>
-            <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.leaveTypeContainer}>
-              {renderLeaveTypeRows()}
-            </ScrollView>
+              <Text category='h5' style={styles.title}>Leave Type</Text>
+              <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.leaveTypeContainer}>
+                {renderLeaveTypeRows()}
+              </ScrollView>
             </Layout>
             <View style={styles.leaveApplyContainer}>
               <Text category='h5' style={styles.title}>Apply for Leave</Text>
@@ -110,16 +110,16 @@ const LeaveScreen = () => {
               <Button style={styles.button} onPress={() => navigation.navigate('ApplyLeave')}>Apply</Button>
             </View>
             <Text category='h4' style={styles.title}>Leave History</Text>
-            <ScrollView style={styles.leaveHistoryContainer}>
-              {leaveHistory.map(renderLeaveHistoryItem)}
+            <ScrollView contentContainerStyle={styles.scrollContainer}>
+              {leaveHistory.map(item => renderLeaveHistoryItem(item))}
             </ScrollView>
           </Layout>
           {selectedLeave && (
             <Modal
-            visible={visible}
-            backdropStyle={styles.backdrop}
-            onBackdropPress={() => setVisible(false)}
-              >
+              visible={visible}
+              backdropStyle={styles.backdrop}
+              onBackdropPress={() => setVisible(false)}
+            >
               <Card disabled={true}>
                 <Text category='h5'>{selectedLeave.type}</Text>
                 <Text category='label'>Added</Text>
@@ -165,8 +165,8 @@ const themedStyles = StyleService.create({
   title: {
     marginVertical: 10,
   },
-  leaveType:{
-    height:'10%',
+  leaveType: {
+    height: '10%',
   },
   leaveTypeContainer: {
     height: '25%',
@@ -180,21 +180,44 @@ const themedStyles = StyleService.create({
     justifyContent: 'center',
     borderRadius: 8,
   },
-  leaveHistoryContainer: {
-    
-    marginVertical: 10,
+  leaveApplyContainer: {
+    paddingHorizontal: 15,
+    paddingVertical: 10,
   },
-  leaveHistoryItem: {
+  scrollContainer: {
+    padding: 10,
+  },
+  infoItem: {
     flexDirection: 'row',
+    justifyContent: 'space-between',
+    borderRadius: 8,
+    backgroundColor: 'white',
+    padding: 10,
+    marginVertical: 5,
+    borderWidth: 1,
   },
-  leaveHistoryText: {
+  iconCircle: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginRight: 10,
+  },
+  infoText: {
+    flex: 2,
+  },
+  StatusText: {
+    flex: 1,
+  },
+  infoTitle: {
     fontWeight: 'bold',
+  },
+  infoDescription: {
+    marginTop: 2,
   },
   button: {
     marginVertical: 5,
   },
   description: {
-    textAlign: 'leaft',
+    textAlign: 'left',
   },
   backdrop: {
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
