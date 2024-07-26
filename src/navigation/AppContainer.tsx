@@ -36,7 +36,7 @@ const Navbar = ({ currentRoute }) => {
         <Text style={[styles.navLabel, { color: currentRoute === 'Leave' ? "#2196F3" : "#757575" }]}>Leave</Text>
       </TouchableOpacity>
       <TouchableOpacity style={styles.cameraButton} onPress={() => navigation.navigate('Camera')}>
-        {getIcon('camera-outline', 'Camera')}
+      <Icon name='camera-outline' fill='white' style={{ width: 24, height: 24 }} />
       </TouchableOpacity>
       <TouchableOpacity style={styles.navItem} onPress={() => navigation.navigate('Attendance')}>
         {getIcon('calendar-outline', 'Attendance')}

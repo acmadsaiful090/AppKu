@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from 'react';
+import {useNavigation } from '@react-navigation/native';
+import { CameraView, CameraType, useCameraPermissions } from 'expo-camera';
 import { View, Text, Button, Image, Dimensions, TouchableOpacity, Alert, ActivityIndicator } from 'react-native';
 import * as Location from 'expo-location';
 import Facial from '../../assets/icons/Facial_Recognition.png';
@@ -12,9 +14,42 @@ import {
   Icon,
 } from '@ui-kitten/components';
 
-
-const AbsensiScreen = ({ navigation }) => {
+// Component for your camera screen
+export default function App() {
   const styles = useStyleSheet(themedStyles);
+  const navigation = useNavigation();
+  const [facing, setFacing] = useState<CameraType>('front');
+  const [permission, requestPermission] = useCameraPermissions();
+  const [location, setLocation] = useState(null);
+  const [locationPermission, setLocationPermission] = useState(null);
+
+  useEffect(() => {
+    (async () => {
+      let { status } = await Location.requestForegroundPermissionsAsync();
+      setLocationPermission(status === 'granted');
+
+      if (status !== 'granted') {
+        Alert.alert('Permission to access location was denied');
+        return;
+      }
+
+      let loc = await Location.getCurrentPositionAsync({});
+      setLocation(loc);
+    })();
+  }, []);
+
+  if (!permission) {
+    return <View />;
+  }
+
+  if (!permission.granted) {
+    return (
+      <View style={styles.container}>
+        <Text style={styles.message}>We need your permission to show the camera</Text>
+        <Button onPress={requestPermission} title="Grant Permission" />
+      </View>
+    );
+  }
   const windowWidth = Dimensions.get('window').width;
   const windowHeight = Dimensions.get('window').height;
   
@@ -26,12 +61,6 @@ const AbsensiScreen = ({ navigation }) => {
     
     return <View style={{ height, width }} />;
   };
-  
-  const checkAllPermissions = async () => {
-    const { status } = await Location.requestForegroundPermissionsAsync();
-    return status === 'granted';
-  };
-  
   const JakartaTime = () => {
     const [jakartaTime, setJakartaTime] = useState(null);
   
@@ -56,43 +85,25 @@ const AbsensiScreen = ({ navigation }) => {
       <Text style={styles.statusText}>Time: {jakartaTime ? jakartaTime : 'Loading...'}</Text>
     );
   };
-  
-  const [locationStatus, setLocationStatus] = useState(null);
-  const [location, setLocation] = useState(null);
-  const [mockLocation, setMockLocation] = useState(false);
-  const timeStatus = true;
-
-  useEffect(() => {
-    const requestLocationPermission = async () => {
-      try {
-        const granted = await checkAllPermissions();
-        if (granted) {
-          setLocationStatus(true);
-          const location = await Location.getCurrentPositionAsync({
-            accuracy: Location.Accuracy.High,
-          });
-          setLocation(location.coords);
-          // checkMockLocation(location.coords); // Expo does not provide mock location detection
-        } else {
-          setLocationStatus(false);
-        }
-      } catch (err) {
-        console.warn(err);
-        setLocationStatus(false);
-      }
-    };
-
-    requestLocationPermission();
-  }, []);
+  const DisplayLocation = () => {
+    if (location) {
+      return (
+        <Text style={styles.statusText}>
+          Location: {location.coords.latitude}, {location.coords.longitude}
+        </Text>
+      );
+    } else {
+      return <ActivityIndicator size="small" color="black" />;
+    }
+  };
 
   return (
     <View style={styles.container}>
       <Spacer heightPercent={windowHeight * 0.01} />
       <View style={styles.circleContainer}>
-        <View style={styles.circle}>
-          {/* Placeholder for Camera */}
-          <Text style={styles.text}>Camera Placeholder</Text>
-        </View>
+      <View style={styles.circle}>
+        <CameraView style={styles.camera} facing={facing} />
+      </View>
       </View>
       <Image source={Facial} style={styles.icon} />
       <Text style={styles.text}>Arahkan wajahmu</Text>
@@ -103,16 +114,7 @@ const AbsensiScreen = ({ navigation }) => {
         <Icon name = 'checkmark'  style={{ width: 18, height: 18 }} color= 'green'/>
           Location
         </Text>
-        {location && (
-          <Text style={styles.statusText}>
-            Latitude: {location.latitude}, Longitude: {location.longitude}
-          </Text>
-        )}
-        {mockLocation && (
-          <Text style={[styles.statusText, { color: 'red' }]}>
-            Fake GPS detected
-          </Text>
-        )}
+        <DisplayLocation />
         <Text style={styles.statusText}>
         <Icon name = 'checkmark'  style={{ width: 18, height: 18 }} color= 'green'/>
           Time
@@ -131,7 +133,7 @@ const AbsensiScreen = ({ navigation }) => {
       </View>
     </View>
   );
-};
+}
 
 const themedStyles = StyleService.create({
   container: {
@@ -148,10 +150,15 @@ const themedStyles = StyleService.create({
     width: 243,
     height: 234,
     borderRadius: 150,
-    backgroundColor: 'black',
-    alignItems: 'center',
+    overflow: 'hidden',
     justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'black',
     marginBottom: 16,
+  },
+  camera: {
+    width: '100%',
+    height: '100%',
   },
   icon: {
     width: 80,
@@ -191,5 +198,3 @@ const themedStyles = StyleService.create({
     justifyContent: 'center',
   },
 });
-
-export default AbsensiScreen;
