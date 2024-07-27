@@ -11,18 +11,10 @@ import {
   Icon,
 } from '@ui-kitten/components';
 
-const birthdays = [
-  { id: '1', name: 'Rhomy Nugraha', date: '27 Desember', role: 'FO Agent', color: '#00BCD4', icon: 'gift-outline' },
-  { id: '2', name: 'Deva nugraha', date: '27 Desember', role: 'FO Agent', color: '#FFCDD2', icon: 'gift-outline' },
-  { id: '3', name: 'Aida Fatmawati', date: '27 Desember', role: 'FO Agent', color: '#DDA002', icon: 'gift-outline' },
-];
 
-const info = [
-  { id: '1', title: 'Peraturan Baru', description: 'Per tanggal 23 Jan 2025 akan semua wajib absen secara online', color: '#FFCDD2', icon: 'alert-circle-outline' },
-  { id: '2', title: 'Deva - FO SPV', description: 'Karyawan Terbaik Juni 2024', color: '#FFF9C4', icon: 'award-outline' },
-  { id: '3', title: 'Tamu Check-in', description: 'Kamar 2024', color: '#B3E5FC', icon: 'home-outline' },
-  { id: '4', title: 'libur Tahun Baru', description: 'Per tanggal 01 Jan 2025 Karyawan Libur', color: '#FFCDD2', icon: 'alert-circle-outline' },
-];
+// Import data
+import birthdays from '../../assets/data/birthdays';
+import info from '../../assets/data/info';
 
 const HomeScreen = ({ navigation }) => {
   const styles = useStyleSheet(themedStyles);
@@ -84,7 +76,7 @@ const HomeScreen = ({ navigation }) => {
           />
           </View>
           <Text style={styles.sectionTitle}>Info Dari HRD</Text>
-          <ScrollView contentContainerStyle={styles.scrollContainer}>
+          <ScrollView contentContainerStyle={styles.scrollContainerinfo}>
           {info.map(item => (
             <View key={item.id} style={[styles.infoItem, { borderColor: item.color }]}>
               <View style={styles.iconCircle}>
@@ -112,12 +104,16 @@ const themedStyles = StyleService.create({
   },
   scrollContainer: {
     flexGrow: 1,
+    padding: 16,
+  },
+  scrollContainerinfo: {
+    flexGrow: 1,
   },
   header: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    padding: 10,
+    padding: 16,
     backgroundColor: '#00BCD4',
   },
   logo: {

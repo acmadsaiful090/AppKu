@@ -53,7 +53,7 @@ const LeaveScreen = () => {
           <Text category='c1'>Start: {item.start} End: {item.end}</Text>
         </View>
         <View style={styles.StatusText}>
-          <Text category='c1' style={{ color: statusColor }}>Status: {item.status}</Text>
+          <Text category='c1' style={{ color: statusColor }}>{item.status}</Text>
           <Text category='c1'>Applied: {item.applied}</Text>
         </View>
       </View>
@@ -88,8 +88,8 @@ const LeaveScreen = () => {
   };
 
   return (
-    <SafeAreaProvider>
     <ApplicationProvider {...eva} theme={eva.light}>
+      <SafeAreaProvider>
         <SafeAreaView style={{ flex: 1 }}>
           <Layout style={styles.container}>
             <Layout style={styles.header}>
@@ -143,8 +143,8 @@ const LeaveScreen = () => {
             </Modal>
           )}
         </SafeAreaView>
+      </SafeAreaProvider>
     </ApplicationProvider>
-    </SafeAreaProvider>
   );
 };
 

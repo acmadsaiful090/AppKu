@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { NavigationContainer, useNavigation } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { ApplicationProvider, IconRegistry, Layout, Text, StyleService, useStyleSheet, Icon } from '@ui-kitten/components';
 import * as eva from '@eva-design/eva';
 import { EvaIconsPack } from '@ui-kitten/eva-icons';
@@ -12,9 +12,10 @@ import LeaveScreen from 'screens/LeaveScreen';
 import PaycheckScreen from 'screens/PaycheckScreen';
 import ApplyLeaveScreen from 'screens/ApplyLeaveScreen';
 
-const Stack = createNativeStackNavigator();
 
+const Tab = createBottomTabNavigator();
 const Navbar = ({ currentRoute }) => {
+  
   const navigation = useNavigation();
   const styles = useStyleSheet(themedStyles);
   const getIcon = (name, route) => (
@@ -58,29 +59,26 @@ function AppContainer() {
       <IconRegistry icons={EvaIconsPack} />
       <ApplicationProvider {...eva} theme={eva.light}>
         <NavigationContainer
-          onStateChange={(state) => {
-            const route = state.routes[state.index];
-            setCurrentRoute(route.name);
-          }}
-        >
-          <Layout style={{ flex: 1 }}>
-            <Stack.Navigator 
-              initialRouteName="Home"
-              screenOptions={{
-                headerShown: false,
-              }}
-            >
-              <Stack.Screen name="Home" component={HomeScreen} />
-              <Stack.Screen name="Camera" component={CameraScreen} />
-              <Stack.Screen name="Attendance" component={AbsensiScreen} />
-              <Stack.Screen name="Leave" component={LeaveScreen} />
-              <Stack.Screen name="Paycheck" component={PaycheckScreen} />
-              <Stack.Screen name="ApplyLeave" component={ApplyLeaveScreen} />
-            </Stack.Navigator>
-            {!(currentRoute === 'Camera' || currentRoute === 'ApplyLeave') && <Navbar currentRoute={currentRoute} />}
-
-          </Layout>
-        </NavigationContainer>
+        onStateChange={(state) => {
+          const route = state.routes[state.index];
+          setCurrentRoute(route.name);
+        }}
+      >
+        <Layout style={{ flex: 1 }}>
+          <Tab.Navigator
+            screenOptions={{ headerShown: false }}
+            initialRouteName="Home"
+          >
+            <Tab.Screen name="Home" component={HomeScreen} />
+            <Tab.Screen name="Camera" component={CameraScreen} />
+            <Tab.Screen name="Attendance" component={AbsensiScreen} />
+            <Tab.Screen name="Leave" component={LeaveScreen} />
+            <Tab.Screen name="Paycheck" component={PaycheckScreen} />
+            <Tab.Screen name="ApplyLeave" component={ApplyLeaveScreen} />
+          </Tab.Navigator>
+          {!(currentRoute === 'Camera' || currentRoute === 'ApplyLeave') && <Navbar currentRoute={currentRoute} />}
+        </Layout>
+      </NavigationContainer>
       </ApplicationProvider>
     </>
   );
