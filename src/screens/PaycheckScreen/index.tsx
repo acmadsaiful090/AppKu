@@ -1,56 +1,67 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { ScrollView, View } from 'react-native';
-import { ApplicationProvider, Layout, Text, Card, StyleService, useStyleSheet } from '@ui-kitten/components';
+import { ApplicationProvider, Layout, Text, StyleService, useStyleSheet } from '@ui-kitten/components';
 import * as eva from '@eva-design/eva';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 
-const paychecks = [
-  { id: 1, month: 'September 2024', amount: 'Rp 11.000.000', date: '30 September 2024' },
-  { id: 2, month: 'September 2024', amount: 'Rp 11.000.000', date: '30 September 2024' },
-  { id: 3, month: 'September 2024', amount: 'Rp 11.000.000', date: '30 September 2024' },
-  { id: 4, month: 'September 2024', amount: 'Rp 11.000.000', date: '30 September 2024' },
-  { id: 5, month: 'September 2024', amount: 'Rp 11.000.000', date: '30 September 2024' },
-];
+import Header from '../Components/Header';
+import PayCheckItem from '../Components/Payment/PayCheckItem';
+import PaycheckDetailsModal from '../Components/Payment/PaycheckDetailsModal';
+import paychecks from '../../assets/data/paychecks';
 
-const ScheduleScreen = () => {
+const PaycheckScreen = () => {
   const styles = useStyleSheet(themedStyles);
+  const [visible, setVisible] = useState(false);
+  const [selectedPaycheck, setSelectedPaycheck] = useState(null);
 
-  const PayCheckItem = ({ month, amount, date }) => (
-    <Card style={styles.card}>
-      <Text category='h6'>Gaji {month}</Text>
-      <Text category='s1'>{amount}</Text>
-      <Text appearance='hint'>{date}</Text>
-    </Card>
-  );
+  const toggleModal = () => {
+    setVisible(!visible);
+  };
+
+  const showPaycheckDetails = (paycheck) => {
+    setSelectedPaycheck(paycheck);
+    toggleModal();
+  };
+
+  const closeModal = () => {
+    setVisible(false);
+    setSelectedPaycheck(null);
+  };
 
   return (
     <SafeAreaProvider>
-    <ApplicationProvider {...eva} theme={eva.light}>
-      <SafeAreaView style={{ flex: 1 }}>
-      <Layout style={styles.container}>
-        <Text category='h1' style={styles.header}>PayCheck</Text>
-        <View style={styles.info}>
-          <Text category='s1'>Nama</Text>
-          <Text category='s1'>Emmanuel Sebastian</Text>
-        </View>
-        <View style={styles.info}>
-          <Text category='s1'>Jabatan</Text>
-          <Text category='s1'>FO Agent</Text>
-        </View>
-        <Text category='h4' style={styles.subHeader}>Riwayat Gaji</Text>
-        <ScrollView>
-          {paychecks.map((paycheck) => (
-            <PayCheckItem
-              key={paycheck.id}
-              month={paycheck.month}
-              amount={paycheck.amount}
-              date={paycheck.date}
-            />
-          ))}
-        </ScrollView>
-      </Layout>
-      </SafeAreaView>
-    </ApplicationProvider>
+      <ApplicationProvider {...eva} theme={eva.light}>
+        <SafeAreaView style={{ flex: 1 }}>
+          <Layout style={styles.container}>
+            <Header title="Paycheck" />
+            <View style={styles.info}>
+              <Text category="s1">Nama</Text>
+              <Text category="s1">Emmanuel Sebastian</Text>
+            </View>
+            <View style={styles.info}>
+              <Text category="s1">Jabatan</Text>
+              <Text category="s1">FO Agent</Text>
+            </View>
+            <Text category="h4" style={styles.subHeader}>Riwayat Gaji</Text>
+            <ScrollView contentContainerStyle={styles.scrollContainer}>
+              {paychecks.map((paycheck) => (
+                <PayCheckItem
+                  key={paycheck.id}
+                  month={paycheck.month}
+                  amount={paycheck.amount}
+                  date={paycheck.date}
+                  onPress={() => showPaycheckDetails(paycheck)}
+                />
+              ))}
+            </ScrollView>
+          </Layout>
+          <PaycheckDetailsModal
+            visible={visible}
+            onClose={closeModal}
+            paycheck={selectedPaycheck}
+          />
+        </SafeAreaView>
+      </ApplicationProvider>
     </SafeAreaProvider>
   );
 };
@@ -59,16 +70,10 @@ const themedStyles = StyleService.create({
   container: {
     flex: 1,
     backgroundColor: 'background-basic-color-1',
-  },
-  header: {
-    color: 'text-control-color',
     padding: 10,
-    borderBottomRightRadius: 10,
-    borderBottomLeftRadius: 10,
-    backgroundColor: 'color-primary-default',
   },
   subHeader: {
-    marginVertical: 8,
+    padding: 10,
   },
   info: {
     flexDirection: 'row',
@@ -79,12 +84,9 @@ const themedStyles = StyleService.create({
     borderBottomColor: 'color-primary-300',
     borderRadius: 10,
   },
-  card: {
-    marginVertical: 4,
+  scrollContainer: {
     padding: 10,
-    borderRadius: 10,
-    backgroundColor: 'color-info-100',
   },
 });
 
-export default ScheduleScreen;
+export default PaycheckScreen;

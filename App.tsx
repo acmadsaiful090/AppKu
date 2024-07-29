@@ -13,7 +13,6 @@ import { EvaIconsPack } from "@ui-kitten/eva-icons";
 import * as eva from "@eva-design/eva";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import AppContainer from "navigation/AppContainer";
-// import Camera from "screens/CameraScreen";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import AssetsIconsPack from "assets/AssetsIconsPack";
 
