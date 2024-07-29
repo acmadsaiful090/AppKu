@@ -28,23 +28,23 @@ const CalendarDay = ({ day, onPress }) => {
 
 const themedStyles = StyleService.create({
   calendarDay: {
-    width: '23%', // Adjust to fit the grid with margins
-    aspectRatio: 1, // Ensure square shape
+    width: '23%', 
+    aspectRatio: 1, 
     margin: '1%',
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: 'color-basic-500', // Background color
+    backgroundColor: 'color-basic-500', 
     padding: 10,
     borderRadius: 5,
   },
   dateText: {
     textAlign: 'center',
-    color: '#000', // Text color
+    color: '#000', 
     marginBottom: 5,
   },
   shiftText: {
     textAlign: 'center',
-    color: '#000', // Text color
+    color: '#000', 
   },
 });
 

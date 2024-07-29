@@ -70,7 +70,6 @@ const themedStyles = StyleService.create({
   container: {
     flex: 1,
     backgroundColor: 'background-basic-color-1',
-    padding: 10,
   },
   subHeader: {
     padding: 10,

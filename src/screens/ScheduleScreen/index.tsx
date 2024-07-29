@@ -42,8 +42,8 @@ const ScheduleScreen = () => {
   };
 
   const handleRangeChange = (range) => {
-    const startDate = range.startDate ? new Date(range.startDate).toISOString().split('T')[0] : '';
-    const endDate = range.endDate ? new Date(range.endDate).toISOString().split('T')[0] : '';
+    const startDate = range.startDate ? new Date(range.startDate.getTime() - range.startDate.getTimezoneOffset() * 60000).toISOString().split('T')[0] : '';
+    const endDate = range.endDate ? new Date(range.endDate.getTime() - range.endDate.getTimezoneOffset() * 60000).toISOString().split('T')[0] : '';
     setSelectedRange({ startDate, endDate });
     setCalendarVisible(false);
   };
@@ -101,6 +101,7 @@ const ScheduleScreen = () => {
                         endDate: selectedRange.endDate ? new Date(selectedRange.endDate) : null,
                       }}
                       onSelect={handleRangeChange}
+                      date={new Date(selectedRange.startDate)}
                     />
                   </View>
                 </View>
@@ -123,6 +124,7 @@ const themedStyles = StyleService.create({
     marginVertical: 20,
   },
   calendarGrid: {
+    padding: 5,
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'space-around',
@@ -134,7 +136,7 @@ const themedStyles = StyleService.create({
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
   },
   modalContainer: {
-    width: '80%',
+    width: '100%',
     backgroundColor: 'background-basic-color-1',
     borderRadius: 10,
     padding: 20,

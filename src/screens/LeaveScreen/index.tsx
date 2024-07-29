@@ -22,7 +22,6 @@ const LeaveScreen = () => {
     setSelectedLeave(type);
     setVisible(true);
   };
-
   return (
     <SafeAreaProvider>
       <ApplicationProvider {...eva} theme={eva.light}>

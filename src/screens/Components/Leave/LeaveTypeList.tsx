@@ -56,7 +56,7 @@ const themedStyles = StyleService.create({
   },
   leaveTypeContainer: {
     padding: 10,
-    height: '23%',
+    height: '25%',
   },
   leaveTypeRow: {
     flexDirection: 'column',

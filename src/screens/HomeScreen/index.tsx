@@ -23,7 +23,7 @@ const HomeScreen = ({ navigation }) => {
           <Header />
           <Profile />
           <Attendance />
-          <Text style={styles.sectionTitle}>Ulang Tahun Hari Ini</Text>
+          <Text style={styles.sectionTitle}>Ulang Tahun Bulan Ini</Text>
           <View style={styles.scrollContainer}>
             <FlatList
               horizontal
