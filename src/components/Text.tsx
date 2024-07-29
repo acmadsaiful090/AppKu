@@ -79,7 +79,7 @@ export default React.forwardRef(
       maxWidth,
       style,
       ...rest
-    }: MyTextProps,a
+    }: MyTextProps,
     ref,
   ) => {
     let textAlign: 'left' | 'center' | 'right' | 'auto' | 'justify' | 'left';
