@@ -1,10 +1,28 @@
 import React from 'react';
-import { View, Image } from 'react-native';
+import { View, Image, TouchableOpacity, Alert } from 'react-native';
 import { StyleService, useStyleSheet, Icon, Text } from '@ui-kitten/components';
 import Logo from '../../assets/images/logo/logo.png';
 
-const Header = ({ title }) => {
+const Header = ({ title, onLogout }) => {
   const styles = useStyleSheet(themedStyles);
+
+  const handleLogout = () => {
+    Alert.alert(
+      'Confirm Logout',
+      'Are you sure you want to log out?',
+      [
+        {
+          text: 'Cancel',
+          style: 'cancel',
+        },
+        {
+          text: 'OK',
+          onPress: () => onLogout(),
+        },
+      ],
+      { cancelable: false }
+    );
+  };
 
   return (
     <View style={styles.header}>
@@ -12,7 +30,9 @@ const Header = ({ title }) => {
       <Text category='h5' style={styles.title}>
         {title}
       </Text>
-      <Icon name='power-outline' fill='red' style={styles.powerIcon} />
+      <TouchableOpacity onPress={handleLogout}>
+        <Icon name='power-outline' fill='red' style={styles.powerIcon} />
+      </TouchableOpacity>
     </View>
   );
 };

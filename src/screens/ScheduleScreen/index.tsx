@@ -4,7 +4,6 @@ import { ApplicationProvider, Layout, Button, Icon, StyleService, useStyleSheet,
 import * as eva from '@eva-design/eva';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import calendarData from '../../assets/data/calendarData';
-import Header from '../Components/Header';
 import ScheduleCard from '../Components/Schedule/ScheduleCard';
 import CalendarDay from '../Components/Schedule/CalendarDay';
 import DetailsModal from '../Components/Schedule/DetailsModal';
@@ -60,7 +59,6 @@ const ScheduleScreen = () => {
       <ApplicationProvider {...eva} theme={eva.light}>
         <SafeAreaView style={{ flex: 1 }}>
           <Layout style={styles.container}>
-            <Header title="Attendance" />
             <ScheduleCard />
             <Layout style={styles.datePicker}>
               <Button

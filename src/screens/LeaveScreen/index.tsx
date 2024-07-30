@@ -7,7 +7,6 @@ import { useNavigation } from '@react-navigation/native';
 
 import leaveTypes from '../../assets/data/leaveTypes';
 import leaveHistory from '../../assets/data/leaveHistory';
-import Header from '../Components/Header';
 import LeaveTypeList from '../Components/Leave/LeaveTypeList';
 import LeaveHistoryItem from '../Components/Leave/LeaveHistoryItem';
 import LeaveModal from '../Components/Leave/LeaveModal';
@@ -27,7 +26,6 @@ const LeaveScreen = () => {
       <ApplicationProvider {...eva} theme={eva.light}>
         <SafeAreaView style={{ flex: 1 }}>
           <Layout style={styles.container}>
-            <Header title="Leave Management" />
             <LeaveTypeList leaveTypes={leaveTypes} onCardPress={handleCardPress} />
             <View style={styles.leaveApplyContainer}>
               <Text category='h5' style={styles.title}>Apply for Leave</Text>

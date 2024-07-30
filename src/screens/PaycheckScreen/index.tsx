@@ -4,7 +4,6 @@ import { ApplicationProvider, Layout, Text, StyleService, useStyleSheet } from '
 import * as eva from '@eva-design/eva';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 
-import Header from '../Components/Header';
 import PayCheckItem from '../Components/Payment/PayCheckItem';
 import PaycheckDetailsModal from '../Components/Payment/PaycheckDetailsModal';
 import paychecks from '../../assets/data/paychecks';
@@ -33,7 +32,6 @@ const PaycheckScreen = () => {
       <ApplicationProvider {...eva} theme={eva.light}>
         <SafeAreaView style={{ flex: 1 }}>
           <Layout style={styles.container}>
-            <Header title="Paycheck" />
             <View style={styles.info}>
               <Text category="s1">Nama</Text>
               <Text category="s1">Emmanuel Sebastian</Text>

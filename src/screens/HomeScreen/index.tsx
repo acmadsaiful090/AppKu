@@ -4,7 +4,6 @@ import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import * as eva from '@eva-design/eva';
 import { ApplicationProvider, StyleService, useStyleSheet, Icon } from '@ui-kitten/components';
 
-import Header from '../Components/Header';
 import Profile from '../Components/Home/Profile';
 import InfoList from '../Components/Home/InfoList';
 import BirthdayList from '../Components/Home/BirthdayList';
@@ -20,7 +19,6 @@ const HomeScreen = ({ navigation }) => {
     <SafeAreaProvider>
       <ApplicationProvider {...eva} theme={eva.light}>
         <SafeAreaView style={styles.container}>
-          <Header />
           <Profile />
           <Attendance />
           <Text style={styles.sectionTitle}>Ulang Tahun Bulan Ini</Text>
