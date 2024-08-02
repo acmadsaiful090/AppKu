@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import { ScrollView, View } from 'react-native';
-import { ApplicationProvider, Layout, Text, StyleService, useStyleSheet } from '@ui-kitten/components';
-import * as eva from '@eva-design/eva';
-import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
+import { Layout, Text, StyleService, useStyleSheet } from '@ui-kitten/components';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 import PayCheckItem from '../Components/Payment/PayCheckItem';
 import PaycheckDetailsModal from '../Components/Payment/PaycheckDetailsModal';
@@ -28,39 +27,34 @@ const PaycheckScreen = () => {
   };
 
   return (
-    <SafeAreaProvider>
-      <ApplicationProvider {...eva} theme={eva.light}>
-        <SafeAreaView style={{ flex: 1 }}>
-          <Layout style={styles.container}>
-            <View style={styles.info}>
-              <Text category="s1">Nama</Text>
-              <Text category="s1">Emmanuel Sebastian</Text>
-            </View>
-            <View style={styles.info}>
-              <Text category="s1">Jabatan</Text>
-              <Text category="s1">FO Agent</Text>
-            </View>
-            <Text category="h4" style={styles.subHeader}>Riwayat Gaji</Text>
-            <ScrollView contentContainerStyle={styles.scrollContainer}>
-              {paychecks.map((paycheck) => (
-                <PayCheckItem
-                  key={paycheck.id}
-                  month={paycheck.month}
-                  amount={paycheck.amount}
-                  date={paycheck.date}
-                  onPress={() => showPaycheckDetails(paycheck)}
-                />
-              ))}
-            </ScrollView>
-          </Layout>
-          <PaycheckDetailsModal
-            visible={visible}
-            onClose={closeModal}
-            paycheck={selectedPaycheck}
-          />
-        </SafeAreaView>
-      </ApplicationProvider>
-    </SafeAreaProvider>
+      <Layout style={styles.container}>
+        <View style={styles.info}>
+          <Text category="s1">Nama</Text>
+          <Text category="s1">Emmanuel Sebastian</Text>
+        </View>
+        <View style={styles.info}>
+          <Text category="s1">Jabatan</Text>
+          <Text category="s1">FO Agent</Text>
+        </View>
+        <Text category="h4" style={styles.subHeader}>Riwayat Gaji</Text>
+        <ScrollView contentContainerStyle={styles.scrollContainer}>
+          {paychecks.map((paycheck) => (
+            <PayCheckItem
+              key={paycheck.id}
+              month={paycheck.month}
+              amount={paycheck.amount}
+              date={paycheck.date}
+              onPress={() => showPaycheckDetails(paycheck)}
+            />
+          ))}
+        </ScrollView>
+        <PaycheckDetailsModal
+        visible={visible}
+        onClose={closeModal}
+        paycheck={selectedPaycheck}
+      />
+      </Layout>
+      
   );
 };
 

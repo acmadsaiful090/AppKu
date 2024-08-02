@@ -9,6 +9,6 @@
     "jsx": "react-native",
     "module": "commonjs",
     "moduleResolution": "node",       
-    "resolveJsonModule": true,   
+    "resolveJsonModule": true
   }
 }

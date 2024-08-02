@@ -12,8 +12,6 @@ import {
   useStyleSheet,
   Icon,
 } from '@ui-kitten/components';
-
-// Component for your camera screen
 export default function App() {
   const styles = useStyleSheet(themedStyles);
   const navigation = useNavigation();

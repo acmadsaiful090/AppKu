@@ -1,10 +1,8 @@
 import React from 'react';
-import { View } from 'react-native';
-import { Text, useStyleSheet, StyleService } from '@ui-kitten/components';
+import { View, StyleSheet } from 'react-native';
+import { Text } from '@ui-kitten/components';
 
 const LeaveHistoryItem = ({ item }) => {
-  const styles = useStyleSheet(themedStyles);
-
   const getStatusColor = (status) => {
     switch (status) {
       case 'In Progress':
@@ -19,21 +17,23 @@ const LeaveHistoryItem = ({ item }) => {
   };
 
   return (
-    <View key={item.id} style={[styles.infoItem, { borderColor: item.color }]}>
+    <View style={[styles.infoItem, { borderColor: item.color }]}>
       <View style={styles.infoText}>
         <Text category='s1'>{item.type}</Text>
         <Text category='s2'>{item.leaveType}</Text>
         <Text category='c1'>Start: {item.start} End: {item.end}</Text>
       </View>
       <View style={styles.statusText}>
-        <Text category='c1' style={{ color: getStatusColor(item.status) }}>Status: {item.status}</Text>
+        <Text category='c1' style={{ color: getStatusColor(item.status) }}>
+          Status: {item.status}
+        </Text>
         <Text category='c1'>Applied: {item.applied}</Text>
       </View>
     </View>
   );
 };
 
-const themedStyles = StyleService.create({
+const styles = StyleSheet.create({
   infoItem: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -48,6 +48,7 @@ const themedStyles = StyleService.create({
   },
   statusText: {
     flex: 1,
+    justifyContent: 'center',
   },
 });
 

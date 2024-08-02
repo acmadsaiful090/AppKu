@@ -6,7 +6,7 @@ const InfoList = ({ item }) => {
   const styles = useStyleSheet(themedStyles);
 
   return (
-    <View key={item.id} style={[styles.infoItem, { borderColor: item.color }]}>
+    <View style={[styles.infoItem, { borderColor: item.color }]}>
       <View style={styles.iconCircle}>
         <Icon name={item.icon} fill={item.color} style={styles.itemIcon} />
       </View>
@@ -29,14 +29,14 @@ const themedStyles = StyleService.create({
     borderWidth: 1,
     borderRadius: 8,
     backgroundColor: '#FFF',
-    borderColor: '#DDD',
+    borderColor: '#DDD', 
     alignItems: 'center',
   },
   iconCircle: {
     width: 40,
     height: 40,
     borderRadius: 20,
-    backgroundColor: '#444',
+    backgroundColor: '#444', 
     justifyContent: 'center',
     alignItems: 'center',
     marginRight: 10,
@@ -46,7 +46,7 @@ const themedStyles = StyleService.create({
     height: 24,
   },
   infoText: {
-    flex: 1, // Ensure the text container takes the available space
+    flex: 1, 
     justifyContent: 'center',
   },
   infoTitle: {
@@ -56,7 +56,7 @@ const themedStyles = StyleService.create({
   infoDescription: {
     fontSize: 14,
     color: '#888',
-    flexShrink: 1, // Allow text to shrink if needed
-    flexWrap: 'wrap', // Wrap the text to the next line
+    flexShrink: 1, 
+    flexWrap: 'wrap', 
   },
 });

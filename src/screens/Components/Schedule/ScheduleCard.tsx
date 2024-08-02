@@ -2,7 +2,7 @@ import React from 'react';
 import { View } from 'react-native';
 import { Layout, Text, StyleService, useStyleSheet } from '@ui-kitten/components';
 
-const ScheduleCard = () => {
+const ScheduleCard = React.memo(() => {
   const styles = useStyleSheet(themedStyles);
 
   return (
@@ -14,7 +14,7 @@ const ScheduleCard = () => {
             <Text category='h6' style={styles.day}>Rabu</Text>
             <Text category='h6' style={styles.date}>17 Juli</Text>
           </View>
-          <View>
+          <View style={styles.scheduleDetails}>
             <Text category='h6' style={styles.time}>08:00 - 14:00 (WIB)</Text>
             <Text category='c1' style={styles.tolerance}>5 menit toleransi</Text>
             <Text category='c1' style={styles.shift}>Shift1</Text>
@@ -23,7 +23,7 @@ const ScheduleCard = () => {
       </Layout>
     </Layout>
   );
-};
+});
 
 const themedStyles = StyleService.create({
   todaySchedule: {
@@ -52,6 +52,7 @@ const themedStyles = StyleService.create({
   },
   centeredContent: {
     alignItems: 'center',
+    marginRight: 10,
   },
   day: {
     color: 'color-primary-500',
@@ -67,6 +68,10 @@ const themedStyles = StyleService.create({
     textAlign: 'center',
     lineHeight: 75,
     marginBottom: 10,
+  },
+  scheduleDetails: {
+    flex: 1,
+    justifyContent: 'center',
   },
   time: {
     color: 'color-primary-500',

@@ -16,9 +16,6 @@ const ApplyLeaveScreen = () => {
   const [selectedIndex, setSelectedIndex] = useState(null);
 
   return (
-    <SafeAreaProvider>
-    <ApplicationProvider {...eva} theme={eva.light}>
-        <SafeAreaView style={{ flex: 1 }}>
           <Layout style={styles.container}>
             <Text category='h1'>Apply Leave</Text>
             <Layout style={styles.formInput}>
@@ -70,9 +67,6 @@ const ApplyLeaveScreen = () => {
               </Button>
             </View>
           </Layout>
-        </SafeAreaView>
-    </ApplicationProvider>
-    </SafeAreaProvider>
   );
 };
 

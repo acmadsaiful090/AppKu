@@ -1,9 +1,10 @@
 import React from 'react';
-import { View} from 'react-native';
-import { Modal, Text, Button,StyleService, useStyleSheet } from '@ui-kitten/components';
+import { View, Dimensions } from 'react-native';
+import { Modal, Text, Button, StyleService, useStyleSheet } from '@ui-kitten/components';
 
 const DetailsModal = ({ visible, day, onClose }) => {
   const styles = useStyleSheet(themedStyles);
+
   return (
     <Modal
       visible={visible}
@@ -30,26 +31,30 @@ const DetailsModal = ({ visible, day, onClose }) => {
   );
 };
 
+const { width, height } = Dimensions.get('window');
+
 const themedStyles = StyleService.create({
   modalBackground: {
     flex: 1,
-    borderRadius: 10,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
   },
   modalContainer: {
-    width: '100%',
+    width: width * 0.85, 
+    maxHeight: height * 0.6, 
     backgroundColor: '#ffffff',
     borderRadius: 10,
     padding: 20,
     alignItems: 'center',
+    overflow: 'hidden', 
   },
   modalTitle: {
-    marginBottom: 10,
+    marginBottom: 15,
+    textAlign: 'center',
   },
   closeButton: {
-    marginTop: 10,
+    marginTop: 20,
+    width: '100%', 
   },
 });
 

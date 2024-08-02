@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { View, ScrollView, Modal } from 'react-native';
 import { ApplicationProvider, Layout, Button, Icon, StyleService, useStyleSheet, RangeCalendar } from '@ui-kitten/components';
 import * as eva from '@eva-design/eva';
@@ -22,93 +22,91 @@ const ScheduleScreen = () => {
     setSelectedRange({ startDate: startOfMonth, endDate: endOfMonth });
   }, []);
 
-  const handlePress = (day) => {
+  const handlePress = useCallback((day) => {
     setSelectedDay(day);
     setModalVisible(true);
-  };
+  }, []);
 
-  const handleCloseModal = () => {
+  const handleCloseModal = useCallback(() => {
     setModalVisible(false);
     setSelectedDay(null);
-  };
+  }, []);
 
-  const handleOpenCalendar = () => {
+  const handleOpenCalendar = useCallback(() => {
     setCalendarVisible(true);
-  };
+  }, []);
 
-  const handleCloseCalendar = () => {
+  const handleCloseCalendar = useCallback(() => {
     setCalendarVisible(false);
-  };
+  }, []);
 
-  const handleRangeChange = (range) => {
-    const startDate = range.startDate ? new Date(range.startDate.getTime() - range.startDate.getTimezoneOffset() * 60000).toISOString().split('T')[0] : '';
-    const endDate = range.endDate ? new Date(range.endDate.getTime() - range.endDate.getTimezoneOffset() * 60000).toISOString().split('T')[0] : '';
-    setSelectedRange({ startDate, endDate });
+  const handleRangeChange = useCallback((range) => {
+    const startDate = range.startDate ? new Date(range.startDate).setHours(0, 0, 0, 0) : '';
+    const endDate = range.endDate ? new Date(range.endDate).setHours(23, 59, 59, 999) : '';
+    setSelectedRange({
+      startDate: startDate ? new Date(startDate).toISOString().split('T')[0] : '',
+      endDate: endDate ? new Date(endDate).toISOString().split('T')[0] : '',
+    });
     setCalendarVisible(false);
-  };
+  }, []);
 
-  const isDateInRange = (dateStr) => {
+  const isDateInRange = useCallback((dateStr) => {
     const date = new Date(dateStr);
-    const startDate = new Date(selectedRange.startDate);
-    const endDate = new Date(selectedRange.endDate);
-    return date >= startDate && date <= endDate;
-  };
+    const { startDate, endDate } = selectedRange;
+    const startDateObj = new Date(startDate);
+    const endDateObj = new Date(endDate);
+    return date >= startDateObj && date <= endDateObj;
+  }, [selectedRange]);
 
   return (
-    <SafeAreaProvider>
-      <ApplicationProvider {...eva} theme={eva.light}>
-        <SafeAreaView style={{ flex: 1 }}>
-          <Layout style={styles.container}>
-            <ScheduleCard />
-            <Layout style={styles.datePicker}>
-              <Button
-                accessoryLeft={(props) => <Icon {...props} name="calendar-outline" />}
-                onPress={handleOpenCalendar}
-              >
-                {selectedRange.startDate
-                  ? `${selectedRange.startDate}${selectedRange.endDate && ` - ${selectedRange.endDate}`}`
-                  : 'Select Date Range'}
-              </Button>
-            </Layout>
-            <ScrollView contentContainerStyle={styles.calendarGrid}>
-              {calendarData
-                .filter(day => isDateInRange(day.date))
-                .map((day) => (
-                  <CalendarDay key={day.id} day={day} onPress={() => handlePress(day)} />
-              ))}
-            </ScrollView>
-            {selectedDay && (
-              <DetailsModal
-                visible={modalVisible}
-                day={selectedDay}
-                onClose={handleCloseModal}
+    <Layout style={styles.container}>
+      <ScheduleCard />
+      <Layout style={styles.datePicker}>
+        <Button
+          accessoryLeft={(props) => <Icon {...props} name="calendar-outline" />}
+          onPress={handleOpenCalendar}
+        >
+          {selectedRange.startDate
+            ? `${selectedRange.startDate}${selectedRange.endDate && ` - ${selectedRange.endDate}`}`
+            : 'Select Date Range'}
+        </Button>
+      </Layout>
+      <ScrollView contentContainerStyle={styles.calendarGrid}>
+        {calendarData
+          .filter(day => isDateInRange(day.date))
+          .map((day) => (
+            <CalendarDay key={day.id} day={day} onPress={() => handlePress(day)} />
+        ))}
+      </ScrollView>
+      {selectedDay && (
+        <DetailsModal
+          visible={modalVisible}
+          day={selectedDay}
+          onClose={handleCloseModal}
+        />
+      )}
+      {calendarVisible && (
+        <Modal
+          visible={calendarVisible}
+          transparent={true}
+          animationType="slide"
+          onRequestClose={handleCloseCalendar}
+        >
+          <View style={styles.modalBackground}>
+            <View style={styles.modalContainer}>
+              <RangeCalendar
+                range={{
+                  startDate: selectedRange.startDate ? new Date(selectedRange.startDate) : null,
+                  endDate: selectedRange.endDate ? new Date(selectedRange.endDate) : null,
+                }}
+                onSelect={handleRangeChange}
+                date={new Date(selectedRange.startDate)}
               />
-            )}
-            {calendarVisible && (
-              <Modal
-                visible={calendarVisible}
-                transparent={true}
-                animationType="slide"
-                onRequestClose={handleCloseCalendar}
-              >
-                <View style={styles.modalBackground}>
-                  <View style={styles.modalContainer}>
-                    <RangeCalendar
-                      range={{
-                        startDate: selectedRange.startDate ? new Date(selectedRange.startDate) : null,
-                        endDate: selectedRange.endDate ? new Date(selectedRange.endDate) : null,
-                      }}
-                      onSelect={handleRangeChange}
-                      date={new Date(selectedRange.startDate)}
-                    />
-                  </View>
-                </View>
-              </Modal>
-            )}
-          </Layout>
-        </SafeAreaView>
-      </ApplicationProvider>
-    </SafeAreaProvider>
+            </View>
+          </View>
+        </Modal>
+      )}
+    </Layout>
   );
 };
 

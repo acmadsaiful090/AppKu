@@ -79,8 +79,8 @@ const themedStyles = StyleService.create({
     paddingHorizontal: 16,
   },
   logo: {
-    width: 400,
-    height: 400,
+    width: 300,
+    height: 300,
     resizeMode: 'contain',
     marginBottom: 10,
   },
