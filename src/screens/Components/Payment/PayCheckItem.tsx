@@ -22,14 +22,9 @@ const themedStyles = StyleService.create({
     overflow: 'hidden',
   },
   card: {
+    padding: 16,
     marginVertical: 4,
     backgroundColor: 'color-info-100',
-    padding: 10,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.1,
-    shadowRadius: 2,
-    elevation: 1,
   },
   monthText: {
     fontWeight: 'bold',
@@ -39,6 +34,9 @@ const themedStyles = StyleService.create({
   },
   dateText: {
     color: 'color-primary-500',
+  },
+   description: {
+    textAlign: 'left',
   },
 });
 

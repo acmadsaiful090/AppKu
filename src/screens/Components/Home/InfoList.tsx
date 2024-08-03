@@ -22,15 +22,14 @@ export default InfoList;
 
 const themedStyles = StyleService.create({
   infoItem: {
+    padding: 8,
     flexDirection: 'row',
-    padding: 16,
-    marginVertical: 5,
-    marginHorizontal: 16,
     borderWidth: 1,
     borderRadius: 8,
     backgroundColor: '#FFF',
     borderColor: '#DDD', 
     alignItems: 'center',
+    marginBottom: 10,
   },
   iconCircle: {
     width: 40,

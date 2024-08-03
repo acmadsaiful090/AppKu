@@ -114,6 +114,8 @@ const themedStyles = StyleService.create({
   container: {
     flex: 1,
     backgroundColor: 'background-basic-color-1',
+    paddingHorizontal: 16,
+    paddingVertical: 10,
   },
   datePicker: {
     alignItems: 'center',

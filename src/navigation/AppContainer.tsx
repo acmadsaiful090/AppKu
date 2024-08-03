@@ -9,7 +9,7 @@ import AuthNavigator from './AuthNavigator';
 import Header from 'screens/Components/Header';
 
 function AppContainer() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(true);
   const [isLoading, setIsLoading] = useState(true);
   const [currentRoute, setCurrentRoute] = useState('Home');
 

@@ -6,6 +6,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import PayCheckItem from '../Components/Payment/PayCheckItem';
 import PaycheckDetailsModal from '../Components/Payment/PaycheckDetailsModal';
 import paychecks from '../../assets/data/paychecks';
+import Profile from '../Components/Home/Profile';
 
 const PaycheckScreen = () => {
   const styles = useStyleSheet(themedStyles);
@@ -28,14 +29,7 @@ const PaycheckScreen = () => {
 
   return (
       <Layout style={styles.container}>
-        <View style={styles.info}>
-          <Text category="s1">Nama</Text>
-          <Text category="s1">Emmanuel Sebastian</Text>
-        </View>
-        <View style={styles.info}>
-          <Text category="s1">Jabatan</Text>
-          <Text category="s1">FO Agent</Text>
-        </View>
+        <Profile />
         <Text category="h4" style={styles.subHeader}>Riwayat Gaji</Text>
         <ScrollView contentContainerStyle={styles.scrollContainer}>
           {paychecks.map((paycheck) => (
@@ -62,21 +56,15 @@ const themedStyles = StyleService.create({
   container: {
     flex: 1,
     backgroundColor: 'background-basic-color-1',
-  },
-  subHeader: {
-    padding: 10,
+    paddingHorizontal: 16,
+    paddingVertical: 10,
   },
   info: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginBottom: 8,
-    padding: 10,
     borderBottomWidth: 1,
     borderBottomColor: 'color-primary-300',
     borderRadius: 10,
-  },
-  scrollContainer: {
-    padding: 10,
   },
 });
 

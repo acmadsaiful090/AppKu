@@ -59,7 +59,7 @@ const ApplyLeaveScreen = () => {
               />
             </Layout>
             <View style={styles.buttonContainer}>
-              <Button onPress={() => navigation.goBack()} style={[styles.button, styles.cancelButton]}>
+              <Button onPress={() => navigation.navigate('Leave')} style={[styles.button, styles.cancelButton]}>
                 Batal
               </Button>
               <Button style={styles.button}>
@@ -74,7 +74,7 @@ const themedStyles = StyleService.create({
   container: {
     flex: 1,
     padding: 16,
-    justifyContent: 'space-between', // Menempatkan konten di antara atas dan bawah
+    justifyContent: 'space-between', 
   },
   formInput: {
     flex: 1,

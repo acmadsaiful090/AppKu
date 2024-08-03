@@ -3,5 +3,9 @@ const info = [
     { id: '2', title: 'Deva - FO SPV', description: 'Karyawan Terbaik Juni 2024', color: '#FFF9C4', icon: 'award-outline' },
     { id: '3', title: 'Tamu Check-in', description: 'Kamar 2024', color: '#B3E5FC', icon: 'home-outline' },
     { id: '4', title: 'libur Tahun Baru', description: 'Per tanggal 01 Jan 2025 Karyawan Libur', color: '#FFCDD2', icon: 'alert-circle-outline' },
+    { id: '5', title: 'Info 5', description: 'Description 5', color: '#FFFFFF', icon: 'info-outline' },
+    { id: '6', title: 'Info 6', description: 'Description 6', color: '#FFFFFF', icon: 'info-outline' },
+    { id: '7', title: 'Info 7', description: 'Description 7', color: '#FFFFFF', icon: 'info-outline' },
+    { id: '8', title: 'Info 8', description: 'Description 8', color: '#FFFFFF', icon: 'info-outline' },
 ];
 export default info;

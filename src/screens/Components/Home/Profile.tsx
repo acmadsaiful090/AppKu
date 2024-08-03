@@ -26,7 +26,6 @@ export default Profile;
 const themedStyles = StyleService.create({
   profile: {
     alignItems: 'center',
-    marginVertical: 10,
   },
   profileImage: {
     width: '100%',
@@ -40,7 +39,6 @@ const themedStyles = StyleService.create({
     height: 100,
     borderRadius: 50,
     backgroundColor: '#EEE',
-    marginBottom: 5,
   },
   circle: {
     width: 90,

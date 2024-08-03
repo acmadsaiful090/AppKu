@@ -1,21 +1,21 @@
 import React from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, Dimensions } from 'react-native';
 import { Icon, StyleService, useStyleSheet, useTheme } from '@ui-kitten/components';
 
 const BirthdayList = ({ item }) => {
   const styles = useStyleSheet(themedStyles);
   const theme = useTheme();
- 
- const maleColor = '#00BCD4';  
- const femaleColor = '#FFCDD2';  
- 
- const unknownColors = ['#B0B0B0', '#DDA002', '#FFDE70'];
 
- const backgroundColor = item.gender === 'male' 
-   ? maleColor 
-   : item.gender === 'female' 
-   ? femaleColor 
-   : unknownColors[Math.floor(Math.random() * unknownColors.length)];
+  const maleColor = '#00BCD4';  
+  const femaleColor = '#FFCDD2';  
+  const unknownColors = ['#B0B0B0', '#DDA002', '#FFDE70'];
+
+  const backgroundColor = item.gender === 'male' 
+    ? maleColor 
+    : item.gender === 'female' 
+    ? femaleColor 
+    : unknownColors[Math.floor(Math.random() * unknownColors.length)];
+
   return (
     <View style={[styles.birthdayItem, { backgroundColor }]}>
       <View style={styles.iconCircle}>
@@ -32,13 +32,17 @@ const BirthdayList = ({ item }) => {
 
 export default BirthdayList;
 
+const { width } = Dimensions.get('window');
+
 const themedStyles = StyleService.create({
   birthdayItem: {
     flexDirection: 'row',
-    padding: 16,
+    padding: 8,
     marginRight: 10,
     borderRadius: 10,
     alignItems: 'center',
+    width: width * 0.6,
+    height: 80, 
   },
   iconCircle: {
     width: 40,
@@ -55,18 +59,19 @@ const themedStyles = StyleService.create({
   },
   birthdayText: {
     justifyContent: 'center',
+    flexShrink: 1, 
   },
   birthdayName: {
     fontSize: 16,
     fontWeight: 'bold',
-    color: 'text-white-color',
+    color: 'text-basic-color',
   },
   birthdayDate: {
     fontSize: 14,
-    color: 'text-white-color',
+    color: 'text-basic-color',
   },
   birthdayRole: {
     fontSize: 12,
-    color: 'text-white-color',
+    color: 'text-basic-color',
   },
 });

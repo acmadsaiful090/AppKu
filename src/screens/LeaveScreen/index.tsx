@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { ScrollView, View } from 'react-native';
-import { Layout, Text, Button, StyleService, useStyleSheet } from '@ui-kitten/components';
+import { ScrollView, View, Pressable } from 'react-native';
+import { Layout, Text, StyleService, useStyleSheet, Icon } from '@ui-kitten/components';
 import { useNavigation } from '@react-navigation/native';
 
 import leaveTypes from '../../assets/data/leaveTypes';
@@ -23,14 +23,6 @@ const LeaveScreen = () => {
   return (
     <Layout style={styles.container}>
       <LeaveTypeList leaveTypes={leaveTypes} onCardPress={handleCardPress} />
-      <View style={styles.leaveApplyContainer}>
-        <Text category='h5' style={styles.title}>Apply for Leave</Text>
-        <Text style={styles.description}>
-          To apply for leave, please fill out the form below with the necessary details including the type of leave,
-          start date, end date, and any additional comments. Once submitted, your application will be reviewed.
-        </Text>
-        <Button style={styles.button} onPress={() => navigation.navigate('ApplyLeave')}>Apply</Button>
-      </View>
       <Text category='h5' style={styles.titleHistory}>Leave History</Text>
       <ScrollView contentContainerStyle={styles.scrollContainer}>
         {leaveHistory.map(item => (
@@ -44,6 +36,12 @@ const LeaveScreen = () => {
           onClose={() => setVisible(false)}
         />
       )}
+      <View style={styles.buttonContainer}>
+        <Pressable style={styles.button} onPress={() => navigation.navigate('ApplyLeave')}>
+          <Icon name='plus-square-outline' fill='#FFFFFF' style={styles.icon} />
+        </Pressable>
+        <Text style={styles.buttonText}>Apply Leave</Text>
+      </View>
     </Layout>
   );
 };
@@ -52,21 +50,30 @@ const themedStyles = StyleService.create({
   container: {
     flex: 1,
     backgroundColor: 'background-basic-color-1',
+    paddingHorizontal: 16,
+    paddingVertical: 10,
   },
-  titleHistory: {
-    padding: 10,
-  },
-  leaveApplyContainer: {
-    paddingHorizontal: 10,
-  },
-  scrollContainer: {
-    padding: 10,
-  },
-  description: {
-    textAlign: 'left',
+  buttonContainer: {
+    position: 'absolute',
+    bottom: 10,
+    right: 20,
+    alignItems: 'center',
   },
   button: {
-    marginVertical: 5,
+    width: 40,
+    height: 40,
+    borderRadius: 10,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'color-primary-500',
+  },
+  icon: {
+    width: 30,
+    height: 30,
+  },
+  buttonText: {
+    color: 'color-primary-500',
+    fontSize: 12,
   },
 });
 

@@ -17,38 +17,52 @@ const LeaveHistoryItem = ({ item }) => {
   };
 
   return (
-    <View style={[styles.infoItem, { borderColor: item.color }]}>
-      <View style={styles.infoText}>
-        <Text category='s1'>{item.type}</Text>
-        <Text category='s2'>{item.leaveType}</Text>
-        <Text category='c1'>Start: {item.start} End: {item.end}</Text>
+    <View style={[styles.container, { borderColor: item.color }]}>
+      <View style={styles.infoItem}>
+        <View style={styles.infoText}>
+          <Text category='s2'>{item.leaveType}</Text>
+          <Text category='c1'>Start: {item.start}</Text>
+          <Text category='c1'>End: {item.end}</Text>
+        </View>
+        <View style={styles.statusText}>
+          <Text category='c1' style={{ color: getStatusColor(item.status) }}>
+            Status: {item.status}
+          </Text>
+          <Text category='c1'>Applied: {item.applied}</Text>
+        </View>
       </View>
-      <View style={styles.statusText}>
-        <Text category='c1' style={{ color: getStatusColor(item.status) }}>
-          Status: {item.status}
-        </Text>
-        <Text category='c1'>Applied: {item.applied}</Text>
+      <View style={styles.reasonText}>
+        <Text category='c1'>Reason:</Text>
+        <Text category='c1'>{item.reason}</Text>
       </View>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  infoItem: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+  container: {
+    padding: 8,
+    flexDirection: 'column',
     borderRadius: 8,
     backgroundColor: 'white',
-    padding: 10,
     marginVertical: 5,
     borderWidth: 1,
   },
+  infoItem: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
   infoText: {
-    flex: 2,
+    alignItems: 'flex-start',
   },
   statusText: {
-    flex: 1,
+    alignItems: 'flex-end',
     justifyContent: 'center',
+  },
+  reasonText: {
+    marginTop: 10,
+    flexShrink: 1,
+    width: '100%', 
   },
 });
 

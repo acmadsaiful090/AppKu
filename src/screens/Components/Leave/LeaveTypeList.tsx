@@ -4,7 +4,6 @@ import { Text, useStyleSheet, StyleService } from '@ui-kitten/components';
 
 const LeaveTypeList = ({ leaveTypes, onCardPress }) => {
   const styles = useStyleSheet(themedStyles);
-
   const LeaveCard = ({ leaveType, days, expDays, color, onPress }) => (
     <TouchableOpacity onPress={onPress}>
       <View style={[styles.card, { backgroundColor: color }]}>
@@ -50,28 +49,14 @@ const LeaveTypeList = ({ leaveTypes, onCardPress }) => {
 };
 
 const themedStyles = StyleService.create({
-  title: {
-    padding: 10,
-    marginVertical: 5,
-  },
-  leaveTypeContainer: {
-    padding: 10,
-    height: '25%',
-  },
   leaveTypeRow: {
     flexDirection: 'column',
-    marginRight: 5,
   },
   card: {
-    padding: 10,
-    borderRadius: 8,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 8,
-    elevation: 3,
-    marginBottom: 10, 
-    marginRight: 5, 
+    padding: 8,
+    borderRadius: 10,
+    marginBottom: 10,
+    marginRight: 10, 
   },
 });
 
