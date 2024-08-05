@@ -28,7 +28,7 @@ const ScheduleCard = React.memo(() => {
 const themedStyles = StyleService.create({
   todaySchedule: {
     alignSelf: 'center',
-    width: '90%',
+    width: '100%',
     padding: 10,
   },
   title: {
@@ -52,7 +52,7 @@ const themedStyles = StyleService.create({
   },
   centeredContent: {
     alignItems: 'center',
-    marginRight: 10,
+    marginRight: 30,
   },
   day: {
     color: 'color-primary-500',

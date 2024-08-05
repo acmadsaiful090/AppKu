@@ -1,6 +1,7 @@
 import React from 'react';
-import { View, Text, Dimensions } from 'react-native';
+import { View, Text } from 'react-native';
 import { Icon, StyleService, useStyleSheet, useTheme } from '@ui-kitten/components';
+import { widthPercentageToDP as wp } from 'react-native-responsive-screen';
 
 const BirthdayList = ({ item }) => {
   const styles = useStyleSheet(themedStyles);
@@ -32,46 +33,44 @@ const BirthdayList = ({ item }) => {
 
 export default BirthdayList;
 
-const { width } = Dimensions.get('window');
-
 const themedStyles = StyleService.create({
   birthdayItem: {
     flexDirection: 'row',
-    padding: 8,
-    marginRight: 10,
-    borderRadius: 10,
+    padding: wp('2%'), // Responsive padding
+    marginRight: wp('2.5%'), // Responsive margin
+    borderRadius: wp('2.5%'), // Responsive border radius
     alignItems: 'center',
-    width: width * 0.6,
-    height: 80, 
+    width: wp('60%'), // Responsive width
+    height: wp('20%'), // Responsive height
   },
   iconCircle: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
+    width: wp('10%'), // Responsive width
+    height: wp('10%'), // Responsive height
+    borderRadius: wp('5%'), // Responsive border radius
     backgroundColor: '#B0B0B0',  
     justifyContent: 'center',
     alignItems: 'center',
-    marginRight: 10,
+    marginRight: wp('2.5%'), // Responsive margin
   },
   itemIcon: {
-    width: 24,
-    height: 24,
+    width: wp('6%'), // Responsive width
+    height: wp('6%'), // Responsive height
   },
   birthdayText: {
     justifyContent: 'center',
     flexShrink: 1, 
   },
   birthdayName: {
-    fontSize: 16,
+    fontSize: wp('4%'), // Responsive font size
     fontWeight: 'bold',
     color: 'text-basic-color',
   },
   birthdayDate: {
-    fontSize: 14,
+    fontSize: wp('3.5%'), // Responsive font size
     color: 'text-basic-color',
   },
   birthdayRole: {
-    fontSize: 12,
+    fontSize: wp('3%'), // Responsive font size
     color: 'text-basic-color',
   },
 });

@@ -1,63 +1,60 @@
 import React from 'react';
-import { View, ScrollView, TouchableOpacity } from 'react-native';
+import { View, Pressable } from 'react-native';
 import { Text, useStyleSheet, StyleService } from '@ui-kitten/components';
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
 const LeaveTypeList = ({ leaveTypes, onCardPress }) => {
   const styles = useStyleSheet(themedStyles);
+
   const LeaveCard = ({ leaveType, days, expDays, color, onPress }) => (
-    <TouchableOpacity onPress={onPress}>
+    <Pressable onPress={onPress} style={styles.cardWrapper}>
       <View style={[styles.card, { backgroundColor: color }]}>
         <Text category='label'>{leaveType}</Text>
         <Text category='label'>Days: {days}</Text>
         <Text category='c1'>Exp Days: {expDays}</Text>
       </View>
-    </TouchableOpacity>
-  );
-
-  const renderLeaveType = (type) => (
-    <LeaveCard
-      key={type.type}
-      leaveType={type.type}
-      days={type.days}
-      expDays={type.expDays}
-      color={type.bgColor}
-      onPress={() => onCardPress(type)}
-    />
+    </Pressable>
   );
 
   const renderLeaveTypeRows = () => {
-    const rows = [];
-    for (let i = 0; i < leaveTypes.length; i += 2) {
-      rows.push(
-        <View key={`row-${i}`} style={styles.leaveTypeRow}>
-          {renderLeaveType(leaveTypes[i])}
-          {leaveTypes[i + 1] && renderLeaveType(leaveTypes[i + 1])}
-        </View>
-      );
-    }
-    return rows;
+    return leaveTypes.map((type) => (
+      <LeaveCard
+        key={type.type}
+        leaveType={type.type}
+        days={type.days}
+        expDays={type.expDays}
+        color={type.bgColor}
+        onPress={() => onCardPress(type)}
+      />
+    ));
   };
 
   return (
-    <View>
-      <Text category='h5' style={styles.title}>Leave Type</Text>
-      <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.leaveTypeContainer}>
+    <View style={styles.container}>
+      <View style={styles.grid}>
         {renderLeaveTypeRows()}
-      </ScrollView>
+      </View>
     </View>
   );
 };
 
 const themedStyles = StyleService.create({
-  leaveTypeRow: {
-    flexDirection: 'column',
+  container: {
+    flex: 1,
+  },
+  grid: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'space-between',
+  },
+  cardWrapper: {
+    width: wp('28%'), 
+    marginBottom: hp('1%'), 
+    marginRight: wp('2%'), 
   },
   card: {
-    padding: 8,
-    borderRadius: 10,
-    marginBottom: 10,
-    marginRight: 10, 
+    padding: wp('2%'),
+    borderRadius: wp('2%'),
   },
 });
-
 export default LeaveTypeList;

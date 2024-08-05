@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { View, ScrollView, Modal } from 'react-native';
-import { ApplicationProvider, Layout, Button, Icon, StyleService, useStyleSheet, RangeCalendar } from '@ui-kitten/components';
+import { View, ScrollView, Modal, TouchableOpacity, Alert } from 'react-native';
+import { ApplicationProvider, Layout, Button, Icon, StyleService, useStyleSheet, RangeCalendar, Text } from '@ui-kitten/components';
 import * as eva from '@eva-design/eva';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import calendarData from '../../assets/data/calendarData';
@@ -41,8 +41,17 @@ const ScheduleScreen = () => {
   }, []);
 
   const handleRangeChange = useCallback((range) => {
-    const startDate = range.startDate ? new Date(range.startDate).setHours(0, 0, 0, 0) : '';
+    const startDate = range.startDate ? new Date(range.startDate).setHours(23, 59, 59, 999) : '';
     const endDate = range.endDate ? new Date(range.endDate).setHours(23, 59, 59, 999) : '';
+
+    if (startDate && endDate) {
+      const diffDays = Math.floor((new Date(endDate) - new Date(startDate)) / (1000 * 60 * 60 * 24)) + 1;
+      if (diffDays > 31) {
+        Alert.alert('Error', 'The selected range cannot exceed 31 days.');
+        return;
+      }
+    }
+
     setSelectedRange({
       startDate: startDate ? new Date(startDate).toISOString().split('T')[0] : '',
       endDate: endDate ? new Date(endDate).toISOString().split('T')[0] : '',
@@ -122,10 +131,8 @@ const themedStyles = StyleService.create({
     marginVertical: 20,
   },
   calendarGrid: {
-    padding: 5,
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    justifyContent: 'space-around',
+    paddingBottom: 40,
+    flexDirection: 'column',
   },
   modalBackground: {
     flex: 1,
@@ -134,7 +141,7 @@ const themedStyles = StyleService.create({
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
   },
   modalContainer: {
-    width: '100%',
+    width: '90%',
     backgroundColor: 'background-basic-color-1',
     borderRadius: 10,
     padding: 20,

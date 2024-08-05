@@ -4,36 +4,50 @@ import { ApplicationProvider, IconRegistry, Layout } from '@ui-kitten/components
 import * as eva from '@eva-design/eva';
 import { EvaIconsPack } from '@ui-kitten/eva-icons';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import AppNavigator from './AppNavigator';
 import AuthNavigator from './AuthNavigator';
 import Header from 'screens/Components/Header';
 
 function AppContainer() {
-  const [isLoggedIn, setIsLoggedIn] = useState(true);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [currentRoute, setCurrentRoute] = useState('Home');
 
   useEffect(() => {
     const checkLoginStatus = async () => {
-      setTimeout(() => {
-        setIsLoggedIn(false);
-        setIsLoading(false);
-      }, 1000);
+      try {
+        const loggedIn = await AsyncStorage.getItem('isLoggedIn');
+        setIsLoggedIn(loggedIn === 'true');
+      } catch (error) {
+        console.error(error);
+      }
+      setIsLoading(false);
     };
     checkLoginStatus();
   }, []);
 
-  const handleLogin = () => {
-    setIsLoggedIn(true);
+  const handleLogin = async () => {
+    try {
+      await AsyncStorage.setItem('isLoggedIn', 'true');
+      setIsLoggedIn(true);
+    } catch (error) {
+      console.error(error);
+    }
   };
 
-  const handleLogout = () => {
-    setIsLoggedIn(false);
-    setCurrentRoute('Login');
+  const handleLogout = async () => {
+    try {
+      await AsyncStorage.setItem('isLoggedIn', 'false');
+      setIsLoggedIn(false);
+      setCurrentRoute('Login');
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   if (isLoading) {
-    return null;
+    return null; 
   }
 
   const shouldShowHeader = isLoggedIn && !['Camera', 'ApplyLeave'].includes(currentRoute);

@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, TouchableOpacity } from 'react-native';
+import { View, Pressable } from 'react-native';
 import { Text, Modal, StyleService, useStyleSheet } from '@ui-kitten/components';
 
 const PaycheckDetailsModal = ({ visible, onClose, paycheck }) => {
@@ -48,9 +48,9 @@ const PaycheckDetailsModal = ({ visible, onClose, paycheck }) => {
         <Text style={styles.acknowledgementText}>Mengetahui</Text>
         <Text style={styles.companyText}>JC CORPORATE</Text>
 
-        <TouchableOpacity style={styles.saveButton} onPress={onClose}>
+        <Pressable style={styles.saveButton} onPress={onClose}>
           <Text style={styles.saveButtonText}>Simpan</Text>
-        </TouchableOpacity>
+        </Pressable>
       </View>
     </Modal>
   );

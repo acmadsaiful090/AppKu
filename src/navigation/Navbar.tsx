@@ -1,7 +1,8 @@
 import React from 'react';
 import { View, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { Icon, Text, useStyleSheet, useTheme,StyleService} from '@ui-kitten/components';
+import { Icon, Text, useStyleSheet, useTheme, StyleService } from '@ui-kitten/components';
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
 const Navbar = ({ currentRoute }) => {
   const navigation = useNavigation();
@@ -11,14 +12,14 @@ const Navbar = ({ currentRoute }) => {
   const getIcon = (name, route) => (
     <Icon
       name={name}
-      width={24}
-      height={24}
+      width={wp('6%')}
+      height={wp('6%')}
       fill={currentRoute === route ? theme['color-primary-500'] : theme['color-basic-600']}
     />
   );
 
   return (
-    <View style={styles.navbar}>
+    <View style={[styles.navbar, { backgroundColor: theme['background-basic-color-1'] }]}>
       <TouchableOpacity style={styles.navItem} onPress={() => navigation.navigate('Home')}>
         {getIcon('home-outline', 'Home')}
         <Text style={[styles.navLabel, { color: currentRoute === 'Home' ? theme['color-primary-500'] : theme['color-basic-600'] }]}>Home</Text>
@@ -28,7 +29,7 @@ const Navbar = ({ currentRoute }) => {
         <Text style={[styles.navLabel, { color: currentRoute === 'Leave' ? theme['color-primary-500'] : theme['color-basic-600'] }]}>Leave</Text>
       </TouchableOpacity>
       <TouchableOpacity style={styles.cameraButton} onPress={() => navigation.navigate('Camera')}>
-        <Icon name='camera-outline' fill='white' style={{ width: 24, height: 24 }} />
+        <Icon name='camera-outline' fill='white' style={{ width: wp('6%'), height: wp('6%') }} />
       </TouchableOpacity>
       <TouchableOpacity style={styles.navItem} onPress={() => navigation.navigate('Attendance')}>
         {getIcon('calendar-outline', 'Attendance')}
@@ -46,28 +47,25 @@ const themedStyles = StyleService.create({
   navbar: {
     flexDirection: 'row',
     justifyContent: 'space-around',
-    backgroundColor: '#fff',
-    padding: 5,
+    padding: wp('1%'),
     borderTopWidth: 1,
-    borderTopColor: '#ddd',
+    borderTopColor: 'color-basic-300',
   },
   navItem: {
-    width: '20%',
+    width: wp('20%'),
     alignItems: 'center',
   },
   navLabel: {
-    fontSize: 12,
+    fontSize: wp('3%'),
   },
   cameraButton: {
-    top: -20,
+    top: -hp('2%'),
     alignItems: 'center',
     justifyContent: 'center',
-    width: 50,
-    height: 50,
-    borderRadius: 25,
+    width: wp('12%'),
+    height: wp('12%'),
+    borderRadius: wp('6%'),
     backgroundColor: 'color-primary-500',
-    borderWidth: 2,
-    borderColor: 'color-primary-500',
   },
 });
 

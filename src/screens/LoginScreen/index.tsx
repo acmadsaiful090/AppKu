@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Image, Alert, TouchableOpacity } from 'react-native';
 import { Layout, Input, Button, Icon, StyleService, useStyleSheet } from '@ui-kitten/components';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from '@react-navigation/native';
 import users from '../../assets/data/users';
 
@@ -27,11 +28,17 @@ const LoginScreen = ({ onLogin }) => {
   const [secureTextEntry, setSecureTextEntry] = useState(true);
   const navigation = useNavigation();
 
-  const handleLogin = () => {
+  const handleLogin = async () => {
     const user = users.find(user => user.email === email && user.password === password);
     if (user) {
-      onLogin();
-      Alert.alert('Login Success', `Welcome, ${user.nama}!`);
+      try {
+        await AsyncStorage.setItem('isLoggedIn', 'true');
+        await AsyncStorage.setItem('user', JSON.stringify(user));
+        onLogin();
+        Alert.alert('Login Success', `Welcome, ${user.nama}!`);
+      } catch (error) {
+        console.error(error);
+      }
     } else {
       Alert.alert('Login Failed', 'Invalid email or password.');
     }

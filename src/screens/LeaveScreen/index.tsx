@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { ScrollView, View, Pressable } from 'react-native';
 import { Layout, Text, StyleService, useStyleSheet, Icon } from '@ui-kitten/components';
 import { useNavigation } from '@react-navigation/native';
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
 import leaveTypes from '../../assets/data/leaveTypes';
 import leaveHistory from '../../assets/data/leaveHistory';
@@ -22,13 +23,16 @@ const LeaveScreen = () => {
 
   return (
     <Layout style={styles.container}>
-      <LeaveTypeList leaveTypes={leaveTypes} onCardPress={handleCardPress} />
-      <Text category='h5' style={styles.titleHistory}>Leave History</Text>
       <ScrollView contentContainerStyle={styles.scrollContainer}>
+        <Text category='h5' style={styles.title}>Leave Type</Text>
+        <LeaveTypeList leaveTypes={leaveTypes} onCardPress={handleCardPress} />
+        
+        <Text category='h5' style={styles.title}>Leave History</Text>
         {leaveHistory.map(item => (
           <LeaveHistoryItem key={item.id} item={item} />
         ))}
       </ScrollView>
+
       {selectedLeave && (
         <LeaveModal
           visible={visible}
@@ -36,11 +40,11 @@ const LeaveScreen = () => {
           onClose={() => setVisible(false)}
         />
       )}
+      
       <View style={styles.buttonContainer}>
         <Pressable style={styles.button} onPress={() => navigation.navigate('ApplyLeave')}>
-          <Icon name='plus-square-outline' fill='#FFFFFF' style={styles.icon} />
+          <Icon name='plus-circle-outline' fill='#FFFFFF' style={styles.icon} />
         </Pressable>
-        <Text style={styles.buttonText}>Apply Leave</Text>
       </View>
     </Layout>
   );
@@ -50,30 +54,39 @@ const themedStyles = StyleService.create({
   container: {
     flex: 1,
     backgroundColor: 'background-basic-color-1',
-    paddingHorizontal: 16,
-    paddingVertical: 10,
+    paddingHorizontal: wp('4%'), // Responsive horizontal padding
+    paddingVertical: hp('2%'), // Responsive vertical padding
   },
   buttonContainer: {
     position: 'absolute',
-    bottom: 10,
-    right: 20,
+    bottom: hp('2%'), // Responsive bottom spacing
+    right: wp('4%'), // Responsive right spacing
     alignItems: 'center',
   },
   button: {
-    width: 40,
-    height: 40,
-    borderRadius: 10,
+    width: wp('12%'), // Responsive width
+    height: hp('6%'), // Responsive height
+    borderRadius: wp('6%'), // Responsive border radius
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: 'color-primary-500',
   },
   icon: {
-    width: 30,
-    height: 30,
+    width: wp('8%'), 
+    height: hp('4%'), 
   },
   buttonText: {
     color: 'color-primary-500',
-    fontSize: 12,
+    fontSize: wp('3%'), 
+    marginTop: hp('1%'), 
+  },
+  title: {
+    marginVertical: hp('1%'), 
+    fontWeight: 'bold',
+    color: 'text-body-color',
+  },
+  scrollContainer: {
+    paddingBottom: hp('10%'), 
   },
 });
 

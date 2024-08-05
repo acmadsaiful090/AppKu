@@ -1,23 +1,47 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import { Text } from '@ui-kitten/components';
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
 const LeaveHistoryItem = ({ item }) => {
+  const getBackgroundColor = (status) => {
+    switch (status) {
+      case 'Rejected':
+        return '#F2F8FF'; 
+      case 'Approved':
+        return '#F2F8FF'; 
+      default:
+        return '#FFFFFF'; 
+    }
+  };
+
+  const getBorderColor = (status) => {
+    return status === 'In Progress' ? '#007BFF' : 'transparent'; 
+  };
   const getStatusColor = (status) => {
     switch (status) {
       case 'In Progress':
-        return 'yellow';
+        return '#007BFF'; // Blue
       case 'Rejected':
-        return 'red';
+        return '#DC3545'; // Red
       case 'Approved':
-        return 'green';
+        return '#28A745'; // Green
       default:
-        return 'black';
+        return '#000000'; // Black
     }
   };
 
   return (
-    <View style={[styles.container, { borderColor: item.color }]}>
+    <View 
+      style={[
+        styles.container, 
+        { 
+          backgroundColor: getBackgroundColor(item.status),
+          borderColor: getBorderColor(item.status),
+          borderWidth: item.status === 'In Progress' ? 1 : 0, // Border only for 'In Progress'
+        }
+      ]}
+    >
       <View style={styles.infoItem}>
         <View style={styles.infoText}>
           <Text category='s2'>{item.leaveType}</Text>
@@ -41,12 +65,11 @@ const LeaveHistoryItem = ({ item }) => {
 
 const styles = StyleSheet.create({
   container: {
-    padding: 8,
+    padding: wp('3%'), 
     flexDirection: 'column',
-    borderRadius: 8,
-    backgroundColor: 'white',
-    marginVertical: 5,
-    borderWidth: 1,
+    borderRadius: wp('2%'), 
+    marginVertical: hp('1%'),
+    backgroundColor: '#FFFFFF', 
   },
   infoItem: {
     flexDirection: 'row',
@@ -60,7 +83,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   reasonText: {
-    marginTop: 10,
+    marginTop: hp('1%'), 
     flexShrink: 1,
     width: '100%', 
   },

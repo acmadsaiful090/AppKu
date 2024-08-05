@@ -1,6 +1,7 @@
 import React from 'react';
 import { ScrollView, FlatList, Text, View } from 'react-native';
 import { StyleService, useStyleSheet } from '@ui-kitten/components';
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import Profile from '../Components/Home/Profile';
 import InfoList from '../Components/Home/InfoList';
 import BirthdayList from '../Components/Home/BirthdayList';
@@ -38,14 +39,14 @@ const themedStyles = StyleService.create({
   container: {
     flex: 1,
     backgroundColor: 'background-basic-color-1',
-    paddingHorizontal: 16,
-    paddingVertical: 10,
+    paddingHorizontal: wp('4%'),
+    paddingVertical: hp('2%'),
   },
   sectionTitle: {
-    fontSize: 18,
+    fontSize: wp('4.5%'),
     fontWeight: 'bold',
-    marginVertical: 10,
-    color: 'text-body-color',
+    marginVertical: hp('2%'),
+    color: '$text-body-color',
   },
 });
 export default HomeScreen;

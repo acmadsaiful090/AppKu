@@ -15,7 +15,7 @@ const DetailsModal = ({ visible, day, onClose }) => {
       <View style={styles.modalBackground}>
         <View style={styles.modalContainer}>
           <Text category='h6' style={styles.modalTitle}>
-            {day.shift ? `${day.shift}` : 'Tidak ada jadwal hari ini'}
+            {day.shift ? `Shift ${day.shift}` : 'Tidak ada jadwal hari ini'}
           </Text>
           <Text category='s1'>{`Tanggal: ${day.date}`}</Text>
           {day.shift && (

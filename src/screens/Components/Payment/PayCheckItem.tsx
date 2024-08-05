@@ -1,18 +1,18 @@
 import React from 'react';
-import { TouchableOpacity, View } from 'react-native';
+import { Pressable, View } from 'react-native';
 import { Text, StyleService, useStyleSheet } from '@ui-kitten/components';
 
 const PayCheckItem = ({ month, amount, date, onPress }) => {
   const styles = useStyleSheet(themedStyles);
 
   return (
-    <TouchableOpacity onPress={onPress} style={styles.touchable}>
+    <Pressable onPress={onPress} style={styles.touchable}>
       <View style={styles.card}>
         <Text category="h6" style={styles.monthText}>Gaji {month}</Text>
         <Text category="s1" style={styles.amountText}>{amount}</Text>
         <Text appearance="hint" style={styles.dateText}>{date}</Text>
       </View>
-    </TouchableOpacity>
+    </Pressable>
   );
 };
 

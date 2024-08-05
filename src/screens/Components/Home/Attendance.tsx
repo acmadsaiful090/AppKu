@@ -1,9 +1,12 @@
 import React from 'react';
 import { View, Text } from 'react-native';
-import { StyleService, useStyleSheet } from '@ui-kitten/components';
+import { StyleService, useStyleSheet, useTheme } from '@ui-kitten/components';
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
 const Attendance = () => {
   const styles = useStyleSheet(themedStyles);
+  const theme = useTheme();
+
   const getCurrentMonth = () => {
     const months = [
       'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 
@@ -40,10 +43,11 @@ export default Attendance;
 
 const themedStyles = StyleService.create({
   container: {
-    
-    backgroundColor: '#fff',
-    marginHorizontal: 16,
-    borderRadius: 10,
+    marginTop: hp('1%'),
+    marginHorizontal: '5%',
+    padding: wp('4%'),
+    backgroundColor: '$background-basic-color-1', // from theme
+    borderRadius: wp('2%'),
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
@@ -52,14 +56,12 @@ const themedStyles = StyleService.create({
   },
   month: {
     alignItems: 'center',
-    alignContent: 'center',
+    marginBottom: hp('1%'),
   },
   titleText: {
-    marginBottom: 5,
-    fontSize: 18,
+    fontSize: wp('5%'),
     fontWeight: 'bold',
-    color: '#333',
-    marginTop: 5,
+    color: '$text-basic-color', // from theme
   },
   attendance: {
     flexDirection: 'row',
@@ -69,12 +71,12 @@ const themedStyles = StyleService.create({
     alignItems: 'center',
   },
   attendanceNumber: {
-    fontSize: 24,
+    fontSize: wp('6%'),
     fontWeight: 'bold',
-    color: 'color-primary-500',
+    color: '$color-primary-500', // from theme
   },
   attendanceLabel: {
-    fontSize: 14,
-    color: '#888',
+    fontSize: wp('3.5%'),
+    color: '$text-placeholder-color', // from theme
   },
 });

@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text } from 'react-native';
 import { Icon, StyleService, useStyleSheet } from '@ui-kitten/components';
-
+import { widthPercentageToDP as wp } from 'react-native-responsive-screen';
 const InfoList = ({ item }) => {
   const styles = useStyleSheet(themedStyles);
 
@@ -22,38 +22,37 @@ export default InfoList;
 
 const themedStyles = StyleService.create({
   infoItem: {
-    padding: 8,
+    padding: wp('2%'),
     flexDirection: 'row',
     borderWidth: 1,
-    borderRadius: 8,
-    backgroundColor: '#FFF',
-    borderColor: '#DDD', 
+    borderRadius: wp('2%'),
+    backgroundColor: 'background-basic-color-1',
     alignItems: 'center',
-    marginBottom: 10,
+    marginBottom: wp('2.5%'),
   },
   iconCircle: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
+    width: wp('10%'),
+    height: wp('10%'),
+    borderRadius: wp('5%'),
     backgroundColor: '#444', 
     justifyContent: 'center',
     alignItems: 'center',
-    marginRight: 10,
+    marginRight: wp('2.5%'),
   },
   itemIcon: {
-    width: 24,
-    height: 24,
+    width: wp('6%'),
+    height: wp('6%'),
   },
   infoText: {
     flex: 1, 
     justifyContent: 'center',
   },
   infoTitle: {
-    fontSize: 16,
+    fontSize: wp('4%'),
     fontWeight: 'bold',
   },
   infoDescription: {
-    fontSize: 14,
+    fontSize: wp('3.5%'),
     color: '#888',
     flexShrink: 1, 
     flexWrap: 'wrap', 

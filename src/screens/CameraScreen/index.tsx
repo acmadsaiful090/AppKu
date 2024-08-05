@@ -181,16 +181,19 @@ const themedStyles = StyleService.create({
     marginVertical: 4,
   },
   buttonContainer: {
+    position: 'absolute',
+    bottom: 10,
     flexDirection: 'row',
     width: '100%',
     alignItems: 'center',
     paddingHorizontal: 16,
   },
   cameraButton: {
+    
     alignItems: 'center',
-    width: 80,
-    height: 80,
-    borderRadius: 40,
+    width: 70,
+    height: 70,
+    borderRadius: 35,
     backgroundColor: 'red',
     justifyContent: 'center',
   },
