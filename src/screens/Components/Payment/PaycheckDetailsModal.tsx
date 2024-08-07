@@ -1,56 +1,122 @@
-import React from 'react';
-import { View, Pressable } from 'react-native';
-import { Text, Modal, StyleService, useStyleSheet } from '@ui-kitten/components';
+import React, { useState, useRef } from 'react';
+import { View, Pressable, Alert, Modal } from 'react-native';
+import { Text, StyleService, useStyleSheet } from '@ui-kitten/components';
+import * as Print from 'expo-print';
+import * as Sharing from 'expo-sharing';
+import { captureRef } from 'react-native-view-shot';
+import PaycheckDetailsContent from './PaycheckDetailsContent';
+import generatePaycheckHtml from './generatePaycheckHtml';
 
 const PaycheckDetailsModal = ({ visible, onClose, paycheck }) => {
   const styles = useStyleSheet(themedStyles);
+  const viewRef = useRef();
+  const [saveOptionsVisible, setSaveOptionsVisible] = useState(false);
 
   if (!paycheck) {
     return null;
   }
 
+  const generatePDF = async () => {
+    const htmlContent = generatePaycheckHtml(paycheck);
+
+    try {
+      const { uri } = await Print.printToFileAsync({ html: htmlContent });
+      return uri;
+    } catch (error) {
+      console.error('Error generating PDF:', error);
+    }
+  };
+
+  const handleSharePDF = async () => {
+    try {
+      const pdfUri = await generatePDF();
+
+      if (await Sharing.isAvailableAsync()) {
+        await Sharing.shareAsync(pdfUri, {
+          mimeType: 'application/pdf',
+          dialogTitle: 'Save or share your paycheck PDF',
+          UTI: 'com.adobe.pdf',
+        });
+      } else {
+        Alert.alert('Error', 'Sharing is not available on this device');
+      }
+    } catch (error) {
+      console.error('Error sharing PDF:', error);
+    }
+  };
+
+  const handleSaveImage = async () => {
+    try {
+      const uri = await captureRef(viewRef, {
+        format: 'jpg',
+        quality: 1.0,
+      });
+
+      if (await Sharing.isAvailableAsync()) {
+        await Sharing.shareAsync(uri, {
+          mimeType: 'image/jpeg',
+          dialogTitle: 'Save or share your paycheck image',
+          UTI: 'public.jpeg',
+        });
+      } else {
+        Alert.alert('Error', 'Sharing is not available on this device');
+      }
+    } catch (error) {
+      console.error('Error saving image:', error);
+    }
+  };
+
+  const handleSave = () => {
+    setSaveOptionsVisible(true);
+  };
+
+  const hideSaveOptions = () => {
+    setSaveOptionsVisible(false);
+  };
+
   return (
     <Modal
       visible={visible}
-      backdropStyle={styles.backdrop}
-      onBackdropPress={onClose}
+      transparent={true}
+      animationType="slide"
+      onRequestClose={onClose}
     >
-      <View style={styles.modalContainer}>
-        <Text style={styles.headerText} category="h6">Slip Gaji Karyawan</Text>
-        <Text style={styles.periodText} category="s1">Priode 25 Agustus - 25 September 2024</Text>
+      <View style={styles.backdrop}>
+        <View style={styles.modalContainer} ref={viewRef}>
+          <PaycheckDetailsContent paycheck={paycheck} />
 
-        {[
-          { label: 'Nama', value: 'Emmanuel Sebastian' },
-          { label: 'NIK', value: '117.121.223' },
-          { label: 'Jabatan', value: 'FO Agent' },
-          { label: 'Alamat', value: 'Malang' }
-        ].map((item, index) => (
-          <View key={index} style={styles.infoContainer}>
-            <Text style={styles.infoLabel}>{item.label} :</Text>
-            <Text style={styles.infoValue}>{item.value}</Text>
-          </View>
-        ))}
+          <Pressable style={styles.saveButton} onPress={handleSave}>
+            <Text style={styles.saveButtonText}>Simpan</Text>
+          </Pressable>
 
-        <View style={styles.divider} />
+          <Modal
+            visible={saveOptionsVisible}
+            transparent={true}
+            animationType="slide"
+            onRequestClose={hideSaveOptions}
+          >
+            <View style={styles.backdrop}>
+              <View style={styles.optionsContainer}>
+                <Text style={styles.optionText}>Simpan sebagai:</Text>
+                <View style={styles.buttonContainer}>
+                  <Pressable style={styles.optionButton} onPress={handleSharePDF}>
+                    <Text style={styles.optionButtonText}>PDF</Text>
+                  </Pressable>
+                  <Pressable style={styles.optionButton} onPress={handleSaveImage}>
+                    <Text style={styles.optionButtonText}>JPG</Text>
+                  </Pressable>
+                  <Pressable style={styles.optionButton} onPress={hideSaveOptions}>
+                    <Text style={styles.optionButtonText}>Batal</Text>
+                  </Pressable>
+                </View>
+              </View>
+            </View>
+          </Modal>
 
-        {[
-          { label: 'Gaji Pokok', value: '9.000.000' },
-          { label: 'Uang Lembur', value: '3.000.000' },
-          { label: 'Potongan', value: '1.000.000' },
-          { label: 'Gaji Bersih', value: '11.000.000' }
-        ].map((item, index) => (
-          <View key={index} style={styles.salaryRow}>
-            <Text style={styles.salaryText}>{item.label}</Text>
-            <Text style={styles.salaryText}>{item.value}</Text>
-          </View>
-        ))}
-
-        <Text style={styles.acknowledgementText}>Mengetahui</Text>
-        <Text style={styles.companyText}>JC CORPORATE</Text>
-
-        <Pressable style={styles.saveButton} onPress={onClose}>
-          <Text style={styles.saveButtonText}>Simpan</Text>
-        </Pressable>
+          <Pressable style={styles.closeButton} onPress={onClose}>
+            <Text style={styles.closeButtonText}>Tutup</Text>
+          </Pressable>
+        </View>
       </View>
     </Modal>
   );
@@ -58,69 +124,60 @@ const PaycheckDetailsModal = ({ visible, onClose, paycheck }) => {
 
 const themedStyles = StyleService.create({
   backdrop: {
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
-  },
-  modalContainer: {
-    padding: 20,
-    borderRadius: 10,
-    backgroundColor: 'background-basic-color-1',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.2,
-    shadowRadius: 4,
-    elevation: 4,
-  },
-  headerText: {
-    marginBottom: 10,
-    textAlign: 'center',
-  },
-  periodText: {
-    marginBottom: 20,
-    textAlign: 'center',
-  },
-  infoContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginBottom: 8,
-  },
-  infoLabel: {
-    fontWeight: 'bold',
-  },
-  infoValue: {
     flex: 1,
-    textAlign: 'right',
-  },
-  divider: {
-    borderBottomWidth: 1,
-    borderBottomColor: 'color-primary-300',
-    marginVertical: 10,
-  },
-  salaryRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginBottom: 5,
-  },
-  salaryText: {
-    fontWeight: 'bold',
-  },
-  acknowledgementText: {
-    textAlign: 'center',
-    marginVertical: 10,
-  },
-  companyText: {
-    textAlign: 'center',
-    marginBottom: 20,
-    fontWeight: 'bold',
-  },
-  saveButton: {
-    flexDirection: 'row',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  modalContainer: {
+    width: '90%',
+    padding: 20,
+    backgroundColor: 'color-basic-100',
+    borderRadius: 10,
+  },
+  saveButton: {
+    marginTop: 20,
     padding: 10,
-    borderRadius: 5,
     backgroundColor: 'color-primary-500',
+    borderRadius: 5,
+    alignItems: 'center',
   },
   saveButtonText: {
+    color: 'white',
+    fontWeight: 'bold',
+  },
+  optionsContainer: {
+    width: '80%',
+    padding: 20,
+    backgroundColor: 'color-basic-100',
+    borderRadius: 10,
+  },
+  optionText: {
+    textAlign: 'center',
+    marginBottom: 10,
+  },
+  buttonContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+  },
+  optionButton: {
+    padding: 10,
+    backgroundColor: 'color-primary-500',
+    borderRadius: 5,
+    alignItems: 'center',
+  },
+  optionButtonText: {
+    color: 'white',
+    fontWeight: 'bold',
+  },
+  closeButton: {
+    marginTop: 20,
+    padding: 10,
+    backgroundColor: 'color-danger-500',
+    borderRadius: 5,
+    alignItems: 'center',
+  },
+  closeButtonText: {
     color: 'white',
     fontWeight: 'bold',
   },

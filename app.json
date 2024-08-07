@@ -22,7 +22,11 @@
         "ACCESS_NETWORK_STATE",
         "INTERNET",
         "CAMERA",
-        "RECORD_AUDIO"
+        "RECORD_AUDIO",
+        "android.permission.ACCESS_COARSE_LOCATION",
+        "android.permission.ACCESS_FINE_LOCATION",
+        "android.permission.CAMERA",
+        "android.permission.RECORD_AUDIO"
       ]
     },
     "web": {
@@ -30,10 +34,10 @@
     },
     "extra": {
       "eas": {
-        "projectId": "d2b8a301-37ab-47cb-8873-9bddf8053aac"
+        "projectId": "bb6fa55b-0070-4d5d-a649-30dfe4ae8719"
       }
     },
-    "owner": "acmad01",
+    "owner": "acmad",
     "plugins": [
       [
         "expo-location",

@@ -1,34 +1,47 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { View, ScrollView, Modal, TouchableOpacity, Alert } from 'react-native';
-import { ApplicationProvider, Layout, Button, Icon, StyleService, useStyleSheet, RangeCalendar, Text } from '@ui-kitten/components';
-import * as eva from '@eva-design/eva';
-import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
+import { View, ScrollView, Modal, Alert } from 'react-native';
+import { Layout, Button, Icon, StyleService, useStyleSheet, RangeCalendar, Text } from '@ui-kitten/components';
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
+import { useNavigation } from '@react-navigation/native';
 import calendarData from '../../assets/data/calendarData';
 import ScheduleCard from '../Components/Schedule/ScheduleCard';
 import CalendarDay from '../Components/Schedule/CalendarDay';
 import DetailsModal from '../Components/Schedule/DetailsModal';
+import DetailsHistoryModal from '../Components/Schedule/DetailsHistoryModal';
 
 const ScheduleScreen = () => {
   const styles = useStyleSheet(themedStyles);
-  const [modalVisible, setModalVisible] = useState(false);
+  const [detailsModalVisible, setDetailsModalVisible] = useState(false);
+  const [detailsHistoryModalVisible, setDetailsHistoryModalVisible] = useState(false);
   const [calendarVisible, setCalendarVisible] = useState(false);
   const [selectedDay, setSelectedDay] = useState(null);
   const [selectedRange, setSelectedRange] = useState({ startDate: '', endDate: '' });
+  const navigation = useNavigation();
 
   useEffect(() => {
     const today = new Date();
-    const startOfMonth = new Date(today.getFullYear(), today.getMonth(), 1).toISOString().split('T')[0];
+    const startOfMonth = new Date(today.getFullYear(), today.getMonth(), 2).toISOString().split('T')[0];
     const endOfMonth = new Date(today.getFullYear(), today.getMonth() + 1, 0).toISOString().split('T')[0];
     setSelectedRange({ startDate: startOfMonth, endDate: endOfMonth });
   }, []);
 
   const handlePress = useCallback((day) => {
-    setSelectedDay(day);
-    setModalVisible(true);
+    setSelectedDay(day.date);
+    if (day.status === 'On Leave') {
+      setDetailsHistoryModalVisible(true);
+    } else {
+      setSelectedDay(day);
+      setDetailsModalVisible(true);
+    }
   }, []);
 
-  const handleCloseModal = useCallback(() => {
-    setModalVisible(false);
+  const handleCloseDetailsModal = useCallback(() => {
+    setDetailsModalVisible(false);
+    setSelectedDay(null);
+  }, []);
+
+  const handleCloseDetailsHistoryModal = useCallback(() => {
+    setDetailsHistoryModalVisible(false);
     setSelectedDay(null);
   }, []);
 
@@ -87,11 +100,18 @@ const ScheduleScreen = () => {
             <CalendarDay key={day.id} day={day} onPress={() => handlePress(day)} />
         ))}
       </ScrollView>
-      {selectedDay && (
+      {selectedDay && detailsModalVisible && (
         <DetailsModal
-          visible={modalVisible}
+          visible={detailsModalVisible}
           day={selectedDay}
-          onClose={handleCloseModal}
+          onClose={handleCloseDetailsModal}
+        />
+      )}
+      {selectedDay && detailsHistoryModalVisible && (
+        <DetailsHistoryModal
+          visible={detailsHistoryModalVisible}
+          selectedDate={selectedDay}
+          onClose={handleCloseDetailsHistoryModal}
         />
       )}
       {calendarVisible && (
@@ -123,15 +143,15 @@ const themedStyles = StyleService.create({
   container: {
     flex: 1,
     backgroundColor: 'background-basic-color-1',
-    paddingHorizontal: 16,
-    paddingVertical: 10,
+    paddingHorizontal: wp('4%'),
+    paddingVertical: hp('2%'),
   },
   datePicker: {
     alignItems: 'center',
-    marginVertical: 20,
+    marginVertical: hp('2%'),
   },
   calendarGrid: {
-    paddingBottom: 40,
+    paddingBottom: hp('5%'),
     flexDirection: 'column',
   },
   modalBackground: {
@@ -141,10 +161,9 @@ const themedStyles = StyleService.create({
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
   },
   modalContainer: {
-    width: '90%',
+    width: wp('95%'),
     backgroundColor: 'background-basic-color-1',
-    borderRadius: 10,
-    padding: 20,
+    borderRadius: wp('2%'),
     alignItems: 'center',
   },
 });

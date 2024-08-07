@@ -1,10 +1,9 @@
 import React from 'react';
-import { View, Dimensions } from 'react-native';
-import { Modal, Text, Button, StyleService, useStyleSheet } from '@ui-kitten/components';
+import { View, Dimensions ,Modal} from 'react-native';
+import { Text, Button, StyleService, useStyleSheet } from '@ui-kitten/components';
 
 const DetailsModal = ({ visible, day, onClose }) => {
   const styles = useStyleSheet(themedStyles);
-
   return (
     <Modal
       visible={visible}

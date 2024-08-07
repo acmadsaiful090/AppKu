@@ -54,39 +54,34 @@ const themedStyles = StyleService.create({
   container: {
     flex: 1,
     backgroundColor: 'background-basic-color-1',
-    paddingHorizontal: wp('4%'), // Responsive horizontal padding
-    paddingVertical: hp('2%'), // Responsive vertical padding
+    paddingHorizontal: wp('4%'),
+    paddingVertical: hp('2%'),
   },
   buttonContainer: {
     position: 'absolute',
-    bottom: hp('2%'), // Responsive bottom spacing
-    right: wp('4%'), // Responsive right spacing
+    bottom: hp('2%'),
+    right: wp('4%'),
     alignItems: 'center',
   },
   button: {
-    width: wp('12%'), // Responsive width
-    height: hp('6%'), // Responsive height
-    borderRadius: wp('6%'), // Responsive border radius
+    width: wp('12%'),
+    height: hp('6%'),
+    borderRadius: wp('6%'),
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: 'color-primary-500',
   },
   icon: {
-    width: wp('8%'), 
-    height: hp('4%'), 
-  },
-  buttonText: {
-    color: 'color-primary-500',
-    fontSize: wp('3%'), 
-    marginTop: hp('1%'), 
+    width: wp('8%'),
+    height: hp('4%'),
   },
   title: {
-    marginVertical: hp('1%'), 
+    marginVertical: hp('1%'),
     fontWeight: 'bold',
     color: 'text-body-color',
   },
   scrollContainer: {
-    paddingBottom: hp('10%'), 
+    paddingBottom: hp('10%'),
   },
 });
 

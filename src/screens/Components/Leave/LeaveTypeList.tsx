@@ -41,6 +41,7 @@ const LeaveTypeList = ({ leaveTypes, onCardPress }) => {
 const themedStyles = StyleService.create({
   container: {
     flex: 1,
+   
   },
   grid: {
     flexDirection: 'row',
@@ -48,13 +49,14 @@ const themedStyles = StyleService.create({
     justifyContent: 'space-between',
   },
   cardWrapper: {
+    borderRadius: wp('2%'),
+    backgroundColor: '#F2F8FF',
     width: wp('28%'), 
     marginBottom: hp('1%'), 
     marginRight: wp('2%'), 
   },
   card: {
     padding: wp('2%'),
-    borderRadius: wp('2%'),
   },
 });
 export default LeaveTypeList;

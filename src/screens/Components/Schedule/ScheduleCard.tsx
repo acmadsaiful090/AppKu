@@ -48,7 +48,7 @@ const themedStyles = StyleService.create({
   scheduleInfo: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between',
+    flexDirection: 'row',
   },
   centeredContent: {
     alignItems: 'center',
