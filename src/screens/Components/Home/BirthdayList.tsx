@@ -1,7 +1,8 @@
 import React from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, Dimensions } from 'react-native';
 import { Icon, StyleService, useStyleSheet, useTheme } from '@ui-kitten/components';
-import { widthPercentageToDP as wp } from 'react-native-responsive-screen';
+
+const { width: screenWidth } = Dimensions.get('window');
 
 const BirthdayList = ({ item }) => {
   const styles = useStyleSheet(themedStyles);
@@ -36,41 +37,41 @@ export default BirthdayList;
 const themedStyles = StyleService.create({
   birthdayItem: {
     flexDirection: 'row',
-    padding: wp('2%'), // Responsive padding
-    marginRight: wp('2.5%'), // Responsive margin
-    borderRadius: wp('2.5%'), // Responsive border radius
+    padding: screenWidth * 0.02, // 2% of screen width
+    marginRight: screenWidth * 0.025, // 2.5% of screen width
+    borderRadius: screenWidth * 0.025, // 2.5% of screen width
     alignItems: 'center',
-    width: wp('60%'), // Responsive width
-    height: wp('20%'), // Responsive height
+    width: screenWidth * 0.6, // 60% of screen width
+    height: screenWidth * 0.2, // 20% of screen width
   },
   iconCircle: {
-    width: wp('10%'), // Responsive width
-    height: wp('10%'), // Responsive height
-    borderRadius: wp('5%'), // Responsive border radius
+    width: screenWidth * 0.1, // 10% of screen width
+    height: screenWidth * 0.1, // 10% of screen width
+    borderRadius: screenWidth * 0.05, // 5% of screen width
     backgroundColor: '#B0B0B0',  
     justifyContent: 'center',
     alignItems: 'center',
-    marginRight: wp('2.5%'), // Responsive margin
+    marginRight: screenWidth * 0.025, // 2.5% of screen width
   },
   itemIcon: {
-    width: wp('6%'), // Responsive width
-    height: wp('6%'), // Responsive height
+    width: screenWidth * 0.06, // 6% of screen width
+    height: screenWidth * 0.06, // 6% of screen width
   },
   birthdayText: {
     justifyContent: 'center',
     flexShrink: 1, 
   },
   birthdayName: {
-    fontSize: wp('4%'), // Responsive font size
+    fontSize: screenWidth * 0.04, // 4% of screen width
     fontWeight: 'bold',
     color: 'text-basic-color',
   },
   birthdayDate: {
-    fontSize: wp('3.5%'), // Responsive font size
+    fontSize: screenWidth * 0.035, // 3.5% of screen width
     color: 'text-basic-color',
   },
   birthdayRole: {
-    fontSize: wp('3%'), // Responsive font size
+    fontSize: screenWidth * 0.03, // 3% of screen width
     color: 'text-basic-color',
   },
 });

@@ -1,16 +1,17 @@
 import React, { useState } from 'react';
 import { Layout, Text, Input, Button, StyleService, useStyleSheet, Select, SelectItem, Datepicker } from '@ui-kitten/components';
-import { View } from 'react-native';
+import { View, Dimensions } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import leaveTypes from '../../assets/data/leaveTypes';
-import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
+
+const { width, height } = Dimensions.get('window');
 
 const ApplyLeaveScreen = () => {
   const styles = useStyleSheet(themedStyles);
   const navigation = useNavigation();
   const [selectedLeaveType, setSelectedLeaveType] = useState(null);
-  const [startDate, setStartDate] = useState(new Date(2024, 6, 17));
-  const [endDate, setEndDate] = useState(new Date(2024, 6, 18));
+  const [startDate, setStartDate] = useState(new Date());
+  const [endDate, setEndDate] = useState(new Date());
   const [selectedIndex, setSelectedIndex] = useState(null);
 
   return (
@@ -53,7 +54,7 @@ const ApplyLeaveScreen = () => {
           label='Reason for Leave'
           placeholder='Enter reason'
           multiline={true}
-          textStyle={{ minHeight: hp('8%'), color: 'black' }}
+          textStyle={{ minHeight: height * 0.2, color: 'black' }}
         />
       </Layout>
       <View style={styles.buttonContainer}>
@@ -71,30 +72,32 @@ const ApplyLeaveScreen = () => {
 const themedStyles = StyleService.create({
   container: {
     flex: 1,
-    padding: wp('4%'),
+    padding: width * 0.04, // Padding based on screen width
     justifyContent: 'space-between',
   },
   header: {
-    marginBottom: hp('2%'),
+    marginBottom: height * 0.02, // Margin based on screen height
+    fontSize: width * 0.07, // Font size based on screen width
   },
   form: {
     flex: 1,
   },
   input: {
-    marginVertical: hp('1%'),
+    marginVertical: height * 0.01, // Margin based on screen height
+    fontSize: width * 0.04, // Font size based on screen width
   },
   reasonInput: {
-    minHeight: hp('8%'),
+    minHeight: height * 0.2, // Minimum height based on screen height
   },
   button: {
-    marginVertical: hp('1%'),
+    marginVertical: height * 0.01, // Margin based on screen height
     flex: 1,
-    marginHorizontal: wp('2%'),
+    marginHorizontal: width * 0.02, // Margin based on screen width
   },
   buttonContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    paddingVertical: hp('2%'),
+    paddingVertical: height * 0.02, // Padding based on screen height
   },
   cancelButton: {
     backgroundColor: 'black',

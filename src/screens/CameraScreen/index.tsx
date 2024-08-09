@@ -1,17 +1,17 @@
 import React, { useEffect, useState } from 'react';
-import {useNavigation } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 import { CameraView, CameraType, useCameraPermissions } from 'expo-camera';
-import { View, Text, Button, Image, Dimensions, TouchableOpacity, Alert, ActivityIndicator } from 'react-native';
+import { View, Text, Image, Dimensions, Pressable, Alert, ActivityIndicator } from 'react-native';
 import * as Location from 'expo-location';
 import Facial from '../../assets/icons/Facial_Recognition.png';
 import moment from 'moment-timezone';
-import * as eva from '@eva-design/eva';
 import {
   ApplicationProvider,
   StyleService,
   useStyleSheet,
   Icon,
 } from '@ui-kitten/components';
+
 export default function App() {
   const styles = useStyleSheet(themedStyles);
   const navigation = useNavigation();
@@ -47,20 +47,20 @@ export default function App() {
       </View>
     );
   }
+
   const windowWidth = Dimensions.get('window').width;
   const windowHeight = Dimensions.get('window').height;
-  
-  const { width: screenWidth, height: screenHeight } = Dimensions.get('window');
-  
+
   const Spacer = ({ heightPercent = 0, widthPercent = 0 }) => {
-    const height = screenHeight * (heightPercent / 100);
-    const width = screenWidth * (widthPercent / 100);
-    
+    const height = windowHeight * (heightPercent / 100);
+    const width = windowWidth * (widthPercent / 100);
+
     return <View style={{ height, width }} />;
   };
+
   const JakartaTime = () => {
     const [jakartaTime, setJakartaTime] = useState(null);
-  
+
     useEffect(() => {
       const fetchJakartaTime = async () => {
         try {
@@ -72,17 +72,18 @@ export default function App() {
           console.error("Error fetching Jakarta time:", error);
         }
       };
-  
+
       fetchJakartaTime();
       const interval = setInterval(fetchJakartaTime, 1000);
-  
+
       return () => clearInterval(interval);
     }, []);
-  
+
     return (
       <Text style={styles.statusText}>Time: {jakartaTime ? jakartaTime : 'Loading...'}</Text>
     );
   };
+
   const DisplayLocation = () => {
     if (location) {
       return (
@@ -97,37 +98,37 @@ export default function App() {
 
   return (
     <View style={styles.container}>
-      <Spacer heightPercent={windowHeight * 0.01} />
+      <Pressable style={styles.closeButton} onPress={() => navigation.goBack()}>
+        <Icon name='close-outline' style={styles.closeIcon} />
+      </Pressable>
       <View style={styles.circleContainer}>
-      <View style={styles.circle}>
-        <CameraView style={styles.camera} facing={facing} />
-      </View>
+        <View style={styles.circle}>
+          <CameraView style={styles.camera} facing={facing} />
+        </View>
       </View>
       <Image source={Facial} style={styles.icon} />
       <Text style={styles.text}>Arahkan wajahmu</Text>
       <Text style={styles.text}>ke arah bingkai</Text>
-      <Spacer heightPercent={windowHeight * 0.001} />
+      <Spacer heightPercent={0.5} />
       <View style={styles.statusContainer}>
         <Text style={styles.statusText}>
-        <Icon name = 'checkmark'  style={{ width: 18, height: 18 }} color= 'green'/>
+          <Icon name='checkmark' style={{ width: 18, height: 18 }} color='green' />
           Location
         </Text>
         <DisplayLocation />
         <Text style={styles.statusText}>
-        <Icon name = 'checkmark'  style={{ width: 18, height: 18 }} color= 'green'/>
+          <Icon name='checkmark' style={{ width: 18, height: 18 }} color='green' />
           Time
         </Text>
         <JakartaTime />
       </View>
-      <Spacer heightPercent={windowHeight * 0.01} />
+      <Spacer heightPercent={1} />
       <View style={styles.buttonContainer}>
-        <View style={styles.leftButton}>
-          <Button title="Batal" color="black" onPress={() => navigation.goBack()} />
+        <View style={styles.centerButton}>
+          <Pressable style={styles.cameraButton} onPress={() => {}}>
+            <Icon name='camera' style={{ width: 34, height: 34 }} fill='white' />
+          </Pressable>
         </View>
-        <Spacer widthPercent={windowWidth * 0.04} />
-        <TouchableOpacity style={styles.cameraButton} onPress={() => {}}>
-          <Icon name='camera' style={{ width: 34, height: 34 }} fill='white' />
-        </TouchableOpacity>
       </View>
     </View>
   );
@@ -187,9 +188,23 @@ const themedStyles = StyleService.create({
     width: '100%',
     alignItems: 'center',
     paddingHorizontal: 16,
+    justifyContent: 'center',
+  },
+  closeButton: {
+    position: 'absolute',
+    top: 16,
+    right: 16,
+    zIndex: 1,
+  },
+  closeIcon: {
+    width: 24,
+    height: 24,
+    color: 'black',
+  },
+  centerButton: {
+    alignItems: 'center',
   },
   cameraButton: {
-    
     alignItems: 'center',
     width: 70,
     height: 70,

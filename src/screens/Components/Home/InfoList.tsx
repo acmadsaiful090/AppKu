@@ -1,7 +1,9 @@
 import React from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, Dimensions } from 'react-native';
 import { Icon, StyleService, useStyleSheet } from '@ui-kitten/components';
-import { widthPercentageToDP as wp } from 'react-native-responsive-screen';
+
+const { width: screenWidth } = Dimensions.get('window');
+
 const InfoList = ({ item }) => {
   const styles = useStyleSheet(themedStyles);
 
@@ -22,39 +24,39 @@ export default InfoList;
 
 const themedStyles = StyleService.create({
   infoItem: {
-    padding: wp('2%'),
+    padding: screenWidth * 0.02, // 2% of screen width
     flexDirection: 'row',
     borderWidth: 1,
-    borderRadius: wp('2%'),
+    borderRadius: screenWidth * 0.02, // 2% of screen width
     backgroundColor: 'background-basic-color-1',
     alignItems: 'center',
-    marginBottom: wp('2.5%'),
+    marginBottom: screenWidth * 0.025, // 2.5% of screen width
   },
   iconCircle: {
-    width: wp('10%'),
-    height: wp('10%'),
-    borderRadius: wp('5%'),
-    backgroundColor: '#444', 
+    width: screenWidth * 0.1, // 10% of screen width
+    height: screenWidth * 0.1, // 10% of screen width
+    borderRadius: screenWidth * 0.05, // 5% of screen width
+    backgroundColor: '#444',
     justifyContent: 'center',
     alignItems: 'center',
-    marginRight: wp('2.5%'),
+    marginRight: screenWidth * 0.025, // 2.5% of screen width
   },
   itemIcon: {
-    width: wp('6%'),
-    height: wp('6%'),
+    width: screenWidth * 0.06, // 6% of screen width
+    height: screenWidth * 0.06, // 6% of screen width
   },
   infoText: {
-    flex: 1, 
+    flex: 1,
     justifyContent: 'center',
   },
   infoTitle: {
-    fontSize: wp('4%'),
+    fontSize: screenWidth * 0.04, // 4% of screen width
     fontWeight: 'bold',
   },
   infoDescription: {
-    fontSize: wp('3.5%'),
+    fontSize: screenWidth * 0.035, // 3.5% of screen width
     color: '#888',
-    flexShrink: 1, 
-    flexWrap: 'wrap', 
+    flexShrink: 1,
+    flexWrap: 'wrap',
   },
 });

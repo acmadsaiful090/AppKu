@@ -1,32 +1,31 @@
-const generatePaycheckHtml = (paycheck) => {
-  const monthMapping = {
-    'Januari': 0,
-    'Februari': 1,
-    'Maret': 2,
-    'April': 3,
-    'Mei': 4,
-    'Juni': 5,
-    'Juli': 6,
-    'Agustus': 7,
-    'September': 8,
-    'Oktober': 9,
-    'November': 10,
-    'Desember': 11
-  };
-  
- 
-  const getPeriodText = (month) => {
-    const [monthName, year] = month.split(' ');
-    const monthIndex = monthMapping[monthName]; 
-    
-    const startDate = new Date(year, monthIndex, 5); 
-    const endDate = new Date(year, monthIndex + 1, 5); 
-    const startFormatted = startDate.toLocaleDateString('id-ID', { day: '2-digit', month: '2-digit', year: 'numeric' });
-    const endFormatted = endDate.toLocaleDateString('id-ID', { day: '2-digit', month: '2-digit', year: 'numeric' });
-  
-    return `Periode ${startFormatted} - ${endFormatted}`;
-  };
+const monthMapping = {
+  'Januari': 0,
+  'Februari': 1,
+  'Maret': 2,
+  'April': 3,
+  'Mei': 4,
+  'Juni': 5,
+  'Juli': 6,
+  'Agustus': 7,
+  'September': 8,
+  'Oktober': 9,
+  'November': 10,
+  'Desember': 11
+};
 
+const formatDate = (date) => 
+  new Date(date).toLocaleDateString('id-ID', { day: '2-digit', month: '2-digit', year: 'numeric' });
+
+const getPeriodText = (month) => {
+  const [monthName, year] = month.split(' ');
+  const monthIndex = monthMapping[monthName];
+  const startDate = new Date(year, monthIndex, 5);
+  const endDate = new Date(year, monthIndex + 1, 5);
+  
+  return `Periode ${formatDate(startDate)} - ${formatDate(endDate)}`;
+};
+
+const generatePaycheckHtml = (paycheck) => {
   const periodText = getPeriodText(paycheck.month);
 
   return `

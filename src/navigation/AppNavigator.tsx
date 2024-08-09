@@ -6,6 +6,7 @@ import ScheduleScreen from 'screens/ScheduleScreen';
 import LeaveScreen from 'screens/LeaveScreen';
 import PaycheckScreen from 'screens/PaycheckScreen';
 import ApplyLeaveScreen from 'screens/ApplyLeaveScreen';
+import LeaveDetailScreen from 'screens/LeaveDetailScreen';
 import Navbar from './Navbar';
 
 const Tab = createBottomTabNavigator();
@@ -15,7 +16,7 @@ const AppNavigator = ({ currentRoute, setCurrentRoute }) => (
     screenOptions={{ headerShown: false }}
     initialRouteName="Home"
     tabBar={() =>
-      !(currentRoute === 'Camera' || currentRoute === 'ApplyLeave' || currentRoute === 'SplashSc' || currentRoute === 'Login') && <Navbar currentRoute={currentRoute} />
+      !(currentRoute === 'Camera' || currentRoute === 'ApplyLeave' || currentRoute === 'SplashSc' || currentRoute === 'Login'|| currentRoute === 'LeaveDetail') && <Navbar currentRoute={currentRoute} />
     }
   >
     <Tab.Screen name="Home" component={HomeScreen} />
@@ -24,6 +25,7 @@ const AppNavigator = ({ currentRoute, setCurrentRoute }) => (
     <Tab.Screen name="Leave" component={LeaveScreen} />
     <Tab.Screen name="Paycheck" component={PaycheckScreen} />
     <Tab.Screen name="ApplyLeave" component={ApplyLeaveScreen} />
+    <Tab.Screen name="LeaveDetail" component={LeaveDetailScreen} />
   </Tab.Navigator>
 );
 

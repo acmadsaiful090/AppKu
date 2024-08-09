@@ -1,6 +1,6 @@
 import React from 'react';
-import { View, ScrollView,Dimensions, Modal } from 'react-native';
-import { Text,Button,StyleService, useStyleSheet } from '@ui-kitten/components';
+import { View, ScrollView, Dimensions, Modal } from 'react-native';
+import { Text, Button, StyleService, useStyleSheet } from '@ui-kitten/components';
 import leaveHistory from '../../../assets/data/leaveHistory'; // Import data leaveHistory
 
 const DetailsHistoryModal = ({ visible, selectedDate, onClose }) => {
@@ -9,13 +9,11 @@ const DetailsHistoryModal = ({ visible, selectedDate, onClose }) => {
   console.log('Received Parameters:', { selectedDate });
   console.log('Data Source: Route Params and leaveHistory');
 
-  // Convert selectedDate to Date object
   const selectedDateObj = new Date(selectedDate);
 
-  // Filter leave history based on the selected date
   const filteredLeaveDetails = leaveHistory.filter(leave => {
     const leaveStart = new Date(leave.start);
-    // Check if selectedDate matches the leaveStart date
+
     return selectedDateObj.toDateString() === leaveStart.toDateString();
   });
 
@@ -71,7 +69,6 @@ const themedStyles = StyleService.create({
     backgroundColor: '#ffffff',
     borderRadius: 10,
     padding: 10,
-    alignItems: 'center',
     overflow: 'hidden', 
   },
   scrollContainer: {
@@ -79,23 +76,25 @@ const themedStyles = StyleService.create({
     paddingBottom: 60, // Adjust padding to ensure the button is visible
   },
   headerText: {
-    marginBottom: 10, // Reduced margin
+    marginBottom: 10,
     textAlign: 'center',
     fontWeight: 'bold',
   },
   infoContainer: {
     flexDirection: 'column',
-    marginBottom: 8, // Reduced margin
+    marginBottom: 8, 
+    width: '100%', // Ensure the container takes full width
   },
   infoLabel: {
     fontWeight: 'bold',
+    marginBottom: 2, // Add some space between label and value
   },
   infoValue: {
-    marginBottom: 4, // Added margin for spacing between values
+    marginBottom: 8, // Add space between different value sections
   },
   closeButton: {
     marginTop: 20,
-    width: '100%', 
+    width: '100%',
   },
 });
 

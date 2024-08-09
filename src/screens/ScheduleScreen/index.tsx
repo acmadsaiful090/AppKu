@@ -1,13 +1,14 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { View, ScrollView, Modal, Alert } from 'react-native';
+import { View, ScrollView, Modal, Alert, Dimensions } from 'react-native';
 import { Layout, Button, Icon, StyleService, useStyleSheet, RangeCalendar, Text } from '@ui-kitten/components';
-import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { useNavigation } from '@react-navigation/native';
 import calendarData from '../../assets/data/calendarData';
 import ScheduleCard from '../Components/Schedule/ScheduleCard';
 import CalendarDay from '../Components/Schedule/CalendarDay';
 import DetailsModal from '../Components/Schedule/DetailsModal';
 import DetailsHistoryModal from '../Components/Schedule/DetailsHistoryModal';
+
+const { width, height } = Dimensions.get('window');
 
 const ScheduleScreen = () => {
   const styles = useStyleSheet(themedStyles);
@@ -93,7 +94,11 @@ const ScheduleScreen = () => {
             : 'Select Date Range'}
         </Button>
       </Layout>
-      <ScrollView contentContainerStyle={styles.calendarGrid}>
+      <ScrollView
+        contentContainerStyle={styles.calendarGrid}
+        showsVerticalScrollIndicator={false}
+        showsHorizontalScrollIndicator={false}
+      >
         {calendarData
           .filter(day => isDateInRange(day.date))
           .map((day) => (
@@ -143,15 +148,15 @@ const themedStyles = StyleService.create({
   container: {
     flex: 1,
     backgroundColor: 'background-basic-color-1',
-    paddingHorizontal: wp('4%'),
-    paddingVertical: hp('2%'),
+    paddingHorizontal: width * 0.04, // 4% of screen width
+    paddingVertical: height * 0.02, // 2% of screen height
   },
   datePicker: {
     alignItems: 'center',
-    marginVertical: hp('2%'),
+    marginVertical: height * 0.02, // 2% of screen height
   },
   calendarGrid: {
-    paddingBottom: hp('5%'),
+    paddingBottom: height * 0.05, // 5% of screen height
     flexDirection: 'column',
   },
   modalBackground: {
@@ -161,9 +166,9 @@ const themedStyles = StyleService.create({
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
   },
   modalContainer: {
-    width: wp('95%'),
+    width: width * 0.95, // 95% of screen width
     backgroundColor: 'background-basic-color-1',
-    borderRadius: wp('2%'),
+    borderRadius: width * 0.02, // 2% of screen width
     alignItems: 'center',
   },
 });

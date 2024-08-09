@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Dimensions ,Modal} from 'react-native';
+import { View, Dimensions, Modal } from 'react-native';
 import { Text, Button, StyleService, useStyleSheet } from '@ui-kitten/components';
 
 const DetailsModal = ({ visible, day, onClose }) => {
@@ -7,9 +7,9 @@ const DetailsModal = ({ visible, day, onClose }) => {
   return (
     <Modal
       visible={visible}
-      transparent={true}
+      transparent={true} // Ensure the modal background is transparent
       animationType="slide"
-      onRequestClose={onClose}
+      onRequestClose={onClose} // Android back button support
     >
       <View style={styles.modalBackground}>
         <View style={styles.modalContainer}>
@@ -37,6 +37,7 @@ const themedStyles = StyleService.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)', 
   },
   modalContainer: {
     width: width * 0.85, 

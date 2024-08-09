@@ -30,8 +30,7 @@ const PaycheckDetailsModal = ({ visible, onClose, paycheck }) => {
   const handleSharePDF = async () => {
     try {
       const pdfUri = await generatePDF();
-
-      if (await Sharing.isAvailableAsync()) {
+      if (pdfUri && await Sharing.isAvailableAsync()) {
         await Sharing.shareAsync(pdfUri, {
           mimeType: 'application/pdf',
           dialogTitle: 'Save or share your paycheck PDF',
@@ -82,40 +81,42 @@ const PaycheckDetailsModal = ({ visible, onClose, paycheck }) => {
       onRequestClose={onClose}
     >
       <View style={styles.backdrop}>
-        <View style={styles.modalContainer} ref={viewRef}>
+        <View style={styles.modalContainer}>
           <PaycheckDetailsContent paycheck={paycheck} />
 
-          <Pressable style={styles.saveButton} onPress={handleSave}>
-            <Text style={styles.saveButtonText}>Simpan</Text>
-          </Pressable>
+          <View style={styles.buttonContainer} ref={viewRef}>
+            <Pressable style={styles.saveButton} onPress={handleSave}>
+              <Text style={styles.saveButtonText}>Simpan</Text>
+            </Pressable>
 
-          <Modal
-            visible={saveOptionsVisible}
-            transparent={true}
-            animationType="slide"
-            onRequestClose={hideSaveOptions}
-          >
-            <View style={styles.backdrop}>
-              <View style={styles.optionsContainer}>
-                <Text style={styles.optionText}>Simpan sebagai:</Text>
-                <View style={styles.buttonContainer}>
-                  <Pressable style={styles.optionButton} onPress={handleSharePDF}>
-                    <Text style={styles.optionButtonText}>PDF</Text>
-                  </Pressable>
-                  <Pressable style={styles.optionButton} onPress={handleSaveImage}>
-                    <Text style={styles.optionButtonText}>JPG</Text>
-                  </Pressable>
-                  <Pressable style={styles.optionButton} onPress={hideSaveOptions}>
-                    <Text style={styles.optionButtonText}>Batal</Text>
-                  </Pressable>
+            <Modal
+              visible={saveOptionsVisible}
+              transparent={true}
+              animationType="slide"
+              onRequestClose={hideSaveOptions}
+            >
+              <View style={styles.backdrop}>
+                <View style={styles.optionsContainer}>
+                  <Text style={styles.optionText}>Simpan sebagai:</Text>
+                  <View style={styles.buttonContainer}>
+                    <Pressable style={styles.optionButton} onPress={handleSharePDF}>
+                      <Text style={styles.optionButtonText}>PDF</Text>
+                    </Pressable>
+                    <Pressable style={styles.optionButton} onPress={handleSaveImage}>
+                      <Text style={styles.optionButtonText}>JPG</Text>
+                    </Pressable>
+                    <Pressable style={styles.optionButton} onPress={hideSaveOptions}>
+                      <Text style={styles.optionButtonText}>Batal</Text>
+                    </Pressable>
+                  </View>
                 </View>
               </View>
-            </View>
-          </Modal>
+            </Modal>
 
-          <Pressable style={styles.closeButton} onPress={onClose}>
-            <Text style={styles.closeButtonText}>Tutup</Text>
-          </Pressable>
+            <Pressable style={styles.closeButton} onPress={onClose}>
+              <Text style={styles.closeButtonText}>Tutup</Text>
+            </Pressable>
+          </View>
         </View>
       </View>
     </Modal>
@@ -135,12 +136,15 @@ const themedStyles = StyleService.create({
     backgroundColor: 'color-basic-100',
     borderRadius: 10,
   },
-  saveButton: {
+  buttonContainer: {
     marginTop: 20,
+  },
+  saveButton: {
     padding: 10,
     backgroundColor: 'color-primary-500',
     borderRadius: 5,
     alignItems: 'center',
+    marginBottom: 10,
   },
   saveButtonText: {
     color: 'white',
@@ -156,26 +160,23 @@ const themedStyles = StyleService.create({
     textAlign: 'center',
     marginBottom: 10,
   },
-  buttonContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-  },
   optionButton: {
     padding: 10,
     backgroundColor: 'color-primary-500',
     borderRadius: 5,
     alignItems: 'center',
+    marginVertical: 5,
   },
   optionButtonText: {
     color: 'white',
     fontWeight: 'bold',
   },
   closeButton: {
-    marginTop: 20,
     padding: 10,
     backgroundColor: 'color-danger-500',
     borderRadius: 5,
     alignItems: 'center',
+    marginTop: 10,
   },
   closeButtonText: {
     color: 'white',

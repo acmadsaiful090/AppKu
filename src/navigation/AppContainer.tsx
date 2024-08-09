@@ -50,7 +50,7 @@ function AppContainer() {
     return null; 
   }
 
-  const shouldShowHeader = isLoggedIn && !['Camera', 'ApplyLeave'].includes(currentRoute);
+  const shouldShowHeader = isLoggedIn && !['Camera', 'ApplyLeave','LeaveDetail'].includes(currentRoute);
 
   return (
     <>

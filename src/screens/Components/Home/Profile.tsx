@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { View, Image, Text } from 'react-native';
-import { StyleService, useStyleSheet, useTheme } from '@ui-kitten/components';
+import { View, Image, Text, Dimensions } from 'react-native';
+import { StyleService, useStyleSheet } from '@ui-kitten/components';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
+
+const { width: screenWidth } = Dimensions.get('window');
 
 const Profile = () => {
   const styles = useStyleSheet(themedStyles);
-  const theme = useTheme();
   const [user, setUser] = useState(null);
 
   useEffect(() => {
@@ -29,16 +29,16 @@ const Profile = () => {
 
   return (
     <View style={styles.profile}>
-      <View style={[styles.circleContainer, { backgroundColor: theme['background-basic-color-3'] }]}>
-        <View style={[styles.circle, { backgroundColor: theme['background-basic-color-1'] }]}>
+      <View style={styles.circleContainer}>
+        <View style={styles.circle}>
           <Image 
             source={{ uri: 'https://t3.ftcdn.net/jpg/03/02/88/46/240_F_302884605_actpipOdPOQHDTnFtp4zg4RtlWzhOASp.jpg' }} 
             style={styles.profileImage} 
           />
         </View>
       </View>
-      <Text style={[styles.profileName, { color: theme['text-basic-color'] }]}>{user.nama}</Text>
-      <Text style={[styles.profileRole, { color: theme['text-hint-color'] }]}>{user.role}</Text>
+      <Text style={styles.profileName}>{user.nama}</Text>
+      <Text style={styles.profileRole}>{user.role}</Text>
     </View>
   );
 };
@@ -52,26 +52,29 @@ const themedStyles = StyleService.create({
   profileImage: {
     width: '100%',
     height: '100%',
-    borderRadius: wp('22.5%'), // 45% of width
+    borderRadius: screenWidth * 0.225, // 22.5% of screen width
   },
   circleContainer: {
     alignItems: 'center',
     justifyContent: 'center',
-    width: wp('25%'), // 100/4
-    height: wp('25%'),
-    borderRadius: wp('12.5%'), // 50% of width
+    width: screenWidth * 0.25, // 25% of screen width
+    height: screenWidth * 0.25, // 25% of screen width
+    borderRadius: screenWidth * 0.125, // 12.5% of screen width
+    backgroundColor: '$background-basic-color-3',
   },
   circle: {
-    width: wp('22.5%'), // 90/4
-    height: wp('22.5%'),
-    borderRadius: wp('11.25%'), // 45% of width
+    width: screenWidth * 0.225, // 22.5% of screen width
+    height: screenWidth * 0.225, // 22.5% of screen width
+    borderRadius: screenWidth * 0.1125, // 11.25% of screen width
+    backgroundColor: '$background-basic-color-1',
   },
   profileName: {
-    fontSize: wp('5.5%'), // 22/4
+    fontSize: screenWidth * 0.055, // 5.5% of screen width
     fontWeight: 'bold',
+    color: 'white', 
   },
   profileRole: {
-    fontSize: wp('4%'), // 16/4
-    color: '#888',
+    fontSize: screenWidth * 0.04, // 4% of screen width
+    color: 'white', 
   },
 });

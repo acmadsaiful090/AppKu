@@ -1,46 +1,63 @@
 import React, { useState } from 'react';
-import { ScrollView, View, Pressable } from 'react-native';
-import { Layout, Text, StyleService, useStyleSheet, Icon } from '@ui-kitten/components';
+import { ScrollView, View, Pressable, Dimensions } from 'react-native';
+import { Layout, Text, StyleService, useStyleSheet, Icon, Button } from '@ui-kitten/components';
 import { useNavigation } from '@react-navigation/native';
-import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
 import leaveTypes from '../../assets/data/leaveTypes';
 import leaveHistory from '../../assets/data/leaveHistory';
 import LeaveTypeList from '../Components/Leave/LeaveTypeList';
 import LeaveHistoryItem from '../Components/Leave/LeaveHistoryItem';
-import LeaveModal from '../Components/Leave/LeaveModal';
+
+const { width, height } = Dimensions.get('window');
+const ITEMS_PER_PAGE = 4;
 
 const LeaveScreen = () => {
-  const [visible, setVisible] = useState(false);
-  const [selectedLeave, setSelectedLeave] = useState(null);
+  const [currentPage, setCurrentPage] = useState(1);
   const styles = useStyleSheet(themedStyles);
   const navigation = useNavigation();
 
-  const handleCardPress = (type) => {
-    setSelectedLeave(type);
-    setVisible(true);
+  const handleCardPress = (leave) => {
+    const { type } = leave;
+    navigation.navigate('LeaveDetail', { leaveType: type });
   };
+
+  const totalPages = Math.ceil(leaveHistory.length / ITEMS_PER_PAGE);
+  const paginatedHistory = leaveHistory.slice((currentPage - 1) * ITEMS_PER_PAGE, currentPage * ITEMS_PER_PAGE);
 
   return (
     <Layout style={styles.container}>
-      <ScrollView contentContainerStyle={styles.scrollContainer}>
+      <ScrollView
+        contentContainerStyle={styles.scrollContainer}
+        showsVerticalScrollIndicator={false}
+        showsHorizontalScrollIndicator={false}
+      >
         <Text category='h5' style={styles.title}>Leave Type</Text>
         <LeaveTypeList leaveTypes={leaveTypes} onCardPress={handleCardPress} />
         
         <Text category='h5' style={styles.title}>Leave History</Text>
-        {leaveHistory.map(item => (
+        {paginatedHistory.map(item => (
           <LeaveHistoryItem key={item.id} item={item} />
         ))}
+        
+        <View style={styles.pagination}>
+          <Button
+            appearance='ghost'
+            disabled={currentPage === 1}
+            onPress={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+          >
+            Previous
+          </Button>
+          <Text>{`${currentPage} / ${totalPages}`}</Text>
+          <Button
+            appearance='ghost'
+            disabled={currentPage === totalPages}
+            onPress={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
+          >
+            Next
+          </Button>
+        </View>
       </ScrollView>
 
-      {selectedLeave && (
-        <LeaveModal
-          visible={visible}
-          leave={selectedLeave}
-          onClose={() => setVisible(false)}
-        />
-      )}
-      
       <View style={styles.buttonContainer}>
         <Pressable style={styles.button} onPress={() => navigation.navigate('ApplyLeave')}>
           <Icon name='plus-circle-outline' fill='#FFFFFF' style={styles.icon} />
@@ -54,34 +71,38 @@ const themedStyles = StyleService.create({
   container: {
     flex: 1,
     backgroundColor: 'background-basic-color-1',
-    paddingHorizontal: wp('4%'),
-    paddingVertical: hp('2%'),
+    paddingHorizontal: width * 0.04, // 4% of screen width
   },
   buttonContainer: {
     position: 'absolute',
-    bottom: hp('2%'),
-    right: wp('4%'),
+    bottom: height * 0.02, // 2% of screen height
+    right: width * 0.04, // 4% of screen width
     alignItems: 'center',
   },
   button: {
-    width: wp('12%'),
-    height: hp('6%'),
-    borderRadius: wp('6%'),
+    width: width * 0.12, // 12% of screen width
+    height: height * 0.06, // 6% of screen height
+    borderRadius: width * 0.06, // 6% of screen width
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: 'color-primary-500',
   },
   icon: {
-    width: wp('8%'),
-    height: hp('4%'),
+    width: width * 0.08, // 8% of screen width
+    height: height * 0.04, // 4% of screen height
   },
   title: {
-    marginVertical: hp('1%'),
     fontWeight: 'bold',
     color: 'text-body-color',
   },
   scrollContainer: {
-    paddingBottom: hp('10%'),
+    paddingBottom: height * 0.1, // 10% of screen height
+  },
+  pagination: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginTop: height * 0.02, // 2% of screen height
   },
 });
 

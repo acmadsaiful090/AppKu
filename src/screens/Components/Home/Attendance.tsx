@@ -1,11 +1,11 @@
 import React from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, Dimensions } from 'react-native';
 import { StyleService, useStyleSheet, useTheme } from '@ui-kitten/components';
-import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
+
+const { width: screenWidth, height: screenHeight } = Dimensions.get('window');
 
 const Attendance = () => {
   const styles = useStyleSheet(themedStyles);
-  const theme = useTheme();
 
   const getCurrentMonth = () => {
     const months = [
@@ -43,40 +43,38 @@ export default Attendance;
 
 const themedStyles = StyleService.create({
   container: {
-    marginTop: hp('1%'),
-    marginHorizontal: '5%',
-    padding: wp('4%'),
-    backgroundColor: '$background-basic-color-1', // from theme
-    borderRadius: wp('2%'),
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 5,
-    elevation: 5,
+    marginTop: screenHeight * 0.01, // 2% of screen height
+    padding: screenWidth * 0.04, // 4% of screen width
+    backgroundColor: '$background-basic-color-1', 
+    borderRadius: screenWidth * 0.02, // 2% of screen width
+    borderWidth: 1,
+    borderColor: '$color-primary-500',
+    width: screenWidth * 0.9, // 90% of screen width
   },
   month: {
     alignItems: 'center',
-    marginBottom: hp('1%'),
+    marginBottom: screenHeight * 0.02, // 2% of screen height
   },
   titleText: {
-    fontSize: wp('5%'),
+    fontSize: screenWidth * 0.05, // 5% of screen width
     fontWeight: 'bold',
-    color: '$text-basic-color', // from theme
+    color: '$text-basic-color',
   },
   attendance: {
     flexDirection: 'row',
     justifyContent: 'space-around',
+    width: '100%',
   },
   attendanceItem: {
     alignItems: 'center',
   },
   attendanceNumber: {
-    fontSize: wp('6%'),
+    fontSize: screenWidth * 0.06, // 6% of screen width
     fontWeight: 'bold',
-    color: '$color-primary-500', // from theme
+    color: '$color-primary-500',
   },
   attendanceLabel: {
-    fontSize: wp('3.5%'),
-    color: '$text-placeholder-color', // from theme
+    fontSize: screenWidth * 0.04, // 4% of screen width
+    color: '$text-placeholder-color',
   },
 });

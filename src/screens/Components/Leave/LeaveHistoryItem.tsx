@@ -1,23 +1,20 @@
 import React from 'react';
-import { View, StyleSheet } from 'react-native';
-import { Text } from '@ui-kitten/components';
-import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
+import { View, Dimensions } from 'react-native';
+import { Text, useStyleSheet, StyleService } from '@ui-kitten/components';
+
+const { width: screenWidth } = Dimensions.get('window');
 
 const LeaveHistoryItem = ({ item }) => {
+  const styles = useStyleSheet(themedStyles);
+
   const getBackgroundColor = (status) => {
-    switch (status) {
-      case 'Rejected':
-        return '#F2F8FF'; 
-      case 'Approved':
-        return '#F2F8FF'; 
-      default:
-        return '#FFFFFF'; 
-    }
+    return status === 'Rejected' || status === 'Approved' ? '#F2F8FF' : '#FFFFFF';
   };
 
   const getBorderColor = (status) => {
-    return status === 'In Progress' ? '#007BFF' : 'transparent'; 
+    return status === 'In Progress' ? '#007BFF' : 'transparent';
   };
+
   const getStatusColor = (status) => {
     switch (status) {
       case 'In Progress':
@@ -38,7 +35,7 @@ const LeaveHistoryItem = ({ item }) => {
         { 
           backgroundColor: getBackgroundColor(item.status),
           borderColor: getBorderColor(item.status),
-          borderWidth: item.status === 'In Progress' ? 1 : 0, // Border only for 'In Progress'
+          borderWidth: item.status === 'In Progress' ? 1 : 0,
         }
       ]}
     >
@@ -63,13 +60,11 @@ const LeaveHistoryItem = ({ item }) => {
   );
 };
 
-const styles = StyleSheet.create({
+const themedStyles = StyleService.create({
   container: {
-    padding: wp('3%'), 
     flexDirection: 'column',
-    borderRadius: wp('2%'), 
-    marginVertical: hp('1%'),
-    backgroundColor: '#FFFFFF', 
+    borderRadius: screenWidth * 0.02, // 2% of screen width
+    marginVertical: screenWidth * 0.025, // 2.5% of screen width (approximation of 1% height)
   },
   infoItem: {
     flexDirection: 'row',
@@ -83,9 +78,9 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   reasonText: {
-    marginTop: hp('1%'), 
+    marginTop: screenWidth * 0.025, // 2.5% of screen width (approximation of 1% height)
     flexShrink: 1,
-    width: '100%', 
+    width: '100%',
   },
 });
 

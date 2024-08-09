@@ -1,8 +1,9 @@
 import React from 'react';
-import { View, TouchableOpacity } from 'react-native';
+import { View, TouchableOpacity, Dimensions } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { Icon, Text, useStyleSheet, useTheme, StyleService } from '@ui-kitten/components';
-import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
+
+const { width, height } = Dimensions.get('window');
 
 const Navbar = ({ currentRoute }) => {
   const navigation = useNavigation();
@@ -12,8 +13,8 @@ const Navbar = ({ currentRoute }) => {
   const getIcon = (name, route) => (
     <Icon
       name={name}
-      width={wp('6%')}
-      height={wp('6%')}
+      width={width * 0.06}
+      height={width * 0.06}
       fill={currentRoute === route ? theme['color-primary-500'] : theme['color-basic-600']}
     />
   );
@@ -29,7 +30,7 @@ const Navbar = ({ currentRoute }) => {
         <Text style={[styles.navLabel, { color: currentRoute === 'Leave' ? theme['color-primary-500'] : theme['color-basic-600'] }]}>Leave</Text>
       </TouchableOpacity>
       <TouchableOpacity style={styles.cameraButton} onPress={() => navigation.navigate('Camera')}>
-        <Icon name='camera-outline' fill='white' style={{ width: wp('6%'), height: wp('6%') }} />
+        <Icon name='camera-outline' fill='white' style={styles.cameraIcon} />
       </TouchableOpacity>
       <TouchableOpacity style={styles.navItem} onPress={() => navigation.navigate('Attendance')}>
         {getIcon('calendar-outline', 'Attendance')}
@@ -47,25 +48,29 @@ const themedStyles = StyleService.create({
   navbar: {
     flexDirection: 'row',
     justifyContent: 'space-around',
-    padding: wp('1%'),
+    padding: width * 0.01,
     borderTopWidth: 1,
     borderTopColor: 'color-basic-300',
   },
   navItem: {
-    width: wp('20%'),
+    width: width * 0.2,
     alignItems: 'center',
   },
   navLabel: {
-    fontSize: wp('3%'),
+    fontSize: width * 0.03,
   },
   cameraButton: {
-    top: -hp('2%'),
+    top: -height * 0.02,
     alignItems: 'center',
     justifyContent: 'center',
-    width: wp('12%'),
-    height: wp('12%'),
-    borderRadius: wp('6%'),
+    width: width * 0.12,
+    height: width * 0.12,
+    borderRadius: width * 0.06,
     backgroundColor: 'color-primary-500',
+  },
+  cameraIcon: {
+    width: width * 0.06,
+    height: width * 0.06,
   },
 });
 

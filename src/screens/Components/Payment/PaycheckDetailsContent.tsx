@@ -20,52 +20,50 @@ const monthMapping = {
 // Function to get the start and end dates of a given month
 const getPeriodText = (month) => {
   const [monthName, year] = month.split(' ');
-  const monthIndex = monthMapping[monthName]; // get month index from mapping
+  const monthIndex = monthMapping[monthName];
   
-  const startDate = new Date(year, monthIndex, 5); // Start on the 5th of the given month
-  const endDate = new Date(year, monthIndex + 1, 5); // End on the 5th of the next month
+  const startDate = new Date(year, monthIndex, 5);
+  const endDate = new Date(year, monthIndex + 1, 5);
 
-  // Format dates to dd/MM/yyyy
-  const startFormatted = startDate.toLocaleDateString('id-ID', { day: '2-digit', month: '2-digit', year: 'numeric' });
-  const endFormatted = endDate.toLocaleDateString('id-ID', { day: '2-digit', month: '2-digit', year: 'numeric' });
+  const formatDate = date => date.toLocaleDateString('id-ID', { day: '2-digit', month: '2-digit', year: 'numeric' });
 
-  return `Periode ${startFormatted} - ${endFormatted}`;
+  return `Periode ${formatDate(startDate)} - ${formatDate(endDate)}`;
 };
 
 const PaycheckDetailsContent = ({ paycheck }) => {
   const styles = useStyleSheet(themedStyles);
   const periodText = getPeriodText(paycheck.month);
 
+  const renderInfoRow = (label, value) => (
+    <View style={styles.infoContainer}>
+      <Text style={styles.infoLabel}>{label} :</Text>
+      <Text style={styles.infoValue}>{value}</Text>
+    </View>
+  );
+
+  const renderSalaryRow = (label, value) => (
+    <View style={styles.salaryRow}>
+      <Text style={styles.salaryText}>{label}</Text>
+      <Text style={styles.salaryText}>{value}</Text>
+    </View>
+  );
+
   return (
     <>
       <Text style={styles.headerText} category="h6">Slip Gaji Karyawan</Text>
       <Text style={styles.periodText} category="s1">{periodText}</Text>
 
-      {[
-        { label: 'Nama', value: paycheck.name },
-        { label: 'NIK', value: paycheck.nik },
-        { label: 'Jabatan', value: paycheck.position },
-        { label: 'Alamat', value: paycheck.address }
-      ].map((item, index) => (
-        <View key={index} style={styles.infoContainer}>
-          <Text style={styles.infoLabel}>{item.label} :</Text>
-          <Text style={styles.infoValue}>{item.value}</Text>
-        </View>
-      ))}
+      {renderInfoRow('Nama', paycheck.name)}
+      {renderInfoRow('NIK', paycheck.nik)}
+      {renderInfoRow('Jabatan', paycheck.position)}
+      {renderInfoRow('Alamat', paycheck.address)}
 
       <View style={styles.divider} />
 
-      {[
-        { label: 'Gaji Pokok', value: paycheck.basicSalary },
-        { label: 'Uang Lembur', value: paycheck.overtimePay },
-        { label: 'Potongan', value: paycheck.deductions },
-        { label: 'Gaji Bersih', value: paycheck.netSalary }
-      ].map((item, index) => (
-        <View key={index} style={styles.salaryRow}>
-          <Text style={styles.salaryText}>{item.label}</Text>
-          <Text style={styles.salaryText}>{item.value}</Text>
-        </View>
-      ))}
+      {renderSalaryRow('Gaji Pokok', paycheck.basicSalary)}
+      {renderSalaryRow('Uang Lembur', paycheck.overtimePay)}
+      {renderSalaryRow('Potongan', paycheck.deductions)}
+      {renderSalaryRow('Gaji Bersih', paycheck.netSalary)}
 
       <Text style={styles.acknowledgementText}>Mengetahui</Text>
       <Text style={styles.companyText}>JC CORPORATE</Text>
