@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { CameraView, CameraType, useCameraPermissions } from 'expo-camera';
-import { View, Text, Image, Dimensions, Pressable, Alert, ActivityIndicator } from 'react-native';
+import { Button,View, Text, Image, Dimensions, Pressable, Alert, ActivityIndicator } from 'react-native';
 import * as Location from 'expo-location';
 import Facial from '../../assets/icons/Facial_Recognition.png';
 import moment from 'moment-timezone';

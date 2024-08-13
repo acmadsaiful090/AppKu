@@ -1,23 +1,50 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { View, Pressable, Alert, Modal } from 'react-native';
 import { Text, StyleService, useStyleSheet } from '@ui-kitten/components';
 import * as Print from 'expo-print';
 import * as Sharing from 'expo-sharing';
 import { captureRef } from 'react-native-view-shot';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import PaycheckDetailsContent from './PaycheckDetailsContent';
-import generatePaycheckHtml from './generatePaycheckHtml';
+import generatePaycheckHtml from './generatePaycheckHtml'; 
 
 const PaycheckDetailsModal = ({ visible, onClose, paycheck }) => {
   const styles = useStyleSheet(themedStyles);
   const viewRef = useRef();
   const [saveOptionsVisible, setSaveOptionsVisible] = useState(false);
+  const [user, setUser] = useState(null);
 
-  if (!paycheck) {
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const storedUser = await AsyncStorage.getItem('user');
+        if (storedUser) {
+          setUser(JSON.parse(storedUser));
+        }
+      } catch (error) {
+        console.error('Error fetching user data:', error);
+      }
+    };
+
+    fetchUserData();
+  }, []);
+
+  if (!paycheck || !user) {
     return null;
   }
 
   const generatePDF = async () => {
-    const htmlContent = generatePaycheckHtml(paycheck);
+    const htmlContent = generatePaycheckHtml({
+      name: user.nama,
+      nik: user.nik,
+      position: user.role,
+      address: user.address,
+      date: paycheck.date,
+      basicSalary: paycheck.basicSalary,
+      overtimePay: paycheck.overtimePay,
+      deductions: paycheck.deductions,
+      netSalary: paycheck.netSalary
+    });
 
     try {
       const { uri } = await Print.printToFileAsync({ html: htmlContent });
@@ -82,7 +109,7 @@ const PaycheckDetailsModal = ({ visible, onClose, paycheck }) => {
     >
       <View style={styles.backdrop}>
         <View style={styles.modalContainer}>
-          <PaycheckDetailsContent paycheck={paycheck} />
+          <PaycheckDetailsContent paycheck={paycheck} user={user} />
 
           <View style={styles.buttonContainer} ref={viewRef}>
             <Pressable style={styles.saveButton} onPress={handleSave}>

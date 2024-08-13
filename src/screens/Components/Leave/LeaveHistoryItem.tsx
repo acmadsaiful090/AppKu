@@ -62,6 +62,7 @@ const LeaveHistoryItem = ({ item }) => {
 
 const themedStyles = StyleService.create({
   container: {
+    padding: screenWidth * 0.02, // 2% of screen width
     flexDirection: 'column',
     borderRadius: screenWidth * 0.02, // 2% of screen width
     marginVertical: screenWidth * 0.025, // 2.5% of screen width (approximation of 1% height)

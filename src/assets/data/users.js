@@ -2,7 +2,9 @@ const users = [
     {
       id: 1,
       nama: 'Emmanuel Sebastian',
+      nik: '123456789',
       email: 'Admin@gmail.com',
+      address: '789 Pine St, City, Country',
       tanggal_lahir: '1990-07-01',
       password: 'password123',
       role: 'FO Agent',
@@ -10,7 +12,9 @@ const users = [
     {
       id: 2,
       nama: 'Jane Smith',
+      nik: '123456789',
       email: 'Admin1@gmail.com',
+      address: '789 Pine St, City, Country',
       tanggal_lahir: '1992-02-02',
       password: 'password123',
       role: 'FO Agent',
@@ -18,7 +22,9 @@ const users = [
     {
       id: 3,
       nama: 'Robert Brown',
+      nik: '123456789',
       email: 'Admin2@gmail.com',
+      address: '789 Pine St, City, Country',
       tanggal_lahir: '1994-03-03',
       password: 'password123',
       role: 'Admin',
@@ -26,7 +32,9 @@ const users = [
     {
         id: 3,
         nama: 'Rhomy Nugraha',
+        nik: '123456789',
         email: 'Admin3@gmail.com',
+        address: '789 Pine St, City, Country',
         tanggal_lahir: '1994-07-03',
         password: 'password123',
         role: 'Admin',

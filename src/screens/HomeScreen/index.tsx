@@ -43,23 +43,23 @@ const HomeScreen = () => {
 const themedStyles = StyleService.create({
   container: {
     flex: 1,
-    backgroundColor: 'background-basic-color-1',
+    backgroundColor: '$background-basic-color-1', // Menggunakan warna latar belakang dari tema
   },
   profileContainer: {
-    backgroundColor: 'color-primary-500',
-    borderBottomRightRadius: screenWidth * 0.07, // 7% of screen width
-    borderBottomLeftRadius: screenWidth * 0.07, // 7% of screen width
-    height: screenHeight * 0.2, // 20% of screen height
+    backgroundColor: '$color-primary-500', // Menggunakan warna primer dari tema
+    borderBottomRightRadius: screenWidth * 0.07, // Radius 7% dari lebar layar
+    borderBottomLeftRadius: screenWidth * 0.07, // Radius 7% dari lebar layar
+    height: screenHeight * 0.2, // Tinggi 20% dari tinggi layar
   },
   sectionTitle: {
-    fontSize: screenWidth * 0.045, // 4.5% of screen width
+    fontSize: screenWidth * 0.045, // 4.5% dari lebar layar
     fontWeight: 'bold',
-    marginVertical: screenHeight * 0.01, // 1% of screen height
-    color: '$text-body-color',
+    marginVertical: screenHeight * 0.01, // Margin vertikal 1% dari tinggi layar
+    color: '$text-basic-color', // Menggunakan warna teks dasar dari tema
   },
   scrollViewContent: {
-    paddingHorizontal: screenWidth * 0.04, // 4% of screen width
-    paddingBottom: screenHeight * 0.02, // 2% of screen height
+    paddingHorizontal: screenWidth * 0.04, // Padding horizontal 4% dari lebar layar
+    paddingBottom: screenHeight * 0.02, // Padding bawah 2% dari tinggi layar
   },
 });
 

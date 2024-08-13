@@ -1,66 +1,143 @@
-const monthMapping = {
-  'Januari': 0,
-  'Februari': 1,
-  'Maret': 2,
-  'April': 3,
-  'Mei': 4,
-  'Juni': 5,
-  'Juli': 6,
-  'Agustus': 7,
-  'September': 8,
-  'Oktober': 9,
-  'November': 10,
-  'Desember': 11
-};
+const monthNames = [
+  'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni',
+  'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'
+];
+const generatePaycheckHtml = ({ name, nik, position, address, date, basicSalary, overtimePay, deductions, netSalary }) => {
+  const getPeriodText = (date) => {
+    const [day, monthIndex, year] = date.split('-').map(Number);
+    const monthName = monthNames[monthIndex - 1]; // monthIndex is 1-based
 
-const formatDate = (date) => 
-  new Date(date).toLocaleDateString('id-ID', { day: '2-digit', month: '2-digit', year: 'numeric' });
+    const startDate = new Date(year, monthIndex - 1, 1); // Month is 0-based
+    const endDate = new Date(year, monthIndex, 0); // Last day of the month
 
-const getPeriodText = (month) => {
-  const [monthName, year] = month.split(' ');
-  const monthIndex = monthMapping[monthName];
-  const startDate = new Date(year, monthIndex, 5);
-  const endDate = new Date(year, monthIndex + 1, 5);
-  
-  return `Periode ${formatDate(startDate)} - ${formatDate(endDate)}`;
-};
+    const formatDate = date => date.toLocaleDateString('id-ID', { day: '2-digit', month: '2-digit', year: 'numeric' });
 
-const generatePaycheckHtml = (paycheck) => {
-  const periodText = getPeriodText(paycheck.month);
+    return `Periode ${formatDate(startDate)} - ${formatDate(endDate)}`;
+  };
+
+  const periodText = getPeriodText(date);
 
   return `
+    <!DOCTYPE html>
     <html>
       <head>
+        <meta charset="UTF-8">
+        <title>Slip Gaji</title>
         <style>
-          body { font-family: Arial, sans-serif; }
-          .header { text-align: center; margin-bottom: 20px; }
-          .section { margin-bottom: 15px; }
-          .info { display: flex; justify-content: space-between; }
-          .divider { border-bottom: 1px solid #ccc; margin: 10px 0; }
-          .footer { text-align: center; margin-top: 20px; }
+          @page {
+            size: A4;
+            margin: 20mm;
+          }
+          body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f9f9f9;
+          }
+          .container {
+            max-width: 210mm; /* Width of A4 */
+            margin: auto;
+            padding: 20mm; /* Padding to fit within the A4 margins */
+            background: #fff;
+            border-radius: 8px;
+          }
+          .header {
+            text-align: center;
+            margin-bottom: 20px;
+          }
+          .header h1 {
+            margin: 0;
+            font-size: 24px;
+          }
+          .period-text {
+            font-style: italic;
+            margin-bottom: 20px;
+            display: block;
+            text-align: center;
+          }
+          .info-container {
+            margin-bottom: 10px;
+          }
+          .info-label {
+            font-weight: bold;
+          }
+          .info-value {
+            margin-left: 10px;
+          }
+          .divider {
+            height: 1px;
+            background-color: #ddd;
+            margin: 20px 0;
+          }
+          .salary-row {
+            display: flex;
+            justify-content: space-between;
+            margin: 5px 0;
+          }
+          .salary-label {
+            font-weight: bold;
+          }
+          .salary-value {
+            font-weight: bold;
+          }
+          .acknowledgement {
+            text-align: center;
+            margin-top: 20px;
+          }
+          .company {
+            font-style: italic;
+          }
         </style>
       </head>
       <body>
-        <div class="header">
-          <h1>Slip Gaji Karyawan</h1>
-          <p>${periodText}</p>
-        </div>
-        <div class="section">
-          <div class="info"><strong>Nama:</strong> ${paycheck.name}</div>
-          <div class="info"><strong>NIK:</strong> ${paycheck.nik}</div>
-          <div class="info"><strong>Jabatan:</strong> ${paycheck.position}</div>
-          <div class="info"><strong>Alamat:</strong> ${paycheck.address}</div>
-        </div>
-        <div class="divider"></div>
-        <div class="section">
-          <div class="info"><strong>Gaji Pokok:</strong> ${paycheck.basicSalary}</div>
-          <div class="info"><strong>Uang Lembur:</strong> ${paycheck.overtimePay}</div>
-          <div class="info"><strong>Potongan:</strong> ${paycheck.deductions}</div>
-          <div class="info"><strong>Gaji Bersih:</strong> ${paycheck.netSalary}</div>
-        </div>
-        <div class="footer">
-          <p>Mengetahui</p>
-          <p>JC CORPORATE</p>
+        <div class="container">
+          <div class="header">
+            <h1>Slip Gaji Karyawan</h1>
+            <span class="period-text">${periodText}</span>
+          </div>
+          
+          <div class="info-container">
+            <span class="info-label">Nama:</span>
+            <span class="info-value">${name || 'N/A'}</span>
+          </div>
+          <div class="info-container">
+            <span class="info-label">NIK:</span>
+            <span class="info-value">${nik || 'N/A'}</span>
+          </div>
+          <div class="info-container">
+            <span class="info-label">Jabatan:</span>
+            <span class="info-value">${position || 'N/A'}</span>
+          </div>
+          <div class="info-container">
+            <span class="info-label">Alamat:</span>
+            <span class="info-value">${address || 'N/A'}</span>
+          </div>
+          
+          <div class="divider"></div>
+          
+          <div class="salary-row">
+            <span class="salary-label">Gaji Pokok:</span>
+            <span class="salary-value">${basicSalary || '0'}</span>
+          </div>
+          <div class="salary-row">
+            <span class="salary-label">Uang Lembur:</span>
+            <span class="salary-value">${overtimePay || '0'}</span>
+          </div>
+          <div class="salary-row">
+            <span class="salary-label">Potongan:</span>
+            <span class="salary-value">${deductions || '0'}</span>
+          </div>
+          <div class="salary-row">
+            <span class="salary-label">Gaji Bersih:</span>
+            <span class="salary-value">${netSalary || '0'}</span>
+          </div>
+          
+          <div class="divider"></div>
+          
+          <div class="acknowledgement">
+            <p>Mengetahui</p>
+            <p class="company">JC CORPORATE</p>
+          </div>
         </div>
       </body>
     </html>

@@ -1,10 +1,9 @@
-import React, { useState } from 'react';
-import { ScrollView, View, Pressable, Dimensions } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { ScrollView, View, Pressable, Dimensions, ActivityIndicator } from 'react-native';
 import { Layout, Text, StyleService, useStyleSheet, Icon, Button } from '@ui-kitten/components';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useFocusEffect } from '@react-navigation/native';
 
 import leaveTypes from '../../assets/data/leaveTypes';
-import leaveHistory from '../../assets/data/leaveHistory';
 import LeaveTypeList from '../Components/Leave/LeaveTypeList';
 import LeaveHistoryItem from '../Components/Leave/LeaveHistoryItem';
 
@@ -13,16 +12,38 @@ const ITEMS_PER_PAGE = 4;
 
 const LeaveScreen = () => {
   const [currentPage, setCurrentPage] = useState(1);
+  const [historyData, setHistoryData] = useState([]);
+  const [loading, setLoading] = useState(true);
   const styles = useStyleSheet(themedStyles);
   const navigation = useNavigation();
+
+  const fetchLeaveHistory = async () => {
+    try {
+      const response = await fetch('https://66bad3266a4ab5edd6364e75.mockapi.io/leaveHistory');
+      const data = await response.json();
+      const sortedData = data.sort((a, b) => new Date(b.applied) - new Date(a.applied));
+      setHistoryData(sortedData);
+    } catch (error) {
+      console.error('Error fetching leave history:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+  
+  useFocusEffect(
+    React.useCallback(() => {
+      setLoading(true);
+      fetchLeaveHistory();
+    }, [])
+  );
 
   const handleCardPress = (leave) => {
     const { type } = leave;
     navigation.navigate('LeaveDetail', { leaveType: type });
   };
 
-  const totalPages = Math.ceil(leaveHistory.length / ITEMS_PER_PAGE);
-  const paginatedHistory = leaveHistory.slice((currentPage - 1) * ITEMS_PER_PAGE, currentPage * ITEMS_PER_PAGE);
+  const totalPages = Math.ceil(historyData.length / ITEMS_PER_PAGE);
+  const paginatedHistory = historyData.slice((currentPage - 1) * ITEMS_PER_PAGE, currentPage * ITEMS_PER_PAGE);
 
   return (
     <Layout style={styles.container}>
@@ -35,27 +56,33 @@ const LeaveScreen = () => {
         <LeaveTypeList leaveTypes={leaveTypes} onCardPress={handleCardPress} />
         
         <Text category='h5' style={styles.title}>Leave History</Text>
-        {paginatedHistory.map(item => (
-          <LeaveHistoryItem key={item.id} item={item} />
-        ))}
+        {loading ? (
+          <ActivityIndicator size="large" color="color-primary-500" />
+        ) : (
+          paginatedHistory.map(item => (
+            <LeaveHistoryItem key={item.id} item={item} />
+          ))
+        )}
         
-        <View style={styles.pagination}>
-          <Button
-            appearance='ghost'
-            disabled={currentPage === 1}
-            onPress={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
-          >
-            Previous
-          </Button>
-          <Text>{`${currentPage} / ${totalPages}`}</Text>
-          <Button
-            appearance='ghost'
-            disabled={currentPage === totalPages}
-            onPress={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
-          >
-            Next
-          </Button>
-        </View>
+        {!loading && (
+          <View style={styles.pagination}>
+            <Button
+              appearance='ghost'
+              disabled={currentPage === 1}
+              onPress={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+            >
+              Previous
+            </Button>
+            <Text>{`${currentPage} / ${totalPages}`}</Text>
+            <Button
+              appearance='ghost'
+              disabled={currentPage === totalPages}
+              onPress={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
+            >
+              Next
+            </Button>
+          </View>
+        )}
       </ScrollView>
 
       <View style={styles.buttonContainer}>
@@ -71,38 +98,38 @@ const themedStyles = StyleService.create({
   container: {
     flex: 1,
     backgroundColor: 'background-basic-color-1',
-    paddingHorizontal: width * 0.04, // 4% of screen width
+    paddingHorizontal: width * 0.04, 
   },
   buttonContainer: {
     position: 'absolute',
-    bottom: height * 0.02, // 2% of screen height
-    right: width * 0.04, // 4% of screen width
+    bottom: height * 0.02, 
+    right: width * 0.04, 
     alignItems: 'center',
   },
   button: {
-    width: width * 0.12, // 12% of screen width
-    height: height * 0.06, // 6% of screen height
-    borderRadius: width * 0.06, // 6% of screen width
+    width: width * 0.12, 
+    height: height * 0.06, 
+    borderRadius: width * 0.06, 
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: 'color-primary-500',
   },
   icon: {
-    width: width * 0.08, // 8% of screen width
-    height: height * 0.04, // 4% of screen height
+    width: width * 0.08, 
+    height: height * 0.04, 
   },
   title: {
     fontWeight: 'bold',
     color: 'text-body-color',
   },
   scrollContainer: {
-    paddingBottom: height * 0.1, // 10% of screen height
+    paddingBottom: height * 0.1, 
   },
   pagination: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginTop: height * 0.02, // 2% of screen height
+    marginTop: height * 0.02,
   },
 });
 

@@ -50,6 +50,7 @@ const themedStyles = StyleService.create({
     justifyContent: 'space-between',
   },
   cardWrapper: {
+    padding: screenWidth * 0.02, // 2% of screen width
     borderRadius: screenWidth * 0.02, // 2% of screen width
     backgroundColor: '#F2F8FF',
     width: screenWidth * 0.27, // 28% of screen width

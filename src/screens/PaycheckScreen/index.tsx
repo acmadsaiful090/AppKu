@@ -1,21 +1,42 @@
-import React, { useState } from 'react';
-import { ScrollView, View, Dimensions } from 'react-native';
+import React, { useState, useEffect, useCallback } from 'react';
+import { ScrollView, View, Dimensions, ActivityIndicator } from 'react-native';
 import { Layout, Text, StyleService, useStyleSheet, Button } from '@ui-kitten/components';
+import { useFocusEffect } from '@react-navigation/native';
 
 import PayCheckItem from '../Components/Payment/PayCheckItem';
 import PaycheckDetailsModal from '../Components/Payment/PaycheckDetailsModal';
-import paychecks from '../../assets/data/paychecks';
 import Profile from '../Components/Home/Profile';
 
 const { width, height } = Dimensions.get('window');
 
-const ITEMS_PER_PAGE = 5;
+const ITEMS_PER_PAGE = 6;
 
 const PaycheckScreen = () => {
   const styles = useStyleSheet(themedStyles);
   const [visible, setVisible] = useState(false);
   const [selectedPaycheck, setSelectedPaycheck] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
+  const [paychecks, setPaychecks] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  const fetchPaychecks = async () => {
+    try {
+      const response = await fetch('https://66bad3266a4ab5edd6364e75.mockapi.io/paychecks');
+      const data = await response.json();
+      setPaychecks(data);
+    } catch (error) {
+      console.error('Error fetching paychecks:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useFocusEffect(
+    useCallback(() => {
+      setLoading(true);
+      fetchPaychecks();
+    }, [])
+  );
 
   const toggleModal = () => {
     setVisible(!visible);
@@ -33,6 +54,14 @@ const PaycheckScreen = () => {
 
   const totalPages = Math.ceil(paychecks.length / ITEMS_PER_PAGE);
   const paginatedPaychecks = paychecks.slice((currentPage - 1) * ITEMS_PER_PAGE, currentPage * ITEMS_PER_PAGE);
+
+  if (loading) {
+    return (
+      <Layout style={styles.container}>
+        <ActivityIndicator size="large" color="#0000ff" />
+      </Layout>
+    );
+  }
 
   return (
     <Layout style={styles.container}>
@@ -103,7 +132,7 @@ const themedStyles = StyleService.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginTop: height * 0.02, // 2% of screen height
+    marginVertical: height * 0.02, // 2% of screen height
   },
 });
 

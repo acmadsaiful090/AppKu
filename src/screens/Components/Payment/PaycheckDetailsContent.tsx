@@ -2,76 +2,70 @@ import React from 'react';
 import { View, Text } from 'react-native';
 import { StyleService, useStyleSheet } from '@ui-kitten/components';
 
-const monthMapping = {
-  'Januari': 0,
-  'Februari': 1,
-  'Maret': 2,
-  'April': 3,
-  'Mei': 4,
-  'Juni': 5,
-  'Juli': 6,
-  'Agustus': 7,
-  'September': 8,
-  'Oktober': 9,
-  'November': 10,
-  'Desember': 11
-};
-
-// Function to get the start and end dates of a given month
-const getPeriodText = (month) => {
-  const [monthName, year] = month.split(' ');
-  const monthIndex = monthMapping[monthName];
-  
-  const startDate = new Date(year, monthIndex, 5);
-  const endDate = new Date(year, monthIndex + 1, 5);
-
-  const formatDate = date => date.toLocaleDateString('id-ID', { day: '2-digit', month: '2-digit', year: 'numeric' });
-
-  return `Periode ${formatDate(startDate)} - ${formatDate(endDate)}`;
-};
-
-const PaycheckDetailsContent = ({ paycheck }) => {
+const PaycheckDetailsContent = ({ paycheck, user }) => {
   const styles = useStyleSheet(themedStyles);
-  const periodText = getPeriodText(paycheck.month);
 
-  const renderInfoRow = (label, value) => (
-    <View style={styles.infoContainer}>
-      <Text style={styles.infoLabel}>{label} :</Text>
-      <Text style={styles.infoValue}>{value}</Text>
-    </View>
-  );
+  if (!paycheck || !user) {
+    return null;
+  }
 
-  const renderSalaryRow = (label, value) => (
-    <View style={styles.salaryRow}>
-      <Text style={styles.salaryText}>{label}</Text>
-      <Text style={styles.salaryText}>{value}</Text>
+  const formatDate = (date) => {
+    return new Date(date).toLocaleDateString('id-ID', { day: '2-digit', month: '2-digit', year: 'numeric' });
+  };
+
+  const getPeriod = (date) => {
+    if (!date || typeof date !== 'string') {
+      return 'Periode: N/A';
+    }
+
+    const [day, month, year] = date.split('-').map(Number);
+
+    if (isNaN(day) || isNaN(month) || isNaN(year)) {
+      return 'Periode: N/A';
+    }
+
+    // Start date: last day of the previous month
+    const endDate = new Date(year, month - 1, day);
+    const startDate = new Date(endDate.getFullYear(), endDate.getMonth() - 1, 1);
+    startDate.setDate(new Date(endDate.getFullYear(), endDate.getMonth(), 0).getDate());
+
+    return `Periode ${formatDate(startDate)} - ${formatDate(endDate)}`;
+  };
+
+  const renderRow = (label, value) => (
+    <View style={styles.rowContainer}>
+      <Text style={styles.rowLabel}>{label} :</Text>
+      <Text style={styles.rowValue}>{value || 'N/A'}</Text>
     </View>
   );
 
   return (
-    <>
+    <View style={styles.container}>
       <Text style={styles.headerText} category="h6">Slip Gaji Karyawan</Text>
-      <Text style={styles.periodText} category="s1">{periodText}</Text>
+      <Text style={styles.periodText} category="s1">{getPeriod(paycheck.date)}</Text>
 
-      {renderInfoRow('Nama', paycheck.name)}
-      {renderInfoRow('NIK', paycheck.nik)}
-      {renderInfoRow('Jabatan', paycheck.position)}
-      {renderInfoRow('Alamat', paycheck.address)}
+      {renderRow('Nama', user.nama)}
+      {renderRow('NIK', user.nik)}
+      {renderRow('Jabatan', user.role)}
+      {renderRow('Alamat', user.address)}
 
       <View style={styles.divider} />
 
-      {renderSalaryRow('Gaji Pokok', paycheck.basicSalary)}
-      {renderSalaryRow('Uang Lembur', paycheck.overtimePay)}
-      {renderSalaryRow('Potongan', paycheck.deductions)}
-      {renderSalaryRow('Gaji Bersih', paycheck.netSalary)}
+      {renderRow('Gaji Pokok', paycheck.basicSalary)}
+      {renderRow('Uang Lembur', paycheck.overtimePay)}
+      {renderRow('Potongan', paycheck.deductions)}
+      {renderRow('Gaji Bersih', paycheck.netSalary)}
 
       <Text style={styles.acknowledgementText}>Mengetahui</Text>
       <Text style={styles.companyText}>JC CORPORATE</Text>
-    </>
+    </View>
   );
 };
 
 const themedStyles = StyleService.create({
+  container: {
+    margin: 20,
+  },
   headerText: {
     marginBottom: 10,
     textAlign: 'center',
@@ -79,16 +73,18 @@ const themedStyles = StyleService.create({
   periodText: {
     marginBottom: 20,
     textAlign: 'center',
+    fontStyle: 'italic',
+    fontWeight: 'bold',
   },
-  infoContainer: {
+  rowContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     marginBottom: 8,
   },
-  infoLabel: {
+  rowLabel: {
     fontWeight: 'bold',
   },
-  infoValue: {
+  rowValue: {
     flex: 1,
     textAlign: 'right',
   },
@@ -96,14 +92,6 @@ const themedStyles = StyleService.create({
     borderBottomWidth: 1,
     borderBottomColor: 'color-primary-300',
     marginVertical: 10,
-  },
-  salaryRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginBottom: 5,
-  },
-  salaryText: {
-    fontWeight: 'bold',
   },
   acknowledgementText: {
     textAlign: 'center',

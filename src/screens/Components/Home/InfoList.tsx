@@ -1,11 +1,12 @@
 import React from 'react';
 import { View, Text, Dimensions } from 'react-native';
-import { Icon, StyleService, useStyleSheet } from '@ui-kitten/components';
+import { Icon, StyleService, useStyleSheet, useTheme } from '@ui-kitten/components';
 
 const { width: screenWidth } = Dimensions.get('window');
 
 const InfoList = ({ item }) => {
   const styles = useStyleSheet(themedStyles);
+  const theme = useTheme();
 
   return (
     <View style={[styles.infoItem, { borderColor: item.color }]}>
@@ -28,7 +29,7 @@ const themedStyles = StyleService.create({
     flexDirection: 'row',
     borderWidth: 1,
     borderRadius: screenWidth * 0.02, // 2% of screen width
-    backgroundColor: 'background-basic-color-1',
+    backgroundColor: '$background-basic-color-1', // Use theme color
     alignItems: 'center',
     marginBottom: screenWidth * 0.025, // 2.5% of screen width
   },
@@ -36,7 +37,7 @@ const themedStyles = StyleService.create({
     width: screenWidth * 0.1, // 10% of screen width
     height: screenWidth * 0.1, // 10% of screen width
     borderRadius: screenWidth * 0.05, // 5% of screen width
-    backgroundColor: '#444',
+    backgroundColor: '$color-basic-1100', // Use theme color
     justifyContent: 'center',
     alignItems: 'center',
     marginRight: screenWidth * 0.025, // 2.5% of screen width
@@ -52,10 +53,11 @@ const themedStyles = StyleService.create({
   infoTitle: {
     fontSize: screenWidth * 0.04, // 4% of screen width
     fontWeight: 'bold',
+    color: '$text-basic-color', // Use theme color
   },
   infoDescription: {
     fontSize: screenWidth * 0.035, // 3.5% of screen width
-    color: '#888',
+    color: '$text-placeholder-color', // Use theme color
     flexShrink: 1,
     flexWrap: 'wrap',
   },

@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, TouchableOpacity, Dimensions } from 'react-native';
+import { View, Pressable, Dimensions } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { Icon, Text, useStyleSheet, useTheme, StyleService } from '@ui-kitten/components';
 
@@ -21,25 +21,25 @@ const Navbar = ({ currentRoute }) => {
 
   return (
     <View style={[styles.navbar, { backgroundColor: theme['background-basic-color-1'] }]}>
-      <TouchableOpacity style={styles.navItem} onPress={() => navigation.navigate('Home')}>
+      <Pressable style={styles.navItem} onPress={() => navigation.navigate('Home')}>
         {getIcon('home-outline', 'Home')}
         <Text style={[styles.navLabel, { color: currentRoute === 'Home' ? theme['color-primary-500'] : theme['color-basic-600'] }]}>Home</Text>
-      </TouchableOpacity>
-      <TouchableOpacity style={styles.navItem} onPress={() => navigation.navigate('Leave')}>
+      </Pressable>
+      <Pressable style={styles.navItem} onPress={() => navigation.navigate('Leave')}>
         {getIcon('paper-plane-outline', 'Leave')}
         <Text style={[styles.navLabel, { color: currentRoute === 'Leave' ? theme['color-primary-500'] : theme['color-basic-600'] }]}>Leave</Text>
-      </TouchableOpacity>
-      <TouchableOpacity style={styles.cameraButton} onPress={() => navigation.navigate('Camera')}>
+      </Pressable>
+      <Pressable style={styles.cameraButton} onPress={() => navigation.navigate('Camera')}>
         <Icon name='camera-outline' fill='white' style={styles.cameraIcon} />
-      </TouchableOpacity>
-      <TouchableOpacity style={styles.navItem} onPress={() => navigation.navigate('Attendance')}>
+      </Pressable>
+      <Pressable style={styles.navItem} onPress={() => navigation.navigate('Attendance')}>
         {getIcon('calendar-outline', 'Attendance')}
         <Text style={[styles.navLabel, { color: currentRoute === 'Attendance' ? theme['color-primary-500'] : theme['color-basic-600'] }]}>Attendance</Text>
-      </TouchableOpacity>
-      <TouchableOpacity style={styles.navItem} onPress={() => navigation.navigate('Paycheck')}>
+      </Pressable>
+      <Pressable style={styles.navItem} onPress={() => navigation.navigate('Paycheck')}>
         {getIcon('credit-card-outline', 'Paycheck')}
         <Text style={[styles.navLabel, { color: currentRoute === 'Paycheck' ? theme['color-primary-500'] : theme['color-basic-600'] }]}>Paycheck</Text>
-      </TouchableOpacity>
+      </Pressable>
     </View>
   );
 };

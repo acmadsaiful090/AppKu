@@ -50,7 +50,7 @@ const ScheduleCard = React.memo(() => {
                   {currentDay.clockIn} - {currentDay.clockOut} (WIB)
                 </Text>
                 <Text category='c1' style={styles.tolerance}>5 menit toleransi</Text>
-                <Text category='c1' style={styles.shift}>{currentDay.shift}</Text>
+                <Text category='c1' style={styles.shift}>Shift {currentDay.shift}</Text>
               </>
             ) : (
               <Text category='h6' style={styles.offText}>OFF</Text>
@@ -69,16 +69,16 @@ const themedStyles = StyleService.create({
     padding: screenWidth * 0.025, // Padding as a percentage of screen width
     borderWidth: 1,
     borderRadius: screenWidth * 0.04, // Radius as a percentage of screen width
-    borderColor: '$color-primary-500',
+    borderColor: '$color-primary-500', // Primary color from theme
   },
   title: {
-    marginBottom: screenWidth * 0.012, // Adjusted margin for responsiveness
     textAlign: 'center',
+    color: '$text-basic-color', // Text color from theme
   },
   scheduleCard: {
     padding: screenWidth * 0.025, // Adjusted padding for responsiveness
     borderRadius: screenWidth * 0.02, // Adjusted radius for responsiveness
-    backgroundColor: 'background-basic-color-1',
+    backgroundColor: '$background-basic-color-1', // Background color from theme
   },
   scheduleInfo: {
     flexDirection: 'row',
@@ -89,16 +89,16 @@ const themedStyles = StyleService.create({
     marginRight: screenWidth * 0.075, // Adjusted margin for responsiveness
   },
   day: {
-    color: 'color-primary-500',
+    color: '$color-primary-500', // Primary color from theme
     marginBottom: screenWidth * 0.012, // Adjusted margin for responsiveness
   },
   date: {
     height: screenWidth * 0.18, // Adjusted height for responsiveness
     width: screenWidth * 0.18, // Adjusted width for responsiveness
     borderRadius: screenWidth * 0.04, // Adjusted radius for responsiveness
-    borderColor: 'black',
-    backgroundColor: 'color-primary-500',
-    color: 'white',
+    borderColor: '$text-basic-color', // Black color from theme
+    backgroundColor: '$color-primary-500', // Primary color from theme
+    color: '$background-basic-color-1', // Background color from theme
     textAlign: 'center',
     lineHeight: screenWidth * 0.18, // Adjusted line height for responsiveness
     marginBottom: screenWidth * 0.025, // Adjusted margin for responsiveness
@@ -108,19 +108,19 @@ const themedStyles = StyleService.create({
     justifyContent: 'center',
   },
   time: {
-    color: 'color-primary-500',
+    color: '$color-primary-500', // Primary color from theme
     marginBottom: screenWidth * 0.012, // Adjusted margin for responsiveness
   },
   tolerance: {
-    color: 'color-basic-600',
+    color: '$color-basic-600', // Basic color from theme
   },
   shift: {
-    color: 'color-basic-600',
+    color: '$color-basic-600', // Basic color from theme
   },
   offText: {
     fontSize: screenWidth * 0.125, // Adjusted font size for responsiveness
     textAlign: 'center',
-    color: 'color-danger-500',
+    color: '$color-danger-500', // Danger color from theme
     fontWeight: 'bold',
   },
 });

@@ -1,6 +1,8 @@
 import React, { memo } from 'react';
-import { Pressable, View } from 'react-native';
+import { Pressable, View, Dimensions } from 'react-native';
 import { Text, StyleService, useStyleSheet } from '@ui-kitten/components';
+
+const { width: screenWidth } = Dimensions.get('window');
 
 const CalendarDay = memo(({ day, onPress }) => {
   const styles = useStyleSheet(themedStyles);
@@ -71,9 +73,12 @@ const themedStyles = StyleService.create({
   calendarDay: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: 'color-info-100',
-    borderColor: 'color-basic-500',
+    backgroundColor: '$background-basic-color-1', // Sesuaikan dengan tema
+    borderColor: '$color-basic-500', // Sesuaikan dengan tema
     borderWidth: 1,
+    borderRadius: screenWidth * 0.02, // 2% of screen width
+    marginVertical: screenWidth * 0.01, // 1% of screen width
+    padding: screenWidth * 0.02, // 2% of screen width
   },
   dateContainer: {
     flex: 1,
@@ -81,13 +86,13 @@ const themedStyles = StyleService.create({
     justifyContent: 'center',
   },
   dayNumber: {
-    fontSize: 24,
+    fontSize: screenWidth * 0.06, // 6% of screen width
     fontWeight: 'bold',
-    color: '#000',
+    color: '$text-basic-color', // Sesuaikan dengan tema
   },
   monthName: {
-    fontSize: 14,
-    color: '#000',
+    fontSize: screenWidth * 0.035, // 3.5% of screen width
+    color: '$text-basic-color', // Sesuaikan dengan tema
   },
   shiftContainer: {
     flex: 2,
@@ -96,7 +101,7 @@ const themedStyles = StyleService.create({
   },
   shiftText: {
     textAlign: 'center',
-    color: '#000',
+    color: '$text-basic-color', // Sesuaikan dengan tema
   },
   statusContainer: {
     flex: 1,
@@ -105,7 +110,7 @@ const themedStyles = StyleService.create({
   },
   statusText: {
     textAlign: 'center',
-    fontSize: 16,
+    fontSize: screenWidth * 0.04, // 4% of screen width
   },
 });
 
