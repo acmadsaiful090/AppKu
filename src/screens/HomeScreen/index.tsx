@@ -1,6 +1,6 @@
 import React from 'react';
-import { ScrollView, FlatList, Text, View, Dimensions } from 'react-native';
-import { StyleService, useStyleSheet } from '@ui-kitten/components';
+import { ScrollView, FlatList, View, Dimensions } from 'react-native';
+import { StyleService, useStyleSheet ,Text} from '@ui-kitten/components';
 import Profile from '../Components/Home/Profile';
 import InfoList from '../Components/Home/InfoList';
 import BirthdayList from '../Components/Home/BirthdayList';
@@ -18,10 +18,7 @@ const HomeScreen = () => {
       <View style={styles.profileContainer}>
         <Profile />
       </View>
-      <ScrollView
-        showsVerticalScrollIndicator={false}
-        contentContainerStyle={styles.scrollViewContent}
-      >
+      <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.scrollViewContent}>
         <Attendance />
         <Text style={styles.sectionTitle}>Ulang Tahun Minggu Ini</Text>
         <FlatList
@@ -43,23 +40,23 @@ const HomeScreen = () => {
 const themedStyles = StyleService.create({
   container: {
     flex: 1,
-    backgroundColor: '$background-basic-color-1', // Menggunakan warna latar belakang dari tema
+    backgroundColor: 'background-basic-color-1',
   },
   profileContainer: {
-    backgroundColor: '$color-primary-500', // Menggunakan warna primer dari tema
-    borderBottomRightRadius: screenWidth * 0.07, // Radius 7% dari lebar layar
-    borderBottomLeftRadius: screenWidth * 0.07, // Radius 7% dari lebar layar
-    height: screenHeight * 0.2, // Tinggi 20% dari tinggi layar
+    backgroundColor: 'background-card-color',
+    borderBottomRightRadius: screenWidth * 0.07,
+    borderBottomLeftRadius: screenWidth * 0.07,
+    height: screenHeight * 0.2,
   },
   sectionTitle: {
-    fontSize: screenWidth * 0.045, // 4.5% dari lebar layar
+    fontSize: screenWidth * 0.045,
     fontWeight: 'bold',
-    marginVertical: screenHeight * 0.01, // Margin vertikal 1% dari tinggi layar
-    color: '$text-basic-color', // Menggunakan warna teks dasar dari tema
+    marginVertical: screenHeight * 0.01,
+    color: '$text-basic-color',
   },
   scrollViewContent: {
-    paddingHorizontal: screenWidth * 0.04, // Padding horizontal 4% dari lebar layar
-    paddingBottom: screenHeight * 0.02, // Padding bawah 2% dari tinggi layar
+    paddingHorizontal: screenWidth * 0.04,
+    paddingBottom: screenHeight * 0.02,
   },
 });
 

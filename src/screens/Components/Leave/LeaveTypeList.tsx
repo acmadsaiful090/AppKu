@@ -2,15 +2,13 @@ import React, { memo } from 'react';
 import { View, Pressable, Dimensions } from 'react-native';
 import { Text, useStyleSheet, StyleService } from '@ui-kitten/components';
 
-// Get screen dimensions
 const { width: screenWidth, height: screenHeight } = Dimensions.get('window');
 
-const LeaveCard = memo(({ leaveType, days, expDays, color, onPress }) => {
+const LeaveCard = memo(({ leaveType, days, expDays, onPress }) => {
   const styles = useStyleSheet(themedStyles);
-
   return (
     <Pressable onPress={onPress} style={styles.cardWrapper}>
-      <View style={[styles.card, { backgroundColor: color }]}>
+      <View style={styles.card}>
         <Text category="label">{leaveType}</Text>
         <Text category="label">Days: {days}</Text>
         <Text category="c1">Exp Days: {expDays}</Text>
@@ -21,18 +19,16 @@ const LeaveCard = memo(({ leaveType, days, expDays, color, onPress }) => {
 
 const LeaveTypeList = ({ leaveTypes, onCardPress }) => {
   const styles = useStyleSheet(themedStyles);
-
   return (
     <View style={styles.container}>
       <View style={styles.grid}>
-        {leaveTypes.map(({ type, days, expDays, bgColor }) => (
+        {leaveTypes.map(({ type, days, expDays}) => (
           <LeaveCard
             key={type}
             leaveType={type}
             days={days}
             expDays={expDays}
-            color={bgColor}
-            onPress={() => onCardPress({ type, days, expDays, bgColor })}
+            onPress={() => onCardPress({ type, days, expDays })}
           />
         ))}
       </View>
@@ -41,21 +37,19 @@ const LeaveTypeList = ({ leaveTypes, onCardPress }) => {
 };
 
 const themedStyles = StyleService.create({
-  container: {
-    flex: 1,
-  },
+  container: { flex: 1 },
   grid: {
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'space-between',
   },
   cardWrapper: {
-    padding: screenWidth * 0.02, // 2% of screen width
-    borderRadius: screenWidth * 0.02, // 2% of screen width
-    backgroundColor: '#F2F8FF',
-    width: screenWidth * 0.27, // 28% of screen width
-    marginBottom: screenHeight * 0.02, // 1% of screen height
-    marginRight: screenWidth * 0.02, // 1% of screen width
+    padding: screenWidth * 0.02,
+    borderRadius: screenWidth * 0.02,
+    backgroundColor: 'background-card-color',
+    width: screenWidth * 0.27,
+    marginBottom: screenHeight * 0.02,
+    marginRight: screenWidth * 0.02,
   },
 });
 

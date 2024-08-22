@@ -3,7 +3,6 @@ import { View, Dimensions } from 'react-native';
 import { Layout, Text, StyleService, useStyleSheet } from '@ui-kitten/components';
 import calendarData from '../../../assets/data/calendarData';
 
-// Get screen dimensions
 const { width: screenWidth } = Dimensions.get('window');
 
 const getCurrentDateData = () => {
@@ -33,31 +32,29 @@ const ScheduleCard = React.memo(() => {
   return (
     <Layout style={styles.todaySchedule}>
       <Text category='h5' style={styles.title}>Jadwal Hari Ini</Text>
-      <Layout style={styles.scheduleCard}>
-        <Layout style={styles.scheduleInfo}>
-          <View style={styles.centeredContent}>
-            <Text category='h6' style={styles.day}>
-              {new Date(currentDay.date).toLocaleDateString('id-ID', { weekday: 'long' })}
-            </Text>
-            <Text category='h6' style={styles.date}>
-              {new Date(currentDay.date).getDate()} {getMonthName(currentDay.date)}
-            </Text>
-          </View>
-          <View style={styles.scheduleDetails}>
-            {currentDay.shift ? (
-              <>
-                <Text category='h6' style={styles.time}>
-                  {currentDay.clockIn} - {currentDay.clockOut} (WIB)
-                </Text>
-                <Text category='c1' style={styles.tolerance}>5 menit toleransi</Text>
-                <Text category='c1' style={styles.shift}>Shift {currentDay.shift}</Text>
-              </>
-            ) : (
-              <Text category='h6' style={styles.offText}>OFF</Text>
-            )}
-          </View>
-        </Layout>
-      </Layout>
+      <View style={styles.scheduleInfo}>
+        <View style={styles.centeredContent}>
+          <Text category='h6' style={styles.day}>
+            {new Date(currentDay.date).toLocaleDateString('id-ID', { weekday: 'long' })}
+          </Text>
+          <Text category='h6' style={styles.date}>
+            {new Date(currentDay.date).getDate()} {getMonthName(currentDay.date)}
+          </Text>
+        </View>
+        <View style={styles.scheduleDetails}>
+          {currentDay.shift ? (
+            <>
+              <Text category='h6' style={styles.time}>
+                {currentDay.clockIn} - {currentDay.clockOut} (WIB)
+              </Text>
+              <Text category='c1' style={styles.tolerance}>5 menit toleransi</Text>
+              <Text category='c1' style={styles.shift}>Shift {currentDay.shift}</Text>
+            </>
+          ) : (
+            <Text category='h6' style={styles.offText}>OFF</Text>
+          )}
+        </View>
+      </View>
     </Layout>
   );
 });
@@ -65,20 +62,15 @@ const ScheduleCard = React.memo(() => {
 const themedStyles = StyleService.create({
   todaySchedule: {
     alignSelf: 'center',
-    width: '95%', // Adjusted to 95% for responsiveness
-    padding: screenWidth * 0.025, // Padding as a percentage of screen width
+    width: '95%',
+    padding: screenWidth * 0.025,
     borderWidth: 1,
-    borderRadius: screenWidth * 0.04, // Radius as a percentage of screen width
-    borderColor: '$color-primary-500', // Primary color from theme
+    borderRadius: screenWidth * 0.04,
+    borderColor: '$border-card-color',
   },
   title: {
     textAlign: 'center',
-    color: '$text-basic-color', // Text color from theme
-  },
-  scheduleCard: {
-    padding: screenWidth * 0.025, // Adjusted padding for responsiveness
-    borderRadius: screenWidth * 0.02, // Adjusted radius for responsiveness
-    backgroundColor: '$background-basic-color-1', // Background color from theme
+    color: '$text-header-color',
   },
   scheduleInfo: {
     flexDirection: 'row',
@@ -86,41 +78,41 @@ const themedStyles = StyleService.create({
   },
   centeredContent: {
     alignItems: 'center',
-    marginRight: screenWidth * 0.075, // Adjusted margin for responsiveness
+    marginRight: screenWidth * 0.075,
   },
   day: {
-    color: '$color-primary-500', // Primary color from theme
-    marginBottom: screenWidth * 0.012, // Adjusted margin for responsiveness
+    color: '$text-header-color',
+    marginBottom: screenWidth * 0.012,
   },
   date: {
-    height: screenWidth * 0.18, // Adjusted height for responsiveness
-    width: screenWidth * 0.18, // Adjusted width for responsiveness
-    borderRadius: screenWidth * 0.04, // Adjusted radius for responsiveness
-    borderColor: '$text-basic-color', // Black color from theme
-    backgroundColor: '$color-primary-500', // Primary color from theme
-    color: '$background-basic-color-1', // Background color from theme
+    height: screenWidth * 0.18,
+    width: screenWidth * 0.18,
+    borderRadius: screenWidth * 0.04,
+    borderColor: '$text-basic-color',
+    backgroundColor: '$background-header-color',
+    color: '$text-basic-color',
     textAlign: 'center',
-    lineHeight: screenWidth * 0.18, // Adjusted line height for responsiveness
-    marginBottom: screenWidth * 0.025, // Adjusted margin for responsiveness
+    lineHeight: screenWidth * 0.18,
+    marginBottom: screenWidth * 0.025,
   },
   scheduleDetails: {
     flex: 1,
     justifyContent: 'center',
   },
   time: {
-    color: '$color-primary-500', // Primary color from theme
-    marginBottom: screenWidth * 0.012, // Adjusted margin for responsiveness
+    color: '$text-header-color',
+    marginBottom: screenWidth * 0.012,
   },
   tolerance: {
-    color: '$color-basic-600', // Basic color from theme
+    color: '$text-primary-color',
   },
   shift: {
-    color: '$color-basic-600', // Basic color from theme
+    color: '$text-primary-color',
   },
   offText: {
-    fontSize: screenWidth * 0.125, // Adjusted font size for responsiveness
+    fontSize: screenWidth * 0.125,
     textAlign: 'center',
-    color: '$color-danger-500', // Danger color from theme
+    color: '$text-danger-color',
     fontWeight: 'bold',
   },
 });

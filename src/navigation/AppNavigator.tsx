@@ -8,24 +8,69 @@ import PaycheckScreen from 'screens/PaycheckScreen';
 import ApplyLeaveScreen from 'screens/ApplyLeaveScreen';
 import LeaveDetailScreen from 'screens/LeaveDetailScreen';
 import Navbar from './Navbar';
+import Header from 'screens/Components/Header';
 
 const Tab = createBottomTabNavigator();
 
-const AppNavigator = ({ currentRoute, setCurrentRoute }) => (
+const AppNavigator = ({ currentRoute, setCurrentRoute, onLogout, toggleTheme,theme }) => (
   <Tab.Navigator
-    screenOptions={{ headerShown: false }}
     initialRouteName="Home"
     tabBar={() =>
-      !(currentRoute === 'Camera' || currentRoute === 'ApplyLeave' || currentRoute === 'SplashSc' || currentRoute === 'Login'|| currentRoute === 'LeaveDetail') && <Navbar currentRoute={currentRoute} />
+      !['Camera', 'ApplyLeave', 'SplashSc', 'Login', 'LeaveDetail'].includes(currentRoute) && <Navbar currentRoute={currentRoute} />
     }
+    listeners={({ navigation }) => ({
+      state: (e) => {
+        const route = e.data.state.routes[e.data.state.index];
+        setCurrentRoute(route.name);
+      },
+    })}
   >
-    <Tab.Screen name="Home" component={HomeScreen} />
-    <Tab.Screen name="Camera" component={CameraScreen} />
-    <Tab.Screen name="Attendance" component={ScheduleScreen} />
-    <Tab.Screen name="Leave" component={LeaveScreen} />
-    <Tab.Screen name="Paycheck" component={PaycheckScreen} />
-    <Tab.Screen name="ApplyLeave" component={ApplyLeaveScreen} />
-    <Tab.Screen name="LeaveDetail" component={LeaveDetailScreen} />
+    <Tab.Screen
+      name="Home"
+      component={HomeScreen}
+      options={{
+        header: (props) => <Header title="Home" 
+        onLogout={onLogout} 
+        toggleTheme={toggleTheme}
+        theme={theme}  />,
+      }}
+    />
+    <Tab.Screen
+      name="Camera"
+      component={CameraScreen}
+      options={{ headerShown: false }}
+    />
+    <Tab.Screen
+      name="Attendance"
+      component={ScheduleScreen}
+      options={{
+        header: (props) => <Header title="Attendance" onLogout={onLogout} toggleTheme={toggleTheme} theme={theme}  />,
+      }}
+    />
+    <Tab.Screen
+      name="Leave"
+      component={LeaveScreen}
+      options={{
+        header: (props) => <Header title="Leave" onLogout={onLogout} toggleTheme={toggleTheme} theme={theme}  />,
+      }}
+    />
+    <Tab.Screen
+      name="Paycheck"
+      component={PaycheckScreen}
+      options={{
+        header: (props) => <Header title="Paycheck" onLogout={onLogout} toggleTheme={toggleTheme} theme={theme}  />,
+      }}
+    />
+    <Tab.Screen
+      name="ApplyLeave"
+      component={ApplyLeaveScreen}
+      options={{ headerShown: false }}
+    />
+    <Tab.Screen
+      name="LeaveDetail"
+      component={LeaveDetailScreen}
+      options={{ headerShown: false }}
+    />
   </Tab.Navigator>
 );
 

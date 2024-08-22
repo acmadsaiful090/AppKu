@@ -1,8 +1,38 @@
 {
-  "background-basic-color-1": "$color-basic-100",
+  "background-color": "$color-basic-1000",
+  "background-header-color": "$color-basic-900",
+  "background-card-color": "$color-basic-900",
+  "background-button-color": "$color-primary-200",
+  "background-button-navbar-color": "$color-primary-600",
+  
+  "text-header-color": "$color-basic-100",
+  "text-primary-color": "$color-primary-100",
+  "text-secondary-color": "$color-secondary-100",
+  "text-placeholder-color": "$color-basic-600",
+  "text-danger-color": "$color-danger-100",
+  "text-success-color": "$color-success-100",
+  
+  "border-card-color": "$color-basic-700",
+  "border-input-color": "$color-basic-500",
+  
+  "icon-default-color": "$color-basic-200",
+  "icon-background-color": "$color-primary-100",
+  
+  
+  "navbar-background-color": "$color-basic-800",
+  "navbar-button-color": "$color-primary-600",
+
+
+  "button-default-color": "$color-basic-400",       
+  "button-primary-color": "$color-primary-500",     
+  "button-success-color": "$color-success-500",    
+  "button-warning-color": "$color-warning-500",     
+  "button-danger-color": "$color-danger-500",
+
+  "background-basic-color-1": "$color-basic-1000",
   "background-basic-color-2": "$color-basic-200",
   "background-basic-color-3": "$color-basic-300",
-  "background-basic-color-4": "$color-basic-400",
+  "background-basic-color-4": "$color-primary-900",
   "background-basic-color-5": "$color-primary-200",
   "background-basic-color-6": "$color-secondary-200",
   "background-basic-color-7": "$color-purple-100",
@@ -12,26 +42,22 @@
   "background-basic-color-11": "$color-radical-100",
   "background-basic-color-12": "$color-success-100",
 
-  "color-danger-default": "$color-danger-100",
-  "text-basic-color": "$color-basic-1100",
+  "background-icon-color": "$color-basic-500",
+  "background-button-transparent-color": "$color-primary-600",
+
+  "color-danger-default": "$color-danger-900",
+  "text-basic-color": "$color-basic-100",
   "text-body-color": "$color-basic-900",
   "text-white-color": "$color-basic-100",
   "text-control-color": "$color-basic-100",
   "text-black-color": "$color-basic-1100",
-  "text-primary-color": "$color-primary-100",
-  "text-secondary-color": "$color-secondary-100",
   "text-salmon-color": "$color-salmon-100",
-  "text-placeholder-color": "$color-basic-600",
   "text-corn-color": "$color-corn-100",
-  "text-danger-color": "$color-danger-100",
   "text-snow-color": "$color-basic-600",
   "text-platinum-color": "$color-basic-400",
-  "text-success-color": "$color-success-100",
   "text-grey-color": "$color-basic-700",
+
   "icon-input-basic-color": "$color-basic-400",
   "border-basic-color-1": "$color-basic-600",
-  "icon-home-color": "$color-basic-100",
-  "background-icon-color": "$color-basic-500",
-  "background-button-color": "$color-primary-200",
-  "background-button-transparent-color": "$color-primary-600"
+  "icon-home-color": "$color-basic-100"
 }

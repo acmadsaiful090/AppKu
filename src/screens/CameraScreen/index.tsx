@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useIsFocused } from '@react-navigation/native';
 import { CameraView, CameraType, useCameraPermissions } from 'expo-camera';
-import { Button,View, Text, Image, Dimensions, Pressable, Alert, ActivityIndicator } from 'react-native';
+import { View, Image, Dimensions, Pressable, Alert, ActivityIndicator } from 'react-native';
 import * as Location from 'expo-location';
 import Facial from '../../assets/icons/Facial_Recognition.png';
 import moment from 'moment-timezone';
@@ -10,6 +10,8 @@ import {
   StyleService,
   useStyleSheet,
   Icon,
+  Button,
+  Text,
 } from '@ui-kitten/components';
 
 export default function App() {
@@ -19,6 +21,9 @@ export default function App() {
   const [permission, requestPermission] = useCameraPermissions();
   const [location, setLocation] = useState(null);
   const [locationPermission, setLocationPermission] = useState(null);
+  const [isCameraActive, setIsCameraActive] = useState(false);
+  const [jakartaTime, setJakartaTime] = useState(null);
+  const isFocused = useIsFocused();
 
   useEffect(() => {
     (async () => {
@@ -34,6 +39,33 @@ export default function App() {
       setLocation(loc);
     })();
   }, []);
+
+  useEffect(() => {
+    if (isFocused) {
+      setIsCameraActive(true);
+      
+      const fetchJakartaTime = async () => {
+        try {
+          const response = await fetch('http://worldtimeapi.org/api/timezone/Asia/Jakarta');
+          const data = await response.json();
+          const time = data.datetime;
+          setJakartaTime(moment(time).format('HH:mm'));
+        } catch (error) {
+          console.error("Error fetching Jakarta time:", error);
+        }
+      };
+
+      fetchJakartaTime();
+      const interval = setInterval(fetchJakartaTime, 1000);
+
+      return () => {
+        clearInterval(interval);
+        setIsCameraActive(false); // Ensure camera is deactivated when the screen is not focused
+      };
+    } else {
+      setIsCameraActive(false);
+    }
+  }, [isFocused]);
 
   if (!permission) {
     return <View />;
@@ -58,32 +90,6 @@ export default function App() {
     return <View style={{ height, width }} />;
   };
 
-  const JakartaTime = () => {
-    const [jakartaTime, setJakartaTime] = useState(null);
-
-    useEffect(() => {
-      const fetchJakartaTime = async () => {
-        try {
-          const response = await fetch('http://worldtimeapi.org/api/timezone/Asia/Jakarta');
-          const data = await response.json();
-          const time = data.datetime;
-          setJakartaTime(moment(time).format('HH:mm'));
-        } catch (error) {
-          console.error("Error fetching Jakarta time:", error);
-        }
-      };
-
-      fetchJakartaTime();
-      const interval = setInterval(fetchJakartaTime, 1000);
-
-      return () => clearInterval(interval);
-    }, []);
-
-    return (
-      <Text style={styles.statusText}>Time: {jakartaTime ? jakartaTime : 'Loading...'}</Text>
-    );
-  };
-
   const DisplayLocation = () => {
     if (location) {
       return (
@@ -103,7 +109,7 @@ export default function App() {
       </Pressable>
       <View style={styles.circleContainer}>
         <View style={styles.circle}>
-          <CameraView style={styles.camera} facing={facing} />
+          {isCameraActive && <CameraView style={styles.camera} facing={facing} />}
         </View>
       </View>
       <Image source={Facial} style={styles.icon} />
@@ -120,7 +126,7 @@ export default function App() {
           <Icon name='checkmark' style={{ width: 18, height: 18 }} color='green' />
           Time
         </Text>
-        <JakartaTime />
+        <Text style={styles.statusText}>Time: {jakartaTime ? jakartaTime : 'Loading...'}</Text>
       </View>
       <Spacer heightPercent={1} />
       <View style={styles.buttonContainer}>

@@ -20,6 +20,7 @@ const LeaveCard = memo(({ leaveType, days, expDays, color, onPress }) => {
 
 const LeaveTypeList = ({ leaveTypes, onCardPress }) => {
   const styles = useStyleSheet(themedStyles);
+  
   return (
     <View style={styles.container}>
       <View style={styles.grid}>
@@ -48,11 +49,14 @@ const themedStyles = StyleService.create({
     justifyContent: 'space-between',
   },
   cardWrapper: {
-    borderRadius: screenWidth * 0.02, // 2% of screen width
-    backgroundColor: '#F2F8FF',
-    width: screenWidth * 0.28, // 28% of screen width
-    marginBottom: screenHeight * 0.01, // 1% of screen height
-    marginRight: screenWidth * 0.02, // 2% of screen width
+    borderRadius: screenWidth * 0.02,
+    width: screenWidth * 0.28,
+    marginBottom: screenHeight * 0.01,
+    marginRight: screenWidth * 0.02,
+  },
+  card: {
+    padding: screenWidth * 0.02,
+    borderRadius: screenWidth * 0.02,
   },
 });
 

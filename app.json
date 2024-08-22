@@ -34,10 +34,10 @@
     },
     "extra": {
       "eas": {
-        "projectId": "bb6fa55b-0070-4d5d-a649-30dfe4ae8719"
+        "projectId": "d2b8a301-37ab-47cb-8873-9bddf8053aac"
       }
     },
-    "owner": "acmad",
+    "owner": "acmad01",
     "plugins": [
       [
         "expo-location",

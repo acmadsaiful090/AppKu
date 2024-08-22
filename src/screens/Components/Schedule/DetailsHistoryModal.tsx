@@ -29,7 +29,7 @@ const DetailsHistoryModal = ({ visible, selectedDate, onClose }) => {
           <Text style={styles.headerText} category="h6">Detail Cuti</Text>
           <ScrollView contentContainerStyle={styles.scrollContainer}>
             {filteredLeaveDetails.length === 0 ? (
-              <Text>Data tidak ditemukan.</Text>
+              <Text>Data tidak ditemukan</Text>
             ) : (
               filteredLeaveDetails.map((detail, index) => (
                 <View key={index} style={styles.infoContainer}>
@@ -66,7 +66,7 @@ const themedStyles = StyleService.create({
   modalContainer: {
     width: width * 0.85, 
     maxHeight: height * 0.8, 
-    backgroundColor: '#ffffff',
+    backgroundColor: 'background-card-color',
     borderRadius: 10,
     padding: 10,
     overflow: 'hidden', 
@@ -93,6 +93,7 @@ const themedStyles = StyleService.create({
     marginBottom: 8, // Add space between different value sections
   },
   closeButton: {
+    backgroundColor: 'color-primary-default',
     marginTop: 20,
     width: '100%',
   },

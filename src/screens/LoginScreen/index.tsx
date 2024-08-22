@@ -1,32 +1,21 @@
 import React, { useState } from 'react';
-import { Image, Alert, TouchableOpacity } from 'react-native';
+import { Image, Alert, Pressable, Dimensions } from 'react-native';
 import { Layout, Input, Button, Icon, StyleService, useStyleSheet } from '@ui-kitten/components';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useNavigation } from '@react-navigation/native';
 import users from '../../assets/data/users';
 
-const MailIcon = (props) => (
-  <Icon {...props} name='email-outline' />
-);
+const { width, height } = Dimensions.get('window');
 
-const LockIcon = (props) => (
-  <Icon {...props} name='lock-outline' />
-);
-
-const EyeIcon = (props) => (
-  <Icon {...props} name='eye-outline' />
-);
-
-const EyeOffIcon = (props) => (
-  <Icon {...props} name='eye-off-outline' />
-);
+const MailIcon = (props) => <Icon {...props} name='email-outline' />;
+const LockIcon = (props) => <Icon {...props} name='lock-outline' />;
+const EyeIcon = (props) => <Icon {...props} name='eye-outline' />;
+const EyeOffIcon = (props) => <Icon {...props} name='eye-off-outline' />;
 
 const LoginScreen = ({ onLogin }) => {
   const styles = useStyleSheet(themedStyles);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [secureTextEntry, setSecureTextEntry] = useState(true);
-  const navigation = useNavigation();
 
   const handleLogin = async () => {
     const user = users.find(user => user.email === email && user.password === password);
@@ -44,10 +33,6 @@ const LoginScreen = ({ onLogin }) => {
     }
   };
 
-  const togglePasswordVisibility = () => {
-    setSecureTextEntry(!secureTextEntry);
-  };
-
   return (
     <Layout style={styles.container}>
       <Image source={require('../../assets/images/logo/logo.png')} style={styles.logo} />
@@ -62,10 +47,10 @@ const LoginScreen = ({ onLogin }) => {
         style={styles.input}
         placeholder='Password'
         accessoryLeft={LockIcon}
-        accessoryRight={() => (
-          <TouchableOpacity onPress={togglePasswordVisibility} style={styles.iconContainer}>
-            {secureTextEntry ? <EyeOffIcon style={styles.icon} /> : <EyeIcon style={styles.icon} />}
-          </TouchableOpacity>
+        accessoryRight={(props) => (
+          <Pressable onPress={() => setSecureTextEntry(!secureTextEntry)}>
+            {secureTextEntry ? <EyeOffIcon {...props} /> : <EyeIcon {...props} />}
+          </Pressable>
         )}
         secureTextEntry={secureTextEntry}
         value={password}
@@ -83,31 +68,22 @@ const themedStyles = StyleService.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    paddingHorizontal: 16,
+    paddingHorizontal: width * 0.05,
   },
   logo: {
-    width: 300,
-    height: 300,
+    width: width * 0.75,
+    height: height * 0.3,
     resizeMode: 'contain',
-    marginBottom: 10,
+    marginBottom: height * 0.05,
   },
   input: {
-    marginBottom: 16,
+    marginBottom: height * 0.02,
     width: '100%',
   },
   button: {
+    backgroundColor: 'background-basic-color-4',
+    borderColor: 'background-basic-color-4',
     width: '100%',
-  },
-  iconContainer: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    width: 24,
-    height: 24,
-  },
-  icon: {
-    color: 'color-basic-600',
-    width: 24,
-    height: 24,
   },
 });
 

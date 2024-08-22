@@ -10,7 +10,7 @@ import generatePaycheckHtml from './generatePaycheckHtml';
 
 const PaycheckDetailsModal = ({ visible, onClose, paycheck }) => {
   const styles = useStyleSheet(themedStyles);
-  const viewRef = useRef();
+  const contentRef = useRef();
   const [saveOptionsVisible, setSaveOptionsVisible] = useState(false);
   const [user, setUser] = useState(null);
 
@@ -18,9 +18,7 @@ const PaycheckDetailsModal = ({ visible, onClose, paycheck }) => {
     const fetchUserData = async () => {
       try {
         const storedUser = await AsyncStorage.getItem('user');
-        if (storedUser) {
-          setUser(JSON.parse(storedUser));
-        }
+        if (storedUser) setUser(JSON.parse(storedUser));
       } catch (error) {
         console.error('Error fetching user data:', error);
       }
@@ -29,9 +27,7 @@ const PaycheckDetailsModal = ({ visible, onClose, paycheck }) => {
     fetchUserData();
   }, []);
 
-  if (!paycheck || !user) {
-    return null;
-  }
+  if (!paycheck || !user) return null;
 
   const generatePDF = async () => {
     const htmlContent = generatePaycheckHtml({
@@ -43,7 +39,7 @@ const PaycheckDetailsModal = ({ visible, onClose, paycheck }) => {
       basicSalary: paycheck.basicSalary,
       overtimePay: paycheck.overtimePay,
       deductions: paycheck.deductions,
-      netSalary: paycheck.netSalary
+      netSalary: paycheck.netSalary,
     });
 
     try {
@@ -73,7 +69,7 @@ const PaycheckDetailsModal = ({ visible, onClose, paycheck }) => {
 
   const handleSaveImage = async () => {
     try {
-      const uri = await captureRef(viewRef, {
+      const uri = await captureRef(contentRef, {
         format: 'jpg',
         quality: 1.0,
       });
@@ -92,27 +88,16 @@ const PaycheckDetailsModal = ({ visible, onClose, paycheck }) => {
     }
   };
 
-  const handleSave = () => {
-    setSaveOptionsVisible(true);
-  };
-
-  const hideSaveOptions = () => {
-    setSaveOptionsVisible(false);
-  };
-
   return (
-    <Modal
-      visible={visible}
-      transparent={true}
-      animationType="slide"
-      onRequestClose={onClose}
-    >
+    <Modal visible={visible} transparent={true} animationType="slide" onRequestClose={onClose}>
       <View style={styles.backdrop}>
         <View style={styles.modalContainer}>
-          <PaycheckDetailsContent paycheck={paycheck} user={user} />
+          <View ref={contentRef}>
+            <PaycheckDetailsContent paycheck={paycheck} user={user} />
+          </View>
 
-          <View style={styles.buttonContainer} ref={viewRef}>
-            <Pressable style={styles.saveButton} onPress={handleSave}>
+          <View style={styles.buttonContainer}>
+            <Pressable style={styles.saveButton} onPress={() => setSaveOptionsVisible(true)}>
               <Text style={styles.saveButtonText}>Simpan</Text>
             </Pressable>
 
@@ -120,7 +105,7 @@ const PaycheckDetailsModal = ({ visible, onClose, paycheck }) => {
               visible={saveOptionsVisible}
               transparent={true}
               animationType="slide"
-              onRequestClose={hideSaveOptions}
+              onRequestClose={() => setSaveOptionsVisible(false)}
             >
               <View style={styles.backdrop}>
                 <View style={styles.optionsContainer}>
@@ -132,7 +117,7 @@ const PaycheckDetailsModal = ({ visible, onClose, paycheck }) => {
                     <Pressable style={styles.optionButton} onPress={handleSaveImage}>
                       <Text style={styles.optionButtonText}>JPG</Text>
                     </Pressable>
-                    <Pressable style={styles.optionButton} onPress={hideSaveOptions}>
+                    <Pressable style={styles.optionButton} onPress={() => setSaveOptionsVisible(false)}>
                       <Text style={styles.optionButtonText}>Batal</Text>
                     </Pressable>
                   </View>
@@ -160,7 +145,7 @@ const themedStyles = StyleService.create({
   modalContainer: {
     width: '90%',
     padding: 20,
-    backgroundColor: 'color-basic-100',
+    backgroundColor: 'background-card-color',
     borderRadius: 10,
   },
   buttonContainer: {
@@ -168,19 +153,19 @@ const themedStyles = StyleService.create({
   },
   saveButton: {
     padding: 10,
-    backgroundColor: 'color-primary-500',
+    backgroundColor: 'button-primary-color',
     borderRadius: 5,
     alignItems: 'center',
     marginBottom: 10,
   },
   saveButtonText: {
-    color: 'white',
+    color: 'text-control-color',
     fontWeight: 'bold',
   },
   optionsContainer: {
     width: '80%',
     padding: 20,
-    backgroundColor: 'color-basic-100',
+    backgroundColor: 'background-card-color',
     borderRadius: 10,
   },
   optionText: {
@@ -189,24 +174,24 @@ const themedStyles = StyleService.create({
   },
   optionButton: {
     padding: 10,
-    backgroundColor: 'color-primary-500',
+    backgroundColor: 'button-primary-color',
     borderRadius: 5,
     alignItems: 'center',
     marginVertical: 5,
   },
   optionButtonText: {
-    color: 'white',
+    color: 'text-control-color',
     fontWeight: 'bold',
   },
   closeButton: {
     padding: 10,
-    backgroundColor: 'color-danger-500',
+    backgroundColor: 'button-danger-color',
     borderRadius: 5,
     alignItems: 'center',
     marginTop: 10,
   },
   closeButtonText: {
-    color: 'white',
+    color: 'text-control-color',
     fontWeight: 'bold',
   },
 });

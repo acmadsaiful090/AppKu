@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { ScrollView, View, Pressable, Dimensions, ActivityIndicator } from 'react-native';
 import { Layout, Text, StyleService, useStyleSheet, Icon, Button } from '@ui-kitten/components';
 import { useNavigation, useFocusEffect } from '@react-navigation/native';
@@ -38,8 +38,7 @@ const LeaveScreen = () => {
   );
 
   const handleCardPress = (leave) => {
-    const { type } = leave;
-    navigation.navigate('LeaveDetail', { leaveType: type });
+    navigation.navigate('LeaveDetail', { leaveType: leave.type });
   };
 
   const totalPages = Math.ceil(historyData.length / ITEMS_PER_PAGE);
@@ -47,17 +46,14 @@ const LeaveScreen = () => {
 
   return (
     <Layout style={styles.container}>
-      <ScrollView
-        contentContainerStyle={styles.scrollContainer}
-        showsVerticalScrollIndicator={false}
-        showsHorizontalScrollIndicator={false}
-      >
+      <ScrollView contentContainerStyle={styles.scrollContainer}
+       showsVerticalScrollIndicator={false}>
         <Text category='h5' style={styles.title}>Leave Type</Text>
         <LeaveTypeList leaveTypes={leaveTypes} onCardPress={handleCardPress} />
         
         <Text category='h5' style={styles.title}>Leave History</Text>
         {loading ? (
-          <ActivityIndicator size="large" color="color-primary-500" />
+          <ActivityIndicator size="large" color={styles.indicatorColor.color} />
         ) : (
           paginatedHistory.map(item => (
             <LeaveHistoryItem key={item.id} item={item} />
@@ -85,11 +81,9 @@ const LeaveScreen = () => {
         )}
       </ScrollView>
 
-      <View style={styles.buttonContainer}>
-        <Pressable style={styles.button} onPress={() => navigation.navigate('ApplyLeave')}>
-          <Icon name='plus-circle-outline' fill='#FFFFFF' style={styles.icon} />
-        </Pressable>
-      </View>
+      <Pressable style={styles.button} onPress={() => navigation.navigate('ApplyLeave')}>
+        <Icon name='plus-circle-outline' fill='#FFFFFF' style={styles.icon} />
+      </Pressable>
     </Layout>
   );
 };
@@ -98,38 +92,39 @@ const themedStyles = StyleService.create({
   container: {
     flex: 1,
     backgroundColor: 'background-basic-color-1',
-    paddingHorizontal: width * 0.04, 
-  },
-  buttonContainer: {
-    position: 'absolute',
-    bottom: height * 0.02, 
-    right: width * 0.04, 
-    alignItems: 'center',
+    paddingHorizontal: width * 0.04,
   },
   button: {
-    width: width * 0.12, 
-    height: height * 0.06, 
-    borderRadius: width * 0.06, 
+    position: 'absolute',
+    bottom: height * 0.02,
+    right: width * 0.04,
+    width: width * 0.12,
+    height: height * 0.06,
+    borderRadius: width * 0.06,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'color-primary-500',
+    backgroundColor: 'background-basic-color-4',
   },
   icon: {
-    width: width * 0.08, 
-    height: height * 0.04, 
+    width: width * 0.08,
+    height: height * 0.04,
   },
   title: {
     fontWeight: 'bold',
-    color: 'text-body-color',
+    color: 'text-basic-color',
+    marginBottom: height * 0.02,
   },
   scrollContainer: {
-    paddingBottom: height * 0.1, 
+    paddingBottom: height * 0.1,
   },
   pagination: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
     marginTop: height * 0.02,
+  },
+  indicatorColor: {
+    color: 'color-primary-500',
   },
 });
 

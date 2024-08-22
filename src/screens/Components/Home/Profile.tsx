@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { View, Image, Text, Dimensions } from 'react-native';
-import { StyleService, useStyleSheet } from '@ui-kitten/components';
+import { View, Image, Dimensions } from 'react-native';
+import { StyleService, useStyleSheet ,Text} from '@ui-kitten/components';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const { width: screenWidth } = Dimensions.get('window');
@@ -23,9 +23,7 @@ const Profile = () => {
     fetchUserData();
   }, []);
 
-  if (!user) {
-    return null;
-  }
+  if (!user) return null;
 
   return (
     <View style={styles.profile}>
@@ -52,29 +50,29 @@ const themedStyles = StyleService.create({
   profileImage: {
     width: '100%',
     height: '100%',
-    borderRadius: screenWidth * 0.225, // 22.5% of screen width
+    borderRadius: screenWidth * 0.225,
   },
   circleContainer: {
     alignItems: 'center',
     justifyContent: 'center',
-    width: screenWidth * 0.25, // 25% of screen width
-    height: screenWidth * 0.25, // 25% of screen width
-    borderRadius: screenWidth * 0.125, // 12.5% of screen width
+    width: screenWidth * 0.25,
+    height: screenWidth * 0.25,
+    borderRadius: screenWidth * 0.125,
     backgroundColor: '$background-basic-color-3',
   },
   circle: {
-    width: screenWidth * 0.225, // 22.5% of screen width
-    height: screenWidth * 0.225, // 22.5% of screen width
-    borderRadius: screenWidth * 0.1125, // 11.25% of screen width
+    width: screenWidth * 0.225,
+    height: screenWidth * 0.225,
+    borderRadius: screenWidth * 0.1125,
     backgroundColor: '$background-basic-color-1',
   },
   profileName: {
-    fontSize: screenWidth * 0.055, // 5.5% of screen width
+    fontSize: screenWidth * 0.055,
     fontWeight: 'bold',
-    color: 'white', 
+    color: '$text-basic-color',
   },
   profileRole: {
-    fontSize: screenWidth * 0.04, // 4% of screen width
-    color: 'white', 
+    fontSize: screenWidth * 0.04,
+    color: '$text-basic-color',
   },
 });

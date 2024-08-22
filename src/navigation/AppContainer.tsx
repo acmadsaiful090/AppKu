@@ -1,82 +1,75 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
-import { ApplicationProvider, IconRegistry, Layout } from '@ui-kitten/components';
-import * as eva from '@eva-design/eva';
-import { EvaIconsPack } from '@ui-kitten/eva-icons';
+import { Layout } from '@ui-kitten/components';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import AppNavigator from './AppNavigator';
 import AuthNavigator from './AuthNavigator';
-import Header from 'screens/Components/Header';
 
-function AppContainer() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
+function AppContainer({ toggleTheme,currentTheme }) {
+  const [authState, setAuthState] = useState({ isLoggedIn: false, isLoading: true });
   const [currentRoute, setCurrentRoute] = useState('Home');
 
   useEffect(() => {
     const checkLoginStatus = async () => {
       try {
         const loggedIn = await AsyncStorage.getItem('isLoggedIn');
-        setIsLoggedIn(loggedIn === 'true');
+        setAuthState({ isLoggedIn: loggedIn === 'true', isLoading: false });
       } catch (error) {
         console.error(error);
+        setAuthState({ isLoggedIn: false, isLoading: false });
       }
-      setIsLoading(false);
     };
     checkLoginStatus();
   }, []);
 
-  const handleLogin = async () => {
+  const handleLogin = useCallback(async () => {
     try {
       await AsyncStorage.setItem('isLoggedIn', 'true');
-      setIsLoggedIn(true);
+      setAuthState((prev) => ({ ...prev, isLoggedIn: true }));
     } catch (error) {
       console.error(error);
     }
-  };
+  }, []);
 
-  const handleLogout = async () => {
+  const handleLogout = useCallback(async () => {
     try {
       await AsyncStorage.setItem('isLoggedIn', 'false');
-      setIsLoggedIn(false);
-      setCurrentRoute('Login');
+      setAuthState((prev) => ({ ...prev, isLoggedIn: false }));
     } catch (error) {
       console.error(error);
     }
-  };
+  }, []);
 
-  if (isLoading) {
+  if (authState.isLoading) {
     return null; 
   }
 
-  const shouldShowHeader = isLoggedIn && !['Camera', 'ApplyLeave','LeaveDetail'].includes(currentRoute);
-
   return (
-    <>
-      <IconRegistry icons={EvaIconsPack} />
-      <ApplicationProvider {...eva} theme={eva.light}>
-        <SafeAreaProvider>
-          <NavigationContainer
-            onStateChange={(state) => {
-              const route = state.routes[state.index];
-              setCurrentRoute(route.name);
-            }}
-          >
-            <SafeAreaView style={{ flex: 1 }}>
-              <Layout style={{ flex: 1 }}>
-                {shouldShowHeader && <Header title={currentRoute} onLogout={handleLogout} />}
-                {isLoggedIn ? (
-                  <AppNavigator currentRoute={currentRoute} setCurrentRoute={setCurrentRoute} />
-                ) : (
-                  <AuthNavigator onLogin={handleLogin} />
-                )}
-              </Layout>
-            </SafeAreaView>
-          </NavigationContainer>
-        </SafeAreaProvider>
-      </ApplicationProvider>
-    </>
+    <SafeAreaProvider>
+      <NavigationContainer
+        onStateChange={(state) => {
+          const route = state.routes[state.index];
+          setCurrentRoute(route.name);
+        }}
+      >
+        <Layout style={{ flex: 1 }}>
+          <SafeAreaView style={{ flex: 1 }}>
+            {authState.isLoggedIn ? (
+              <AppNavigator
+                currentRoute={currentRoute}
+                setCurrentRoute={setCurrentRoute}
+                onLogout={handleLogout}
+                toggleTheme={toggleTheme}
+                theme={currentTheme}
+              />
+            ) : (
+              <AuthNavigator onLogin={handleLogin} />
+            )}
+          </SafeAreaView>
+        </Layout>
+      </NavigationContainer>
+    </SafeAreaProvider>
   );
 }
 

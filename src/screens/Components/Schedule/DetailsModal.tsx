@@ -50,28 +50,28 @@ const themedStyles = StyleService.create({
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
   },
   modalContainer: {
-    width: width * 0.9, // 90% of screen width
-    maxHeight: height * 0.5, // 50% of screen height
-    backgroundColor: '$background-basic-color-1',
+    width: width * 0.9,
+    maxHeight: height * 0.5,
+    backgroundColor: '$background-card-color',
     borderRadius: 12,
-    padding: width * 0.05, // Padding as a percentage of screen width
+    padding: width * 0.05,
     alignItems: 'center',
     overflow: 'hidden',
   },
   modalTitle: {
-    marginBottom: height * 0.02, // Margin as a percentage of screen height
+    marginBottom: height * 0.02,
     textAlign: 'center',
-    color: '$text-basic-color',
+    color: '$text-header-color',
     fontWeight: 'bold',
   },
   modalText: {
-    marginBottom: height * 0.015, // Margin as a percentage of screen height
-    color: '$text-basic-color',
+    marginBottom: height * 0.015,
+    color: '$text-primary-color',
   },
   closeButton: {
-    marginTop: height * 0.02, // Margin as a percentage of screen height
+    marginTop: height * 0.02,
     width: '100%',
-    backgroundColor: '$color-primary-500',
+    backgroundColor: '$button-primary-color',
   },
 });
 

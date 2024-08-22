@@ -116,10 +116,10 @@ const themedStyles = StyleService.create({
     backgroundColor: 'background-basic-color-1',
   },
   profileContainer: {
-    backgroundColor: 'color-primary-500',
+    backgroundColor: 'background-card-color',
     borderBottomRightRadius: 25,
     borderBottomLeftRadius: 25,
-    height: height * 0.2, // 20% of screen height
+    height: height * 0.2,
   },
   subHeader: {
     paddingHorizontal: width * 0.04, // 4% of screen width

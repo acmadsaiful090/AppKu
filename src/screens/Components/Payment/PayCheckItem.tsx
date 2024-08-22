@@ -39,7 +39,7 @@ const themedStyles = StyleService.create({
   },
   card: {
     padding: width * 0.04, // 4% of screen width
-    backgroundColor: '$color-info-100', // Background color from theme
+    backgroundColor: 'background-card-color', // Background color from theme
   },
   monthText: {
     fontWeight: 'bold',
@@ -51,7 +51,7 @@ const themedStyles = StyleService.create({
     fontSize: width * 0.04, // Font size as a percentage of screen width
   },
   dateText: {
-    color: '$color-primary-500', // Primary color from theme
+    color: 'text-secondary-color', // Primary color from theme
     fontSize: width * 0.035, // Font size as a percentage of screen width
   },
 });

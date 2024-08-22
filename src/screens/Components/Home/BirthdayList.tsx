@@ -1,6 +1,6 @@
 import React from 'react';
-import { View, Text, Dimensions } from 'react-native';
-import { Icon, StyleService, useStyleSheet, useTheme } from '@ui-kitten/components';
+import { View, Dimensions } from 'react-native';
+import { Icon, StyleService, useStyleSheet, useTheme,Text } from '@ui-kitten/components';
 
 const { width: screenWidth } = Dimensions.get('window');
 
@@ -8,15 +8,11 @@ const BirthdayList = ({ item }) => {
   const styles = useStyleSheet(themedStyles);
   const theme = useTheme();
 
-  const maleColor = '#00BCD4';  
-  const femaleColor = '#FFCDD2';  
-  const unknownColors = ['#B0B0B0', '#DDA002', '#FFDE70'];
-
   const backgroundColor = item.gender === 'male' 
-    ? maleColor 
+    ? '#00BCD4' 
     : item.gender === 'female' 
-    ? femaleColor 
-    : unknownColors[Math.floor(Math.random() * unknownColors.length)];
+    ? '#FFCDD2' 
+    : ['#B0B0B0', '#DDA002', '#FFDE70'][Math.floor(Math.random() * 3)];
 
   return (
     <View style={[styles.birthdayItem, { backgroundColor }]}>
@@ -37,41 +33,41 @@ export default BirthdayList;
 const themedStyles = StyleService.create({
   birthdayItem: {
     flexDirection: 'row',
-    padding: screenWidth * 0.02, // 2% of screen width
-    marginRight: screenWidth * 0.025, // 2.5% of screen width
-    borderRadius: screenWidth * 0.025, // 2.5% of screen width
+    padding: screenWidth * 0.02,
+    marginRight: screenWidth * 0.025,
+    borderRadius: screenWidth * 0.025,
     alignItems: 'center',
-    width: screenWidth * 0.6, // 60% of screen width
-    height: screenWidth * 0.2, // 20% of screen width
+    width: screenWidth * 0.6,
+    height: screenWidth * 0.2,
   },
   iconCircle: {
-    width: screenWidth * 0.1, // 10% of screen width
-    height: screenWidth * 0.1, // 10% of screen width
-    borderRadius: screenWidth * 0.05, // 5% of screen width
-    backgroundColor: '#B0B0B0',  
+    width: screenWidth * 0.1,
+    height: screenWidth * 0.1,
+    borderRadius: screenWidth * 0.05,
+    backgroundColor: '#B0B0B0',
     justifyContent: 'center',
     alignItems: 'center',
-    marginRight: screenWidth * 0.025, // 2.5% of screen width
+    marginRight: screenWidth * 0.025,
   },
   itemIcon: {
-    width: screenWidth * 0.06, // 6% of screen width
-    height: screenWidth * 0.06, // 6% of screen width
+    width: screenWidth * 0.06,
+    height: screenWidth * 0.06,
   },
   birthdayText: {
     justifyContent: 'center',
-    flexShrink: 1, 
+    flexShrink: 1,
   },
   birthdayName: {
-    fontSize: screenWidth * 0.04, // 4% of screen width
+    fontSize: screenWidth * 0.04,
     fontWeight: 'bold',
     color: 'text-basic-color',
   },
   birthdayDate: {
-    fontSize: screenWidth * 0.035, // 3.5% of screen width
+    fontSize: screenWidth * 0.035,
     color: 'text-basic-color',
   },
   birthdayRole: {
-    fontSize: screenWidth * 0.03, // 3% of screen width
+    fontSize: screenWidth * 0.03,
     color: 'text-basic-color',
   },
 });

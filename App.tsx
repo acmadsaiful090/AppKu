@@ -1,31 +1,33 @@
 import "react-native-gesture-handler";
 import { StatusBar } from "expo-status-bar";
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { SafeAreaProvider } from "react-native-safe-area-context";
-import { LogBox, StyleSheet } from "react-native";
+import { LogBox } from "react-native";
 import { ApplicationProvider, IconRegistry } from "@ui-kitten/components";
-import { default as darkTheme } from "constants/theme/dark.json";
-import { default as lightTheme } from "constants/theme/light.json";
-import { default as customTheme } from "constants/theme/appTheme.json";
-import { default as customMapping } from "constants/theme/mapping.json";
-import { useCachedResources } from "./src/hooks";
 import { EvaIconsPack } from "@ui-kitten/eva-icons";
 import * as eva from "@eva-design/eva";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import AppContainer from "navigation/AppContainer";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import AssetsIconsPack from "assets/AssetsIconsPack";
+import lightTheme from "constants/theme/light.json";
+import darkTheme from "constants/theme/dark.json";
+import customTheme from "constants/theme/appTheme.json";
+import customMapping from "constants/theme/mapping.json";
+import { useCachedResources } from "./src/hooks";
 
 LogBox.ignoreLogs([
   "AsyncStorage has been extracted from react-native core and will be removed in a future release. It can now be installed and imported from '@react-native-async-storage/async-storage' instead of 'react-native'. See https://github.com/react-native-async-storage/async-storage",
 ]);
 
 export default function App() {
-  const [theme, setTheme] = React.useState<"light" | "dark">("light");
+  const [theme, setTheme] = useState<"light" | "dark">("light");
 
-  React.useEffect(() => {
-    AsyncStorage.getItem("theme").then((value) => {
-      if (value === "light" || value === "dark") setTheme(value);
+  useEffect(() => {
+    AsyncStorage.getItem("theme").then(value => {
+      if (value === "light" || value === "dark") {
+        setTheme(value);
+      }
     });
   }, []);
 
@@ -40,29 +42,28 @@ export default function App() {
 
   if (!isLoadingComplete) {
     return null;
-  } else {
-    return (
-      <GestureHandlerRootView style={{ flex: 1 }}>
-        <SafeAreaProvider>
-          <IconRegistry icons={[EvaIconsPack, AssetsIconsPack]} />
-          <ApplicationProvider
-            {...eva}
-            theme={
-              theme === "light"
-                ? { ...eva.light, ...customTheme, ...lightTheme }
-                : { ...eva.dark, ...customTheme, ...darkTheme }
-            }
-            customMapping={customMapping}
-          >
-            <StatusBar
-              style={theme === "light" ? "dark" : "light"}
-              translucent={true}
-              backgroundColor={"#00000000"}
-            />
-            <AppContainer />
-          </ApplicationProvider>
-        </SafeAreaProvider>
-      </GestureHandlerRootView>
-    );
   }
+
+  const currentTheme = theme === "light" ? lightTheme : darkTheme;
+  const statusBarColor = theme === "light" ? "#E4E9F2" : "#1A2138";
+  const statusBarStyle = theme === "light" ? "dark-content" : "light-content";
+
+  return (
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <SafeAreaProvider>
+        <IconRegistry icons={[EvaIconsPack, AssetsIconsPack]} />
+        <ApplicationProvider
+          {...eva}
+          theme={{ ...eva[theme], ...customTheme, ...currentTheme }}
+          customMapping={customMapping}
+        >
+          <StatusBar
+            backgroundColor={statusBarColor}
+            barStyle={statusBarStyle}
+          />
+          <AppContainer toggleTheme={toggleTheme} currentTheme={theme} />
+        </ApplicationProvider>
+      </SafeAreaProvider>
+    </GestureHandlerRootView>
+  );
 }

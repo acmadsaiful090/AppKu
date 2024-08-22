@@ -1,39 +1,26 @@
 import React from 'react';
-import { View, Text, Dimensions } from 'react-native';
-import { StyleService, useStyleSheet } from '@ui-kitten/components';
+import { View, Dimensions } from 'react-native';
+import { StyleService, useStyleSheet,Text } from '@ui-kitten/components';
 
 const { width: screenWidth, height: screenHeight } = Dimensions.get('window');
 
 const Attendance = () => {
   const styles = useStyleSheet(themedStyles);
 
-  const getCurrentMonth = () => {
-    const months = [
-      'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 
-      'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'
-    ];
-    const currentMonthIndex = new Date().getMonth();
-    return months[currentMonthIndex];
-  };
+  const currentMonth = new Date().toLocaleString('id-ID', { month: 'long' });
 
   return (
     <View style={styles.container}>
       <View style={styles.month}>
-        <Text style={styles.titleText}>{getCurrentMonth()}</Text>
+        <Text style={styles.titleText}>{currentMonth}</Text>
       </View>
       <View style={styles.attendance}>
-        <View style={styles.attendanceItem}>
-          <Text style={styles.attendanceLabel}>Hadir</Text>
-          <Text style={styles.attendanceNumber}>5</Text>
-        </View>
-        <View style={styles.attendanceItem}>
-          <Text style={styles.attendanceLabel}>Libur</Text>
-          <Text style={styles.attendanceNumber}>1</Text>
-        </View>
-        <View style={styles.attendanceItem}>
-          <Text style={styles.attendanceLabel}>Absen</Text>
-          <Text style={styles.attendanceNumber}>3</Text>
-        </View>
+        {['Hadir', 'Libur', 'Absen'].map((label, index) => (
+          <View key={index} style={styles.attendanceItem}>
+            <Text style={styles.attendanceLabel}>{label}</Text>
+            <Text style={styles.attendanceNumber}>{[5, 1, 3][index]}</Text>
+          </View>
+        ))}
       </View>
     </View>
   );
@@ -43,22 +30,22 @@ export default Attendance;
 
 const themedStyles = StyleService.create({
   container: {
-    marginTop: screenHeight * 0.01, // 1% of screen height
-    padding: screenWidth * 0.04, // 4% of screen width
-    backgroundColor: 'background-basic-color-1', // from theme
-    borderRadius: screenWidth * 0.02, // 2% of screen width
+    marginTop: screenHeight * 0.01,
+    padding: screenWidth * 0.04,
+    backgroundColor: 'background-basic-color-1',
+    borderRadius: screenWidth * 0.02,
     borderWidth: 1,
-    borderColor: 'color-primary-500', // from theme
-    width: screenWidth * 0.9, // 90% of screen width
+    borderColor: 'background-basic-color-4',
+    width: screenWidth * 0.9,
   },
   month: {
     alignItems: 'center',
-    marginBottom: screenHeight * 0.02, // 2% of screen height
+    marginBottom: screenHeight * 0.02,
   },
   titleText: {
-    fontSize: screenWidth * 0.05, // 5% of screen width
+    fontSize: screenWidth * 0.05,
     fontWeight: 'bold',
-    color: 'text-basic-color', // from theme
+    color: 'text-basic-color',
   },
   attendance: {
     flexDirection: 'row',
@@ -69,12 +56,12 @@ const themedStyles = StyleService.create({
     alignItems: 'center',
   },
   attendanceNumber: {
-    fontSize: screenWidth * 0.06, // 6% of screen width
+    fontSize: screenWidth * 0.06,
     fontWeight: 'bold',
-    color: 'color-primary-500', // from theme
+    color: 'background-basic-color-4',
   },
   attendanceLabel: {
-    fontSize: screenWidth * 0.04, // 4% of screen width
-    color: 'text-placeholder-color', // from theme
+    fontSize: screenWidth * 0.04,
+    color: 'text-placeholder-color',
   },
 });

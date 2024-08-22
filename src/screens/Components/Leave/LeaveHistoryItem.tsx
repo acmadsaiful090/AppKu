@@ -7,38 +7,16 @@ const { width: screenWidth } = Dimensions.get('window');
 const LeaveHistoryItem = ({ item }) => {
   const styles = useStyleSheet(themedStyles);
 
-  const getBackgroundColor = (status) => {
-    return status === 'Rejected' || status === 'Approved' ? '#F2F8FF' : '#FFFFFF';
-  };
-
-  const getBorderColor = (status) => {
-    return status === 'In Progress' ? '#007BFF' : 'transparent';
-  };
-
-  const getStatusColor = (status) => {
-    switch (status) {
-      case 'In Progress':
-        return '#007BFF'; // Blue
-      case 'Rejected':
-        return '#DC3545'; // Red
-      case 'Approved':
-        return '#28A745'; // Green
-      default:
-        return '#000000'; // Black
-    }
-  };
+  const backgroundColor = 'background-card-color';
+  const borderColor = item.status === 'In Progress' ? '#007BFF' : 'transparent';
+  const statusColor = {
+    'In Progress': '#007BFF',
+    'Rejected': '#DC3545',
+    'Approved': '#28A745',
+  }[item.status] || '#000000';
 
   return (
-    <View 
-      style={[
-        styles.container, 
-        { 
-          backgroundColor: getBackgroundColor(item.status),
-          borderColor: getBorderColor(item.status),
-          borderWidth: item.status === 'In Progress' ? 1 : 0,
-        }
-      ]}
-    >
+    <View style={[styles.container, { backgroundColor, borderColor, borderWidth: borderColor !== 'transparent' ? 1 : 0 }]}>
       <View style={styles.infoItem}>
         <View style={styles.infoText}>
           <Text category='s2'>{item.leaveType}</Text>
@@ -46,9 +24,7 @@ const LeaveHistoryItem = ({ item }) => {
           <Text category='c1'>End: {item.end}</Text>
         </View>
         <View style={styles.statusText}>
-          <Text category='c1' style={{ color: getStatusColor(item.status) }}>
-            Status: {item.status}
-          </Text>
+          <Text category='c1' style={{ color: statusColor }}>Status: {item.status}</Text>
           <Text category='c1'>Applied: {item.applied}</Text>
         </View>
       </View>
@@ -62,10 +38,10 @@ const LeaveHistoryItem = ({ item }) => {
 
 const themedStyles = StyleService.create({
   container: {
-    padding: screenWidth * 0.02, // 2% of screen width
+    padding: screenWidth * 0.02,
     flexDirection: 'column',
-    borderRadius: screenWidth * 0.02, // 2% of screen width
-    marginVertical: screenWidth * 0.025, // 2.5% of screen width (approximation of 1% height)
+    borderRadius: screenWidth * 0.02,
+    marginVertical: screenWidth * 0.025,
   },
   infoItem: {
     flexDirection: 'row',
@@ -79,7 +55,7 @@ const themedStyles = StyleService.create({
     justifyContent: 'center',
   },
   reasonText: {
-    marginTop: screenWidth * 0.025, // 2.5% of screen width (approximation of 1% height)
+    marginTop: screenWidth * 0.025,
     flexShrink: 1,
     width: '100%',
   },
