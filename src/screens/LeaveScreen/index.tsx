@@ -103,7 +103,7 @@ const themedStyles = StyleService.create({
     borderRadius: width * 0.06,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'background-basic-color-4',
+    backgroundColor: 'navbar-button-color',
   },
   icon: {
     width: width * 0.08,

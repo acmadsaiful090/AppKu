@@ -14,7 +14,7 @@ import {
   Text,
 } from '@ui-kitten/components';
 
-export default function App() {
+const CameraScreen = ({ theme }) => {
   const styles = useStyleSheet(themedStyles);
   const navigation = useNavigation();
   const [facing, setFacing] = useState<CameraType>('front');
@@ -24,6 +24,7 @@ export default function App() {
   const [isCameraActive, setIsCameraActive] = useState(false);
   const [jakartaTime, setJakartaTime] = useState(null);
   const isFocused = useIsFocused();
+  const isEnabled = theme === 'light';
 
   useEffect(() => {
     (async () => {
@@ -43,7 +44,7 @@ export default function App() {
   useEffect(() => {
     if (isFocused) {
       setIsCameraActive(true);
-      
+
       const fetchJakartaTime = async () => {
         try {
           const response = await fetch('http://worldtimeapi.org/api/timezone/Asia/Jakarta');
@@ -98,14 +99,18 @@ export default function App() {
         </Text>
       );
     } else {
-      return <ActivityIndicator size="small" color="black" />;
+      return <ActivityIndicator size="small" color={styles.statusText.color} />;
     }
   };
 
   return (
     <View style={styles.container}>
       <Pressable style={styles.closeButton} onPress={() => navigation.goBack()}>
-        <Icon name='close-outline' style={styles.closeIcon} />
+        <Icon 
+          name='close-outline' 
+          style={styles.closeIcon} 
+          fill={isEnabled ? "#1F1F1F" : "#F2F6FF"} 
+        />
       </Pressable>
       <View style={styles.circleContainer}>
         <View style={styles.circle}>
@@ -118,12 +123,12 @@ export default function App() {
       <Spacer heightPercent={0.5} />
       <View style={styles.statusContainer}>
         <Text style={styles.statusText}>
-          <Icon name='checkmark' style={{ width: 18, height: 18 }} color='green' />
+          <Icon name='checkmark' style={styles.statusIcon} />
           Location
         </Text>
         <DisplayLocation />
         <Text style={styles.statusText}>
-          <Icon name='checkmark' style={{ width: 18, height: 18 }} color='green' />
+          <Icon name='checkmark' style={styles.statusIcon} />
           Time
         </Text>
         <Text style={styles.statusText}>Time: {jakartaTime ? jakartaTime : 'Loading...'}</Text>
@@ -132,7 +137,7 @@ export default function App() {
       <View style={styles.buttonContainer}>
         <View style={styles.centerButton}>
           <Pressable style={styles.cameraButton} onPress={() => {}}>
-            <Icon name='camera' style={{ width: 34, height: 34 }} fill='white' />
+            <Icon name='camera' style={styles.cameraIcon} />
           </Pressable>
         </View>
       </View>
@@ -146,6 +151,7 @@ const themedStyles = StyleService.create({
     justifyContent: 'center',
     alignItems: 'center',
     padding: 16,
+    backgroundColor: 'background-basic-color-1',
   },
   circleContainer: {
     alignItems: 'center',
@@ -158,7 +164,7 @@ const themedStyles = StyleService.create({
     overflow: 'hidden',
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'black',
+    backgroundColor: 'background-basic-color-10',
     marginBottom: 16,
   },
   camera: {
@@ -172,7 +178,7 @@ const themedStyles = StyleService.create({
   },
   text: {
     fontSize: 16,
-    color: 'black',
+    color: 'text-basic-color',
     textAlign: 'center',
   },
   statusContainer: {
@@ -183,9 +189,14 @@ const themedStyles = StyleService.create({
   },
   statusText: {
     fontSize: 12,
-    color: 'black',
+    color: 'text-primary-color',
     textAlign: 'center',
     marginVertical: 4,
+  },
+  statusIcon: {
+    width: 18,
+    height: 18,
+    color: 'icon-home-color',
   },
   buttonContainer: {
     position: 'absolute',
@@ -205,7 +216,6 @@ const themedStyles = StyleService.create({
   closeIcon: {
     width: 24,
     height: 24,
-    color: 'black',
   },
   centerButton: {
     alignItems: 'center',
@@ -218,4 +228,11 @@ const themedStyles = StyleService.create({
     backgroundColor: 'red',
     justifyContent: 'center',
   },
+  cameraIcon: {
+    width: 34,
+    height: 34,
+    fill: 'text-control-color',
+  },
 });
+
+export default CameraScreen;

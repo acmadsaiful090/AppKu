@@ -150,8 +150,8 @@ const themedStyles = StyleService.create({
     alignItems: 'center',
   },
   customButton: {
-    backgroundColor: 'background-basic-color-4',
-    borderColor: 'background-basic-color-4',
+    backgroundColor: 'button-primary-color',
+    borderColor: 'button-primary-color',
   },
 });
 

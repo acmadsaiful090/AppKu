@@ -32,10 +32,10 @@ const themedStyles = StyleService.create({
   container: {
     marginTop: screenHeight * 0.01,
     padding: screenWidth * 0.04,
-    backgroundColor: 'background-basic-color-1',
+    backgroundColor: 'background-card-color',
     borderRadius: screenWidth * 0.02,
     borderWidth: 1,
-    borderColor: 'background-basic-color-4',
+    borderColor: 'border-card-color',
     width: screenWidth * 0.9,
   },
   month: {
@@ -58,10 +58,10 @@ const themedStyles = StyleService.create({
   attendanceNumber: {
     fontSize: screenWidth * 0.06,
     fontWeight: 'bold',
-    color: 'background-basic-color-4',
+    color: 'text-placeholder-color',
   },
   attendanceLabel: {
     fontSize: screenWidth * 0.04,
-    color: 'text-placeholder-color',
+    color: 'text-primary-color',
   },
 });

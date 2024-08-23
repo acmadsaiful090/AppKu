@@ -15,30 +15,30 @@ const Navbar = ({ currentRoute }) => {
       name={name}
       width={width * 0.06}
       height={width * 0.06}
-      fill={currentRoute === route ? theme['background-basic-color-4'] : theme['color-basic-600']}
+      fill={currentRoute === route ? theme['navbar-button-color'] : theme['icon-default-color']}
     />
   );
 
   return (
-    <View style={[styles.navbar, { backgroundColor: theme['background-basic-color-1'] }]}>
+    <View style={[styles.navbar, { backgroundColor: theme['navbar-background-color'] }]}>
       <Pressable style={styles.navItem} onPress={() => navigation.navigate('Home')}>
         {getIcon('home-outline', 'Home')}
-        <Text style={[styles.navLabel, { color: currentRoute === 'Home' ? theme['background-basic-color-4'] : theme['color-basic-600'] }]}>Home</Text>
+        <Text style={[styles.navLabel, { color: currentRoute === 'Home' ? theme['navbar-button-color'] : theme['icon-default-color'] }]}>Home</Text>
       </Pressable>
       <Pressable style={styles.navItem} onPress={() => navigation.navigate('Leave')}>
         {getIcon('paper-plane-outline', 'Leave')}
-        <Text style={[styles.navLabel, { color: currentRoute === 'Leave' ? theme['background-basic-color-4'] : theme['color-basic-600'] }]}>Leave</Text>
+        <Text style={[styles.navLabel, { color: currentRoute === 'Leave' ? theme['navbar-button-color'] : theme['icon-default-color'] }]}>Leave</Text>
       </Pressable>
       <Pressable style={styles.cameraButton} onPress={() => navigation.navigate('Camera')}>
         <Icon name='camera-outline' fill='white' style={styles.cameraIcon} />
       </Pressable>
       <Pressable style={styles.navItem} onPress={() => navigation.navigate('Attendance')}>
         {getIcon('calendar-outline', 'Attendance')}
-        <Text style={[styles.navLabel, { color: currentRoute === 'Attendance' ? theme['background-basic-color-4'] : theme['color-basic-600'] }]}>Attendance</Text>
+        <Text style={[styles.navLabel, { color: currentRoute === 'Attendance' ? theme['navbar-button-color'] : theme['icon-default-color'] }]}>Attendance</Text>
       </Pressable>
       <Pressable style={styles.navItem} onPress={() => navigation.navigate('Paycheck')}>
         {getIcon('credit-card-outline', 'Paycheck')}
-        <Text style={[styles.navLabel, { color: currentRoute === 'Paycheck' ? theme['background-basic-color-4'] : theme['color-basic-600'] }]}>Paycheck</Text>
+        <Text style={[styles.navLabel, { color: currentRoute === 'Paycheck' ? theme['navbar-button-color'] : theme['icon-default-color'] }]}>Paycheck</Text>
       </Pressable>
     </View>
   );
@@ -50,7 +50,7 @@ const themedStyles = StyleService.create({
     justifyContent: 'space-around',
     padding: width * 0.01,
     borderTopWidth: 1,
-    borderTopColor: 'color-basic-300',
+    borderTopColor: 'border-basic-color-1',
   },
   navItem: {
     width: width * 0.2,
@@ -66,11 +66,11 @@ const themedStyles = StyleService.create({
     width: width * 0.12,
     height: width * 0.12,
     borderRadius: width * 0.06,
-    backgroundColor: 'background-basic-color-4',
+    backgroundColor: 'navbar-button-color',
   },
   cameraIcon: {
-    width: width * 0.06,
-    height: width * 0.06,
+    width: width * 0.07,
+    height: width * 0.07,
   },
 });
 

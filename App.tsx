@@ -1,5 +1,5 @@
 import "react-native-gesture-handler";
-import { StatusBar } from "expo-status-bar";
+import { StatusBar } from "react-native";
 import React, { useState, useEffect } from "react";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { LogBox } from "react-native";

@@ -4,7 +4,9 @@ import {
   Text,
   StyleService,
   useStyleSheet,
-  Calendar
+  Calendar,
+  Button,
+  useTheme
 } from '@ui-kitten/components';
 import {
   TextInput,
@@ -26,6 +28,7 @@ const { width, height } = Dimensions.get('window');
 
 const ApplyLeaveScreen = () => {
   const styles = useStyleSheet(themedStyles);
+  const theme = useTheme();
   const navigation = useNavigation();
   const [selectedLeaveType, setSelectedLeaveType] = useState(null);
   const [startDate, setStartDate] = useState(new Date());
@@ -169,6 +172,7 @@ const ApplyLeaveScreen = () => {
             <TextInput
               style={[styles.input, styles.reasonInput]}
               placeholder='Enter reason'
+              placeholderTextColor="$text-primary-color"
               multiline={true}
               value={reason}
               onChangeText={setReason}
@@ -182,15 +186,25 @@ const ApplyLeaveScreen = () => {
               }}
             />
           </Layout>
-          <View style={styles.buttonContainer}>
-            <TouchableOpacity onPress={() => navigation.navigate('Leave')} style={[styles.button, styles.cancelButton]}>
-              <Text style={styles.cancelButtonText}>Batal</Text>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={handleApplyLeave} style={[styles.button, styles.saveButton]}>
-              <Text style={styles.buttonText}>Apply Leave</Text>
-            </TouchableOpacity>
-          </View>
-
+          {!isReasonFocused && (
+            <View style={styles.buttonContainer}>
+              <Button
+                onPress={() => navigation.navigate('Leave')}
+                appearance="filled"
+                status="danger"
+                style={[styles.button, styles.cancelButton]}
+              >
+                Cancel
+              </Button>
+              <Button
+                onPress={handleApplyLeave}
+                appearance="filled"
+                style={[styles.button, styles.saveButton]}
+              >
+                Apply Leave
+              </Button>
+            </View>
+          )}
           <CustomDropdown
             options={leaveTypes}
             selectedIndex={selectedLeaveType}
@@ -226,7 +240,7 @@ const themedStyles = StyleService.create({
     flex: 1,
     padding: width * 0.04,
     justifyContent: 'space-between',
-    backgroundColor: '$background-color',
+    backgroundColor: '$background-header-color',
   },
   header: {
     marginBottom: height * 0.02,
@@ -235,6 +249,7 @@ const themedStyles = StyleService.create({
   },
   form: {
     flex: 1,
+    backgroundColor: '$background-header-color',
   },
   formShift: {
     justifyContent: 'flex-start',
@@ -247,6 +262,7 @@ const themedStyles = StyleService.create({
     color: '$text-primary-color',
     padding: width * 0.03,
     borderRadius: 5,
+    borderColor: 'border-input-color',
   },
   label: {
     marginBottom: height * 0.005,
@@ -260,14 +276,17 @@ const themedStyles = StyleService.create({
     backgroundColor: '$background-card-color',
     borderRadius: 5,
     borderWidth: 1,
+    borderColor: 'border-input-color',
   },
   buttonText: {
     color: '$text-primary-color',
     fontSize: width * 0.04,
   },
   reasonInput: {
+    color: '$text-primary-color',
     minHeight: height * 0.2,
     textAlignVertical: 'top',
+    borderColor: 'border-input-color',
   },
   buttonContainer: {
     flexDirection: 'row',
@@ -277,10 +296,10 @@ const themedStyles = StyleService.create({
   button: {
     height: height * 0.05,
     flex: 1,
-    marginHorizontal: width * 0.04,
+    marginHorizontal: width * 0.03,
     alignItems: 'center',
     justifyContent: 'center',
-    borderRadius: 5,
+    borderRadius: 4,
   },
   cancelButton: {
     backgroundColor: '$button-danger-color',

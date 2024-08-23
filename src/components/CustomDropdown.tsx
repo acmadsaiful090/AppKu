@@ -1,9 +1,12 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, Modal, StyleSheet, Dimensions } from 'react-native';
+import { useTheme } from '@ui-kitten/components'; // Assuming you use UI Kitten
 
-const { width, height } = Dimensions.get('window');
+const { width } = Dimensions.get('window');
 
 const CustomDropdown = ({ options, selectedIndex, onSelect, isVisible, onClose }) => {
+  const theme = useTheme(); // Access the theme
+
   return (
     <Modal
       visible={isVisible}
@@ -11,20 +14,25 @@ const CustomDropdown = ({ options, selectedIndex, onSelect, isVisible, onClose }
       onRequestClose={onClose}
     >
       <View style={styles.modalBackground}>
-        <View style={styles.dropdownContainer}>
+        <View
+          style={[
+            styles.dropdownContainer,
+            { backgroundColor: theme['background-card-color'], borderColor: theme['border-card-color'] }
+          ]}
+        >
           {options.map((option, index) => (
             <TouchableOpacity
               key={index}
               style={[
                 styles.dropdownItem,
-                selectedIndex === index && styles.selectedItem
+                selectedIndex === index && { backgroundColor: theme['background-button-color'] }
               ]}
               onPress={() => {
                 onSelect(index);
                 onClose();
               }}
             >
-              <Text style={styles.itemText}>{option.type}</Text>
+              <Text style={[styles.itemText, { color: theme['text-primary-color'] }]}>{option.type}</Text>
             </TouchableOpacity>
           ))}
         </View>
@@ -42,15 +50,12 @@ const styles = StyleSheet.create({
   },
   dropdownContainer: {
     width: width * 0.8,
-    backgroundColor: 'white',
     borderRadius: 8,
     padding: 10,
+    borderWidth: 1,
   },
   dropdownItem: {
     padding: 10,
-  },
-  selectedItem: {
-    backgroundColor: 'lightgray',
   },
   itemText: {
     fontSize: 16,
