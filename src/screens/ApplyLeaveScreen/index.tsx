@@ -74,7 +74,7 @@ const ApplyLeaveScreen = () => {
     };
 
     try {
-      const response = await fetch('https://66bad326a4ab5edd6364e75.mockapi.io/leaveHistory', {
+      const response = await fetch('https://66bad3266a4ab5edd6364e75.mockapi.io/leaveHistory', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -320,7 +320,7 @@ const themedStyles = StyleService.create({
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
   },
   modalContainer: {
-    backgroundColor: 'background-basic-color-1',
+    backgroundColor: 'background-color',
     borderRadius: width * 0.02,
     alignItems: 'center',
   },

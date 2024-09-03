@@ -15,8 +15,9 @@
   "border-card-color": "$color-basic-300",
   "border-input-color": "$color-basic-600",
   
-  "icon-default-color": "$color-basic-900",
-  "icon-background-color": "$color-primary-100",
+  "icon-default-color": "$color-basic-600",
+  "icon-Birthday-color": "$color-basic-100",
+  "icon-background-color": "$color-basic-800",
   
   "navbar-background-color": "$color-basic-100",
   "navbar-button-color": "$color-primary-600",

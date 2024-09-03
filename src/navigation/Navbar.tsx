@@ -13,8 +13,8 @@ const Navbar = ({ currentRoute }) => {
   const getIcon = (name, route) => (
     <Icon
       name={name}
-      width={width * 0.06}
-      height={width * 0.06}
+      width={width * 0.065}
+      height={width * 0.065}
       fill={currentRoute === route ? theme['navbar-button-color'] : theme['icon-default-color']}
     />
   );
@@ -48,11 +48,10 @@ const themedStyles = StyleService.create({
   navbar: {
     flexDirection: 'row',
     justifyContent: 'space-around',
-    padding: width * 0.01,
-    borderTopWidth: 1,
-    borderTopColor: 'border-basic-color-1',
+    padding: width * 0.001,
   },
   navItem: {
+    marginTop: height * 0.01,
     width: width * 0.2,
     alignItems: 'center',
   },
@@ -60,12 +59,12 @@ const themedStyles = StyleService.create({
     fontSize: width * 0.03,
   },
   cameraButton: {
-    top: -height * 0.02,
+    top: -height * 0.03,
     alignItems: 'center',
     justifyContent: 'center',
-    width: width * 0.12,
-    height: width * 0.12,
-    borderRadius: width * 0.06,
+    width: width * 0.15,
+    height: width * 0.15,
+    borderRadius: width * 0.075,
     backgroundColor: 'navbar-button-color',
   },
   cameraIcon: {

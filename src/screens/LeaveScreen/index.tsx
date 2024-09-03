@@ -1,11 +1,12 @@
-import React, { useState } from 'react';
-import { ScrollView, View, Pressable, Dimensions, ActivityIndicator } from 'react-native';
+import React, { useState, useCallback, useEffect } from 'react';
+import { ScrollView, View, Pressable, Dimensions, ActivityIndicator, AppState } from 'react-native';
 import { Layout, Text, StyleService, useStyleSheet, Icon, Button } from '@ui-kitten/components';
 import { useNavigation, useFocusEffect } from '@react-navigation/native';
 
 import leaveTypes from '../../assets/data/leaveTypes';
 import LeaveTypeList from '../Components/Leave/LeaveTypeList';
 import LeaveHistoryItem from '../Components/Leave/LeaveHistoryItem';
+import DetailsHistoryModal from '../Components/Schedule/DetailsHistoryModal';
 
 const { width, height } = Dimensions.get('window');
 const ITEMS_PER_PAGE = 4;
@@ -14,6 +15,9 @@ const LeaveScreen = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [historyData, setHistoryData] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [modalVisible, setModalVisible] = useState(false);
+  const [selectedId, setSelectedId] = useState(null);
+  const [appState, setAppState] = useState(AppState.currentState);
   const styles = useStyleSheet(themedStyles);
   const navigation = useNavigation();
 
@@ -29,16 +33,35 @@ const LeaveScreen = () => {
       setLoading(false);
     }
   };
-  
   useFocusEffect(
-    React.useCallback(() => {
+    useCallback(() => {
       setLoading(true);
       fetchLeaveHistory();
     }, [])
   );
+  useEffect(() => {
+    const handleAppStateChange = (nextAppState) => {
+      if (appState.match(/inactive|background/) && nextAppState === 'active') {
+        setLoading(true);
+        fetchLeaveHistory();
+      }
+      setAppState(nextAppState);
+    };
+
+    const subscription = AppState.addEventListener('change', handleAppStateChange);
+
+    return () => {
+      subscription.remove();
+    };
+  }, [appState]);
 
   const handleCardPress = (leave) => {
     navigation.navigate('LeaveDetail', { leaveType: leave.type });
+  };
+
+  const handleHistoryItemPress = (id) => {
+    setSelectedId(id);
+    setModalVisible(true);
   };
 
   const totalPages = Math.ceil(historyData.length / ITEMS_PER_PAGE);
@@ -46,8 +69,7 @@ const LeaveScreen = () => {
 
   return (
     <Layout style={styles.container}>
-      <ScrollView contentContainerStyle={styles.scrollContainer}
-       showsVerticalScrollIndicator={false}>
+      <ScrollView contentContainerStyle={styles.scrollContainer} showsVerticalScrollIndicator={false}>
         <Text category='h5' style={styles.title}>Leave Type</Text>
         <LeaveTypeList leaveTypes={leaveTypes} onCardPress={handleCardPress} />
         
@@ -56,7 +78,11 @@ const LeaveScreen = () => {
           <ActivityIndicator size="large" color={styles.indicatorColor.color} />
         ) : (
           paginatedHistory.map(item => (
-            <LeaveHistoryItem key={item.id} item={item} />
+            <LeaveHistoryItem 
+              key={item.id} 
+              item={item} 
+              onPress={() => handleHistoryItemPress(item.id)} 
+            />
           ))
         )}
         
@@ -84,6 +110,12 @@ const LeaveScreen = () => {
       <Pressable style={styles.button} onPress={() => navigation.navigate('ApplyLeave')}>
         <Icon name='plus-circle-outline' fill='#FFFFFF' style={styles.icon} />
       </Pressable>
+
+      <DetailsHistoryModal
+        visible={modalVisible}
+        selectedId={selectedId} // Pass selectedId here
+        onClose={() => setModalVisible(false)}
+      />
     </Layout>
   );
 };
@@ -91,7 +123,7 @@ const LeaveScreen = () => {
 const themedStyles = StyleService.create({
   container: {
     flex: 1,
-    backgroundColor: 'background-basic-color-1',
+    backgroundColor: 'background-color',
     paddingHorizontal: width * 0.04,
   },
   button: {

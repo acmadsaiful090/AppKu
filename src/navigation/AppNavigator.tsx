@@ -7,6 +7,7 @@ import LeaveScreen from 'screens/LeaveScreen';
 import PaycheckScreen from 'screens/PaycheckScreen';
 import ApplyLeaveScreen from 'screens/ApplyLeaveScreen';
 import LeaveDetailScreen from 'screens/LeaveDetailScreen';
+import ProfileDetailScreen from 'screens/ProfileDetailScreen'; // Import ProfileDetailScreen
 import Navbar from './Navbar';
 import Header from 'screens/Components/Header';
 
@@ -16,7 +17,7 @@ const AppNavigator = ({ currentRoute, setCurrentRoute, onLogout, toggleTheme, th
   <Tab.Navigator
     initialRouteName="Home"
     tabBar={() =>
-      !['Camera', 'ApplyLeave', 'SplashSc', 'Login', 'LeaveDetail'].includes(currentRoute) && (
+      !['Camera', 'ApplyLeave', 'SplashSc', 'Login', 'LeaveDetail','ProfileDetail'].includes(currentRoute) && (
         <Navbar currentRoute={currentRoute} />
       )
     }
@@ -97,6 +98,11 @@ const AppNavigator = ({ currentRoute, setCurrentRoute, onLogout, toggleTheme, th
     <Tab.Screen
       name="LeaveDetail"
       component={LeaveDetailScreen}
+      options={{ headerShown: false }}
+    />
+    <Tab.Screen
+      name="ProfileDetail"
+      component={ProfileDetailScreen}
       options={{ headerShown: false }}
     />
   </Tab.Navigator>

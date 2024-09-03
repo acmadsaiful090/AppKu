@@ -45,7 +45,7 @@ export default Profile;
 
 const themedStyles = StyleService.create({
   profile: {
-    marginTop: screenWidth * 0.05,
+    marginTop: screenWidth * 0.01,
     alignItems: 'center',
   },
   profileImage: {

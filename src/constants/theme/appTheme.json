@@ -1,4 +1,13 @@
 {
+  "color-radical-100": "#C06363",
+  "color-radical-200": "#cb7f7f",
+  "color-radical-300": "#d79b9b",
+  "color-radical-400": "#dca9a9",
+  "color-radical-500": "#e7c5c5",
+  "color-light-100": "#FBF0EA",
+  "color-corn-100": "#FFDE70",
+  "color-emerald-100": "#E5CABF",
+  "color-purple-100": "#CE8ABC",
   "color-primary-100": "#F2F6FF",
   "color-primary-200": "#D9E4FF",
   "color-primary-300": "#A6C1FF",

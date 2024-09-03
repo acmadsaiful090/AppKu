@@ -13,10 +13,12 @@
   "text-success-color": "$color-success-100",
   
   "border-card-color": "$color-basic-700",
+  
   "border-input-color": "$color-basic-500",
   
   "icon-default-color": "$color-basic-200",
-  "icon-background-color": "$color-primary-100",
+  "icon-Birthday-color": "$color-basic-800",
+  "icon-background-color": "$color-basic-400",
   
   
   "navbar-background-color": "$color-basic-800",

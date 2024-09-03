@@ -1,8 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Image, Alert, Pressable, Dimensions } from 'react-native';
-import { Layout, Input, Button, Icon, StyleService, useStyleSheet } from '@ui-kitten/components';
+import { Text,Input, Layout, Button, Icon, StyleService, useStyleSheet } from '@ui-kitten/components';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import users from '../../assets/data/users';
 
 const { width, height } = Dimensions.get('window');
 
@@ -16,6 +15,21 @@ const LoginScreen = ({ onLogin }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [secureTextEntry, setSecureTextEntry] = useState(true);
+  const [users, setUsers] = useState([]);
+
+  useEffect(() => {
+    const fetchUsers = async () => {
+      try {
+        const response = await fetch('https://66d28529184dce1713cdbda8.mockapi.io/users');
+        const data = await response.json();
+        setUsers(data);
+      } catch (error) {
+        console.error('Failed to fetch users:', error);
+      }
+    };
+
+    fetchUsers();
+  }, []);
 
   const handleLogin = async () => {
     const user = users.find(user => user.email === email && user.password === password);
@@ -35,7 +49,9 @@ const LoginScreen = ({ onLogin }) => {
 
   return (
     <Layout style={styles.container}>
-      <Image source={require('../../assets/images/logo/logo.png')} style={styles.logo} />
+      <Image source={require('../../assets/images/logo/logo-header.png')} style={styles.logo} />
+      <Text category="h6" style={styles.logoText}>JC CORPORATED</Text>
+      
       <Input
         style={styles.input}
         placeholder='E-Mail'
@@ -56,6 +72,7 @@ const LoginScreen = ({ onLogin }) => {
         value={password}
         onChangeText={setPassword}
       />
+
       <Button style={styles.button} onPress={handleLogin}>
         Masuk
       </Button>
@@ -71,19 +88,30 @@ const themedStyles = StyleService.create({
     paddingHorizontal: width * 0.05,
   },
   logo: {
-    width: width * 0.75,
+    width: width * 0.65,
     height: height * 0.3,
     resizeMode: 'contain',
+  },
+  logoText: {
     marginBottom: height * 0.05,
   },
   input: {
     marginBottom: height * 0.02,
     width: '100%',
+    fontSize: width * 0.04,
+    backgroundColor: 'background-card-color',
+    borderColor: 'border-input-color',
+    color: 'text-primary-color',
   },
   button: {
     backgroundColor: 'background-basic-color-4',
     borderColor: 'background-basic-color-4',
     width: '100%',
+  },
+  eyeIcon: {
+    position: 'absolute',
+    right: 10,
+    top: 15,
   },
 });
 

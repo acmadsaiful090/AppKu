@@ -36,7 +36,7 @@ const themedStyles = StyleService.create({
     width: screenWidth * 0.1,
     height: screenWidth * 0.1,
     borderRadius: screenWidth * 0.05,
-    backgroundColor: 'background-basic-color-2',
+    backgroundColor: 'icon-background-color',
     justifyContent: 'center',
     alignItems: 'center',
     marginRight: screenWidth * 0.025,

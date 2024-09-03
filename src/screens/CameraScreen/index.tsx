@@ -27,19 +27,31 @@ const CameraScreen = ({ theme }) => {
   const isEnabled = theme === 'light';
 
   useEffect(() => {
+    if (__DEV__) {
+      Alert.alert(
+        "Debugging Mode Active",
+        "Please turn off debugging mode to use the camera feature.",
+        [{
+          text: "OK",
+          onPress: () => navigation.goBack(), // Navigate back to the previous screen
+        }]
+      );
+    }
+  
     (async () => {
       let { status } = await Location.requestForegroundPermissionsAsync();
       setLocationPermission(status === 'granted');
-
+  
       if (status !== 'granted') {
         Alert.alert('Permission to access location was denied');
         return;
       }
-
+  
       let loc = await Location.getCurrentPositionAsync({});
       setLocation(loc);
     })();
   }, []);
+  
 
   useEffect(() => {
     if (isFocused) {
@@ -137,7 +149,11 @@ const CameraScreen = ({ theme }) => {
       <View style={styles.buttonContainer}>
         <View style={styles.centerButton}>
           <Pressable style={styles.cameraButton} onPress={() => {}}>
-            <Icon name='camera' style={styles.cameraIcon} />
+          <Icon
+            name='camera'
+            fill='white'
+            style={styles.cameraIcon}
+          />
           </Pressable>
         </View>
       </View>
@@ -151,7 +167,7 @@ const themedStyles = StyleService.create({
     justifyContent: 'center',
     alignItems: 'center',
     padding: 16,
-    backgroundColor: 'background-basic-color-1',
+    backgroundColor: 'background-color',
   },
   circleContainer: {
     alignItems: 'center',
@@ -231,7 +247,6 @@ const themedStyles = StyleService.create({
   cameraIcon: {
     width: 34,
     height: 34,
-    fill: 'text-control-color',
   },
 });
 

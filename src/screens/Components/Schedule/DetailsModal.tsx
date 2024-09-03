@@ -25,7 +25,6 @@ const DetailsModal = ({ visible, day, onClose }) => {
           <Text category='h6' style={styles.modalTitle}>
             {day.shift ? `Shift ${day.shift}` : 'Tidak ada jadwal hari ini'}
           </Text>
-         
           {day.shift && (
             <>
               <Text category='s1' style={styles.modalText}>{`Tanggal: ${formatDate(day.date)}`}</Text>
@@ -33,7 +32,9 @@ const DetailsModal = ({ visible, day, onClose }) => {
               <Text category='s1' style={styles.modalText}>{`Clock-Out: ${day.clockOut}`}</Text>
             </>
           )}
-          <Button style={styles.closeButton} onPress={onClose}>Tutup</Button>
+          <Button style={styles.closeButton} onPress={onClose}>
+            {props => <Text {...props} style={styles.closeButtonText}>Close</Text>}
+          </Button>
         </View>
       </View>
     </Modal>
@@ -72,6 +73,9 @@ const themedStyles = StyleService.create({
     marginTop: height * 0.02,
     width: '100%',
     backgroundColor: '$button-primary-color',
+  },
+  closeButtonText: {
+    color: '#FFFFFF',
   },
 });
 

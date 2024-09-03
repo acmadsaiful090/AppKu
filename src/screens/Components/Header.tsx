@@ -43,7 +43,7 @@ const Header = ({ title, onLogout, toggleTheme, theme }) => {
         onClose={() => setModalVisible(false)} 
         onLogout={handleLogout} 
         theme={theme} 
-        toggleTheme={toggleTheme} 
+        toggleTheme={toggleTheme}
       />
     </View>
   );
@@ -59,7 +59,7 @@ const themedStyles = StyleService.create({
     position: 'relative',
   },
   logoContainer: {
-    flexDirection: 'coloumn',
+    flexDirection: 'column',
     alignItems: 'center',
   },
   logo: {

@@ -8,20 +8,20 @@ const BirthdayList = ({ item }) => {
   const styles = useStyleSheet(themedStyles);
   const theme = useTheme();
 
-  const backgroundColor = item.gender === 'male' 
-    ? '#00BCD4' 
-    : item.gender === 'female' 
-    ? '#FFCDD2' 
-    : ['#B0B0B0', '#DDA002', '#FFDE70'][Math.floor(Math.random() * 3)];
+  const backgroundColor = item.jenis_kelamin === 'Laki-laki' 
+  ? '#00BCD4' 
+  : item.jenis_kelamin === 'Perempuan' 
+  ? '#FFCDD2'  
+  : '#FFFFFF';
 
   return (
     <View style={[styles.birthdayItem, { backgroundColor }]}>
       <View style={styles.iconCircle}>
-        <Icon name={item.icon} fill={theme['icon-home-color']} style={styles.itemIcon} />
+        <Icon name='gift-outline' fill={theme['icon-Birthday-color']} style={styles.itemIcon} />
       </View>
       <View style={styles.birthdayText}>
-        <Text style={styles.birthdayName}>{item.name}</Text>
-        <Text style={styles.birthdayDate}>{item.date}</Text>
+        <Text style={styles.birthdayName}>{item.nama}</Text>
+        <Text style={styles.birthdayDate}>{item.tanggal_lahir}</Text>
         <Text style={styles.birthdayRole}>{item.role}</Text>
       </View>
     </View>
@@ -44,7 +44,7 @@ const themedStyles = StyleService.create({
     width: screenWidth * 0.1,
     height: screenWidth * 0.1,
     borderRadius: screenWidth * 0.05,
-    backgroundColor: '#B0B0B0',
+    backgroundColor: 'icon-background-color',
     justifyContent: 'center',
     alignItems: 'center',
     marginRight: screenWidth * 0.025,

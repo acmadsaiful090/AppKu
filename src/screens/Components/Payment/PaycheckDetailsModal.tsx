@@ -3,7 +3,6 @@ import { View, Pressable, Alert, Modal } from 'react-native';
 import { Text, StyleService, useStyleSheet } from '@ui-kitten/components';
 import * as Print from 'expo-print';
 import * as Sharing from 'expo-sharing';
-import { captureRef } from 'react-native-view-shot';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import PaycheckDetailsContent from './PaycheckDetailsContent';
 import generatePaycheckHtml from './generatePaycheckHtml'; 
@@ -67,27 +66,6 @@ const PaycheckDetailsModal = ({ visible, onClose, paycheck }) => {
     }
   };
 
-  const handleSaveImage = async () => {
-    try {
-      const uri = await captureRef(contentRef, {
-        format: 'jpg',
-        quality: 1.0,
-      });
-
-      if (await Sharing.isAvailableAsync()) {
-        await Sharing.shareAsync(uri, {
-          mimeType: 'image/jpeg',
-          dialogTitle: 'Save or share your paycheck image',
-          UTI: 'public.jpeg',
-        });
-      } else {
-        Alert.alert('Error', 'Sharing is not available on this device');
-      }
-    } catch (error) {
-      console.error('Error saving image:', error);
-    }
-  };
-
   return (
     <Modal visible={visible} transparent={true} animationType="slide" onRequestClose={onClose}>
       <View style={styles.backdrop}>
@@ -95,7 +73,6 @@ const PaycheckDetailsModal = ({ visible, onClose, paycheck }) => {
           <View ref={contentRef}>
             <PaycheckDetailsContent paycheck={paycheck} user={user} />
           </View>
-
           <View style={styles.buttonContainer}>
             <Pressable style={styles.saveButton} onPress={() => setSaveOptionsVisible(true)}>
               <Text style={styles.saveButtonText}>Simpan</Text>
@@ -114,10 +91,7 @@ const PaycheckDetailsModal = ({ visible, onClose, paycheck }) => {
                     <Pressable style={styles.optionButton} onPress={handleSharePDF}>
                       <Text style={styles.optionButtonText}>PDF</Text>
                     </Pressable>
-                    <Pressable style={styles.optionButton} onPress={handleSaveImage}>
-                      <Text style={styles.optionButtonText}>JPG</Text>
-                    </Pressable>
-                    <Pressable style={styles.optionButton} onPress={() => setSaveOptionsVisible(false)}>
+                    <Pressable style={styles.closeButton} onPress={() => setSaveOptionsVisible(false)}>
                       <Text style={styles.optionButtonText}>Batal</Text>
                     </Pressable>
                   </View>

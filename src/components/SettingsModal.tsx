@@ -1,22 +1,36 @@
 import React from 'react';
-import { View, Dimensions, Modal } from 'react-native';
-import { StyleService, useStyleSheet, Button,Icon } from '@ui-kitten/components';
+import { View, Dimensions, Modal, Pressable } from 'react-native';
+import { StyleService, useStyleSheet, Button, Icon, Text, useTheme } from '@ui-kitten/components';
+import { useNavigation } from '@react-navigation/native';
 import CustomToggleButton from './CustomToggleButton';
 
 const { width: screenWidth, height: screenHeight } = Dimensions.get('window');
 
 const SettingsModal = ({ visible, onClose, onLogout, theme, toggleTheme }) => {
   const styles = useStyleSheet(themedStyles);
+  const thm = useTheme();
+  const navigation = useNavigation();
 
   return (
     <Modal visible={visible} transparent={true} animationType="fade">
       <View style={styles.modalContainer}>
         <View style={styles.modalContent}>
+          <Text category='h5' style={styles.title}>Settings</Text>
+          <CustomToggleButton theme={theme} toggleTheme={toggleTheme} />
+          
           <View style={styles.modalItem}>
-            <CustomToggleButton theme={theme} toggleTheme={toggleTheme} />
+            <Button 
+              style={styles.Profile} 
+              onPress={() => {
+                onClose();
+                navigation.navigate('ProfileDetail');
+              }}
+            >
+              Profile
+            </Button>
           </View>
-        
-          <View style={styles.modalItem}>
+          
+          <View style={styles.modalItem}>            
             <Button
               onPress={() => { onLogout(); onClose(); }}
               appearance="filled"
@@ -26,13 +40,10 @@ const SettingsModal = ({ visible, onClose, onLogout, theme, toggleTheme }) => {
               Logout
             </Button>
           </View>
-          <Button
-            onPress={onClose}
-            appearance="filled"
-            style={styles.closeButton}
-          >
-            Close
-          </Button>
+
+          <Pressable onPress={onClose} style={styles.closeIconContainer}>
+            <Icon name="close-outline" fill={thm['icon-background-color']} style={styles.closeIcon} />
+          </Pressable>
         </View>
       </View>
     </Modal>
@@ -57,6 +68,20 @@ const themedStyles = StyleService.create({
     borderRadius: screenWidth * 0.05,
     width: screenWidth * 0.6,
   },
+  title: {
+    alignSelf: 'center',
+    marginBottom: screenWidth * 0.05,
+  },
+  closeIconContainer: {
+    position: 'absolute',
+    top: screenWidth * 0.01,
+    right: screenWidth * 0.01,
+    zIndex: 1,
+  },
+  closeIcon: {
+    width: screenWidth * 0.08,
+    height: screenWidth * 0.08,
+  },
   modalItem: {
     marginBottom: screenWidth * 0.02,
   },
@@ -66,9 +91,9 @@ const themedStyles = StyleService.create({
     borderWidth: 1,
     borderRadius: screenWidth * 0.02,
   },
-  closeButton: {
-    backgroundColor: 'background-basic-color-4',
-    borderColor: 'background-basic-color-4',
+  Profile: {
+    backgroundColor: 'button-primary-color',
+    borderColor: 'button-primary-color',
     borderWidth: 1,
     borderRadius: screenWidth * 0.02,
   },

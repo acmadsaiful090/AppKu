@@ -15,7 +15,30 @@ const ScheduleScreen = () => {
   const [detailsHistoryModalVisible, setDetailsHistoryModalVisible] = useState(false);
   const [calendarVisible, setCalendarVisible] = useState(false);
   const [selectedDay, setSelectedDay] = useState(null);
+  const [selectedId, setSelectedId] = useState(null);
   const [selectedRange, setSelectedRange] = useState({ startDate: '', endDate: '' });
+  const [leaveHistory, setLeaveHistory] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchLeaveHistory = async () => {
+      try {
+        const response = await fetch('https://66bad3266a4ab5edd6364e75.mockapi.io/leaveHistory');
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        const data = await response.json();
+        setLeaveHistory(data);
+      } catch (error) {
+        setError(error.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchLeaveHistory();
+  }, []);
 
   useEffect(() => {
     const today = new Date();
@@ -26,19 +49,23 @@ const ScheduleScreen = () => {
   }, []);
 
   const handlePress = useCallback((day) => {
-    setSelectedDay(day.date);
-    if (day.status === 'On Leave') {
+    const leaveRecord = leaveHistory.find(
+      leave => leave.status === 'Approved' && new Date(leave.start) <= new Date(day.date) && new Date(leave.end) >= new Date(day.date)
+    );
+    if (leaveRecord && day.status === 'On Leave') {
+      setSelectedId(leaveRecord.id);
       setDetailsHistoryModalVisible(true);
     } else {
       setSelectedDay(day);
       setDetailsModalVisible(true);
     }
-  }, []);
+  }, [leaveHistory]);
 
   const handleCloseModal = useCallback(() => {
     setDetailsModalVisible(false);
     setDetailsHistoryModalVisible(false);
     setSelectedDay(null);
+    setSelectedId(null);
   }, []);
 
   const handleRangeChange = useCallback((range) => {
@@ -92,12 +119,15 @@ const ScheduleScreen = () => {
             <CalendarDay key={day.id} day={day} onPress={() => handlePress(day)} />
           ))}
       </ScrollView>
-      {selectedDay && (
-        detailsModalVisible ? (
-          <DetailsModal visible={detailsModalVisible} day={selectedDay} onClose={handleCloseModal} />
-        ) : (
-          <DetailsHistoryModal visible={detailsHistoryModalVisible} selectedDate={selectedDay} onClose={handleCloseModal} />
-        )
+      {detailsModalVisible && selectedDay && (
+        <DetailsModal visible={detailsModalVisible} day={selectedDay} onClose={handleCloseModal} />
+      )}
+      {detailsHistoryModalVisible && selectedId !== null && (
+        <DetailsHistoryModal 
+          visible={detailsHistoryModalVisible} 
+          selectedId={selectedId} 
+          onClose={handleCloseModal} 
+        />
       )}
       {calendarVisible && (
         <Modal
@@ -127,12 +157,12 @@ const ScheduleScreen = () => {
 const themedStyles = StyleService.create({
   container: {
     flex: 1,
-    backgroundColor: 'background-basic-color-1',
+    backgroundColor: 'background-color',
     paddingHorizontal: width * 0.04,
     paddingVertical: height * 0.02,
   },
-  datePicker: {
-    alignItems: 'center',
+  datePicker: {borderRadius: width * 0.04,
+    marginHorizontal: width * 0.04,
     marginVertical: height * 0.02,
   },
   calendarGrid: {
@@ -145,7 +175,7 @@ const themedStyles = StyleService.create({
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
   },
   modalContainer: {
-    backgroundColor: 'background-basic-color-1',
+    backgroundColor: 'background-card-color',
     borderRadius: width * 0.02,
     alignItems: 'center',
   },
