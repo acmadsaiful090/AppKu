@@ -156,7 +156,7 @@ const themedStyles = StyleService.create({
   title: {
     position: 'absolute',
     left: '50%',
-    transform: [{ translateX: -10 }],
+    transform: [{ translateX: -25 }],
     textAlign: 'center',
   },
   backButton: {
@@ -228,7 +228,7 @@ const themedStyles = StyleService.create({
   },
   input: {
     height: screenHeight * 0.06,
-    marginBottom: screenHeight * 0.04,
+    marginBottom: screenHeight * 0.045,
     width: '100%',
     fontSize: screenWidth * 0.04,
     backgroundColor: 'background-card-color',

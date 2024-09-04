@@ -11,7 +11,7 @@ const BirthdayList = ({ item }) => {
   const backgroundColor = item.jenis_kelamin === 'Laki-laki' 
   ? '#00BCD4' 
   : item.jenis_kelamin === 'Perempuan' 
-  ? '#FFCDD2'  
+  ? '#FF708D'  
   : '#FFFFFF';
 
   return (

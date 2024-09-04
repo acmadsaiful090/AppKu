@@ -30,12 +30,10 @@ const HomeScreen = () => {
       fetchData();
     }, [])
   );
-
   const filterCurrentWeekBirthdays = (data) => {
     const today = new Date();
     const startOfWeek = new Date(today.setDate(today.getDate() - today.getDay()));
     const endOfWeek = new Date(today.setDate(today.getDate() + 6));
-    console.log('Searching birthdays from:', startOfWeek.toLocaleDateString(), 'to:', endOfWeek.toLocaleDateString());
   
     const filteredBirthdays = data.filter((user) => {
       const [day, month, year] = user.tanggal_lahir.split('-');
@@ -43,10 +41,10 @@ const HomeScreen = () => {
   
       return birthDate >= startOfWeek && birthDate <= endOfWeek;
     });
+    
     return filteredBirthdays;
   };
   
-
   return (
     <View style={styles.container}>
       <View style={styles.profileContainer}>

@@ -45,7 +45,8 @@ const themedStyles = StyleService.create({
   toggleContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginLeft: screenWidth * 0.05, // Adjust spacing between text and switch
+    marginLeft: screenWidth * 0.05,
+    marginBottom: screenWidth * 0.05,
   },
   switchContainer: {
     position: 'relative',
