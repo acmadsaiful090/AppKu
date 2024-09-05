@@ -123,15 +123,17 @@ const CameraScreen = ({ theme }: { theme: any }) => {
   
       if (photo) {
         const photoUri = photo.uri;
-        const timestamp = jakartaTime || moment().format('HH-mm');
-        const fileUri = `${FileSystem.documentDirectory}photo_${timestamp}.jpg`;
+        const timestamp = jakartaTime || moment().format('HH-mm'); // Replace ':' to avoid issues with filenames
+        
+        // Saving directly to the app's document directory
+        const fileUri = ${FileSystem.documentDirectory}photo_${timestamp}.jpg;
   
         await FileSystem.moveAsync({
           from: photoUri,
           to: fileUri,
         });
   
-        Alert.alert("Success", `Photo saved at ${fileUri}`);
+        Alert.alert("Success", Photo saved at ${fileUri});
       }
     } catch (error) {
       console.error("Error capturing photo:", error);

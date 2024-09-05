@@ -13,6 +13,19 @@ const BirthdayList = ({ item }) => {
   : item.jenis_kelamin === 'Perempuan' 
   ? '#FF708D'  
   : '#FFFFFF';
+  const calculateAge = (birthDate) => {
+    const today = new Date();
+    const birthDateObj = new Date(birthDate);
+    let age = today.getFullYear() - birthDateObj.getFullYear();
+    const monthDifference = today.getMonth() - birthDateObj.getMonth();
+  
+    // Jika bulan sekarang lebih kecil dari bulan lahir, atau jika bulan sama tapi tanggal sekarang lebih kecil dari tanggal lahir, kurangi umur
+    if (monthDifference < 0 || (monthDifference === 0 && today.getDate() < birthDateObj.getDate())) {
+      age--;
+    }
+  
+    return age;
+  };
 
   return (
     <View style={[styles.birthdayItem, { backgroundColor }]}>
@@ -21,7 +34,7 @@ const BirthdayList = ({ item }) => {
       </View>
       <View style={styles.birthdayText}>
         <Text style={styles.birthdayName}>{item.nama}</Text>
-        <Text style={styles.birthdayDate}>{item.tanggal_lahir}</Text>
+        <Text style={styles.birthdayDate}>{calculateAge(item.tanggal_lahir)} tahun</Text>
         <Text style={styles.birthdayRole}>{item.role}</Text>
       </View>
     </View>
