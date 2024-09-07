@@ -6,11 +6,7 @@ const { width: screenWidth } = Dimensions.get('window');
 
 const CustomToggleButton = ({ theme, toggleTheme }) => {
   const styles = useStyleSheet(themedStyles);
-  const [isEnabled, setIsEnabled] = useState(theme === 'dark');
-
-  useEffect(() => {
-    setIsEnabled(theme === 'dark');
-  }, [theme]);
+  const isEnabled = theme === 'dark';
 
   const toggleSwitch = () => {
     toggleTheme();
@@ -23,14 +19,13 @@ const CustomToggleButton = ({ theme, toggleTheme }) => {
         fill={isEnabled ? "#FFFFFF" : "#FFD700"}
         style={styles.switchIcon}
       />
-      <Text style={isEnabled ? styles.toggleTextOff : styles.toggleTextOn}>
+      <Text style={isEnabled ? styles.toggleTextDark : styles.toggleTextLight}>
         {isEnabled ? 'Dark' : 'Light'}
       </Text>
       <Pressable onPress={toggleSwitch} style={styles.switchContainer}>
         <Switch
           trackColor={{ false: '#FFE9A0', true: '#192734' }}
           thumbColor={isEnabled ? '#1E90FF' : '#FFD700'}
-          ios_backgroundColor="#3e3e3e"
           onValueChange={toggleSwitch}
           value={isEnabled}
           style={styles.switch}
@@ -50,16 +45,14 @@ const themedStyles = StyleService.create({
   },
   switchContainer: {
     position: 'relative',
-    marginLeft: screenWidth * 0.05, // Adjust spacing between text/icon and switch
+    marginLeft: screenWidth * 0.05,
   },
   switch: {
-    transform: [{ scaleX: 1.6 }, { scaleY: 1.6 }], // Slightly enlarged switch
+    transform: [{ scaleX: 1.6 }, { scaleY: 1.6 }],
   },
   switchOverlay: {
     position: 'absolute',
     top: '25%',
-    alignItems: 'center',
-    justifyContent: 'center',
     width: '100%',
     height: '100%',
   },
@@ -70,17 +63,17 @@ const themedStyles = StyleService.create({
     left: '65%',
   },
   switchIcon: {
-    width: 20,  // Slightly larger icon
+    width: 20,
     height: 20,
-    marginRight: screenWidth * 0.02,  // Space between icon and text
+    marginRight: screenWidth * 0.02,
   },
-  toggleTextOn: {
+  toggleTextLight: {
     color: 'black',
-    fontSize: screenWidth * 0.045,  // Slightly larger text
+    fontSize: screenWidth * 0.045, 
   },
-  toggleTextOff: {
+  toggleTextDark: {
     color: 'white',
-    fontSize: screenWidth * 0.045,  // Slightly larger text
+    fontSize: screenWidth * 0.045,
   },
 });
 

@@ -1,21 +1,16 @@
 import React from 'react';
 import { Pressable, View, Dimensions } from 'react-native';
 import { Text, StyleService, useStyleSheet } from '@ui-kitten/components';
-
 const { width: screenWidth } = Dimensions.get('window');
-
 const CalendarDay = ({ day, onPress }) => {
   const styles = useStyleSheet(themedStyles);
-
   const date = new Date(day.date);
   const dayNumber = date.getDate();
   const monthName = date.toLocaleDateString('id-ID', { month: 'short' });
-
   const getShiftDetails = () => {
     if (!day.shift) {
       return <Text category='s1' style={styles.shiftText}>OFF</Text>;
     }
-
     return (
       <>
         <Text category='s1' style={styles.shiftText}>
@@ -33,9 +28,7 @@ const CalendarDay = ({ day, onPress }) => {
     'On Leave': '#FF9800',
     Absent: '#F44336',
   };
-
   const statusColor = statusColors[day.status] || '#000';
-
   return (
     <Pressable style={styles.calendarDay} onPress={onPress}>
       <View style={styles.dateContainer}>
@@ -57,7 +50,6 @@ const CalendarDay = ({ day, onPress }) => {
     </Pressable>
   );
 };
-
 const themedStyles = StyleService.create({
   calendarDay: {
     flexDirection: 'row',
@@ -102,5 +94,4 @@ const themedStyles = StyleService.create({
     fontSize: screenWidth * 0.04,
   },
 });
-
 export default CalendarDay;

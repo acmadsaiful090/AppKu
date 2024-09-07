@@ -64,9 +64,14 @@ const DetailsHistoryModal = ({ visible, selectedId, onClose }) => {
               )}
             </ScrollView>
           )}
-          <Button style={styles.closeButton} onPress={onClose}>
-            {props => <Text {...props} style={styles.closeButtonText}>Close</Text>}
-          </Button>
+          <Button
+              onPress={onClose}
+              appearance="filled" 
+              status="danger"
+              style={styles.closeButton}
+            >
+              Close
+        </Button>
         </View>
       </View>
     </Modal>
@@ -112,12 +117,11 @@ const themedStyles = StyleService.create({
     marginBottom: 8, 
   },
   closeButton: {
-    backgroundColor: 'color-primary-default',
-    marginTop: 20,
+    borderColor: '$button-primary-color',
+    borderWidth: 1,
+    marginTop:'20%',
     width: '100%',
-  },
-  closeButtonText: {
-    color: '#FFFFFF',
+    backgroundColor: '$button-primary-color',
   },
 });
 

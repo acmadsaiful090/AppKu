@@ -11,28 +11,32 @@ const SettingsModal = ({ visible, onClose, onLogout, theme, toggleTheme }) => {
   const thm = useTheme();
   const navigation = useNavigation();
 
+  const handleProfileNavigation = () => {
+    onClose();
+    navigation.navigate('ProfileDetail');
+  };
+
+  const handleLogout = () => {
+    onLogout();
+    onClose();
+  };
+
   return (
-    <Modal visible={visible} transparent={true} animationType="fade">
+    <Modal visible={visible} transparent animationType="fade">
       <View style={styles.modalContainer}>
         <View style={styles.modalContent}>
-          <Text category='h5' style={styles.title}>Settings</Text>
+          <Text category="h5" style={styles.title}>Settings</Text>
           <CustomToggleButton theme={theme} toggleTheme={toggleTheme} />
           
           <View style={styles.modalItem}>
-            <Button 
-              style={styles.Profile} 
-              onPress={() => {
-                onClose();
-                navigation.navigate('ProfileDetail');
-              }}
-            >
+            <Button style={styles.Profile} onPress={handleProfileNavigation}>
               Profile
             </Button>
           </View>
           
           <View style={styles.modalItem}>            
             <Button
-              onPress={() => { onLogout(); onClose(); }}
+              onPress={handleLogout}
               appearance="filled"
               status="danger"
               style={styles.logoutButton}
@@ -53,8 +57,6 @@ const SettingsModal = ({ visible, onClose, onLogout, theme, toggleTheme }) => {
 const themedStyles = StyleService.create({
   modalContainer: {
     position: 'absolute',
-    top: 0,
-    right: 0,
     width: screenWidth,
     height: screenHeight,
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
@@ -76,7 +78,6 @@ const themedStyles = StyleService.create({
     position: 'absolute',
     top: screenWidth * 0.01,
     right: screenWidth * 0.01,
-    zIndex: 1,
   },
   closeIcon: {
     width: screenWidth * 0.08,

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import { View, Image, Alert, Pressable, Dimensions } from 'react-native';
 import { StyleService, useStyleSheet, Icon, Text } from '@ui-kitten/components';
 import Logo from '../../assets/images/logo/logo-header.png';
@@ -9,17 +9,13 @@ const Header = ({ title, onLogout, toggleTheme, theme }) => {
   const [modalVisible, setModalVisible] = useState(false);
   const isEnabled = theme === 'light';
 
-  const handleLogout = () => {
-    Alert.alert(
-      'Confirm Logout',
-      'Are you sure you want to log out?',
-      [
-        { text: 'Cancel', style: 'cancel' },
-        { text: 'OK', onPress: onLogout },
-      ],
-      { cancelable: false }
-    );
-  };
+  // Use useCallback to memoize the logout handler
+  const handleLogout = useCallback(() => {
+    Alert.alert('Confirm Logout', 'Are you sure you want to log out?', [
+      { text: 'Cancel', style: 'cancel' },
+      { text: 'OK', onPress: onLogout },
+    ]);
+  }, [onLogout]);
 
   return (
     <View style={styles.header}>

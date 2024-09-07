@@ -35,9 +35,9 @@ const generatePaycheckHtml = ({ name, nik, position, address, date, basicSalary,
             background-color: #f9f9f9;
           }
           .container {
-            max-width: 210mm; /* Width of A4 */
+            max-width: 210mm; 
             margin: auto;
-            padding: 20mm; /* Padding to fit within the A4 margins */
+            padding: 20mm;
             background: #fff;
             border-radius: 8px;
           }

@@ -12,10 +12,7 @@ const monthNames = [
 
 const PayCheckItem = ({ amount, date, onPress }) => {
   const styles = useStyleSheet(themedStyles);
-
-  // Extract day, month, and year from date string in dd-mm-yyyy format
   const [day, month, year] = date.split('-');
-  // Convert month to zero-based index
   const monthNumber = parseInt(month, 10) - 1;
   const monthName = monthNames[monthNumber];
 
@@ -33,27 +30,27 @@ const PayCheckItem = ({ amount, date, onPress }) => {
 
 const themedStyles = StyleService.create({
   touchable: {
-    borderRadius: width * 0.04, // Border radius as a percentage of screen width
+    borderRadius: width * 0.04,
     overflow: 'hidden',
-    marginBottom: width * 0.02, // Margin bottom for spacing
+    marginBottom: width * 0.02,
   },
   card: {
-    padding: width * 0.04, // 4% of screen width
-    backgroundColor: 'background-card-color', // Background color from theme
+    padding: width * 0.04,
+    backgroundColor: 'background-card-color',
   },
   monthText: {
     fontWeight: 'bold',
-    color: '$text-basic-color', // Text color from theme
-    fontSize: width * 0.045, // Font size as a percentage of screen width
+    color: '$text-basic-color',
+    fontSize: width * 0.045,
   },
   amountText: {
-    color: '$text-basic-color', // Text color from theme
-    fontSize: width * 0.04, // Font size as a percentage of screen width
+    color: '$text-basic-color',
+    fontSize: width * 0.04,
   },
   dateText: {
-    color: 'text-secondary-color', // Primary color from theme
-    fontSize: width * 0.035, // Font size as a percentage of screen width
-  },
+    color: 'text-secondary-color',
+    fontSize: width * 0.035,
+  }
 });
 
 export default PayCheckItem;

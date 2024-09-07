@@ -90,7 +90,7 @@ const themedStyles = StyleService.create({
   },
   divider: {
     borderBottomWidth: 1,
-    borderBottomColor: 'color-primary-300',
+    borderBottomColor: 'background-basic-color-3',
     marginVertical: 10,
   },
   acknowledgementText: {

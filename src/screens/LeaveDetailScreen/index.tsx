@@ -86,23 +86,27 @@ const LeaveDetailScreen = () => {
     </View>
   );
 };
-
 const themedStyles = StyleService.create({
   container: {
+    backgroundColor: 'background-color', // background-basic-color-1000
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
     padding: width * 0.04,
   },
   card: {
+    backgroundColor: 'background-card-color', // background-basic-900
     padding: width * 0.06,
     width: width * 0.9,
     borderRadius: 12,
+    borderColor: 'border-card-color', // border-basic-700
+    borderWidth: 1,
   },
   title: {
     marginBottom: 8,
     fontSize: width * 0.05,
     textAlign: 'center',
+    color: 'text-header-color', // text-basic-100
   },
   header: {
     flexDirection: 'row',
@@ -113,6 +117,7 @@ const themedStyles = StyleService.create({
   icon: {
     width: width * 0.06,
     height: width * 0.06,
+    fill: 'icon-default-color', // color-basic-200
   },
   tableContainer: {
     marginVertical: width * 0.02,
@@ -122,7 +127,7 @@ const themedStyles = StyleService.create({
     justifyContent: 'space-between',
     marginVertical: width * 0.01,
     borderBottomWidth: 1,
-    borderBottomColor: '#DDDDDD',
+    borderBottomColor: 'border-input-color', // border-basic-500
     paddingBottom: width * 0.01,
   },
   row: {
@@ -135,28 +140,30 @@ const themedStyles = StyleService.create({
     flex: 2,
     textAlign: 'left',
     fontSize: width * 0.04,
+    color: 'text-primary-color',
   },
   textDetail: {
     flex: 3,
     textAlign: 'left',
     fontSize: width * 0.04,
+    color: 'text-primary-color',
   },
   textQty: {
     flex: 1,
     textAlign: 'center',
     fontSize: width * 0.04,
+    color: 'text-primary-color',
   },
   cancelButton: {
     marginTop: height * 0.02,
     padding: width * 0.02,
     alignItems: 'center',
-    backgroundColor: '#EEEEEE',
+    backgroundColor: 'button-danger-color',
     borderRadius: 8,
   },
   cancelText: {
     fontSize: width * 0.04,
-    color: '#000',
+    color: '#F2F6FF',
   },
 });
-
 export default LeaveDetailScreen;

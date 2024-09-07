@@ -4,32 +4,25 @@
   "background-card-color": "$color-basic-900",
   "background-button-color": "$color-primary-200",
   "background-button-navbar-color": "$color-primary-600",
-  
   "text-header-color": "$color-basic-100",
   "text-primary-color": "$color-primary-100",
   "text-secondary-color": "$color-secondary-100",
   "text-placeholder-color": "$color-basic-600",
   "text-danger-color": "$color-danger-100",
   "text-success-color": "$color-success-100",
-  
   "border-card-color": "$color-basic-700",
-  
   "border-input-color": "$color-basic-500",
-  
   "icon-default-color": "$color-basic-200",
   "icon-Birthday-color": "$color-basic-800",
   "icon-background-color": "$color-basic-400",
-  
-  
   "navbar-background-color": "$color-basic-800",
   "navbar-button-color": "$color-primary-400",
-
-
   "button-default-color": "$color-basic-400",       
   "button-primary-color": "$color-primary-400",     
   "button-success-color": "$color-success-500",    
   "button-warning-color": "$color-warning-500",     
   "button-danger-color": "$color-danger-500",
+
 
   "background-basic-color-1": "$color-basic-1000",
   "background-basic-color-2": "$color-basic-200",

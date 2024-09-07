@@ -1,31 +1,44 @@
 import React from 'react';
 import { View, Dimensions } from 'react-native';
-import { Icon, StyleService, useStyleSheet, useTheme,Text } from '@ui-kitten/components';
+import { Icon, StyleService, useStyleSheet, useTheme, Text } from '@ui-kitten/components';
 
 const { width: screenWidth } = Dimensions.get('window');
+const calculateAge = (birthDate) => {
+  const today = new Date();
+  const [day, month, year] = birthDate.split('-').map(Number); // Convert to numbers
 
+  // Create a birth date object
+  const birthDateObj = new Date(year, month - 1, day); // Month is 0-indexed in JavaScript
+
+  // Calculate age
+  let age = today.getFullYear() - birthDateObj.getFullYear();
+  const monthDifference = today.getMonth() - birthDateObj.getMonth();
+
+  // Adjust age if the birthday hasn't occurred yet this year
+  if (monthDifference < 0 || (monthDifference === 0 && today.getDate() < day)) {
+    age--;
+  }
+
+  // Get the current day
+  const todayDay = today.getDate();
+
+  // Calculate the difference in days, ignoring month and year
+  const differenceInDays = Math.abs(day - todayDay);
+
+  // Return age and difference
+  return { age, differenceInDays };
+};
 const BirthdayList = ({ item }) => {
   const styles = useStyleSheet(themedStyles);
   const theme = useTheme();
 
-  const backgroundColor = item.jenis_kelamin === 'Laki-laki' 
-  ? '#00BCD4' 
-  : item.jenis_kelamin === 'Perempuan' 
-  ? '#FF708D'  
-  : '#FFFFFF';
-  const calculateAge = (birthDate) => {
-    const today = new Date();
-    const birthDateObj = new Date(birthDate);
-    let age = today.getFullYear() - birthDateObj.getFullYear();
-    const monthDifference = today.getMonth() - birthDateObj.getMonth();
-  
-    // Jika bulan sekarang lebih kecil dari bulan lahir, atau jika bulan sama tapi tanggal sekarang lebih kecil dari tanggal lahir, kurangi umur
-    if (monthDifference < 0 || (monthDifference === 0 && today.getDate() < birthDateObj.getDate())) {
-      age--;
-    }
-  
-    return age;
-  };
+  const backgroundColor = item.jenis_kelamin === 'Laki-laki'
+    ? '#00BCD4'
+    : item.jenis_kelamin === 'Perempuan'
+      ? '#FF708D'
+      : '#FFFFFF';
+
+  const { age, differenceInDays } = calculateAge(item.tanggal_lahir);
 
   return (
     <View style={[styles.birthdayItem, { backgroundColor }]}>
@@ -34,7 +47,12 @@ const BirthdayList = ({ item }) => {
       </View>
       <View style={styles.birthdayText}>
         <Text style={styles.birthdayName}>{item.nama}</Text>
-        <Text style={styles.birthdayDate}>{calculateAge(item.tanggal_lahir)} tahun</Text>
+        <Text style={styles.birthdayDate}>{age} tahun </Text>
+        <Text style={styles.birthdayDate}>
+        {differenceInDays === 0
+          ? 'Today is their birthday!'
+          : `${differenceInDays} days until their birthday`}
+      </Text>
         <Text style={styles.birthdayRole}>{item.role}</Text>
       </View>
     </View>
@@ -76,6 +94,10 @@ const themedStyles = StyleService.create({
     color: 'text-basic-color',
   },
   birthdayDate: {
+    fontSize: screenWidth * 0.035,
+    color: 'text-basic-color',
+  },
+  birthdayDifference: {
     fontSize: screenWidth * 0.035,
     color: 'text-basic-color',
   },

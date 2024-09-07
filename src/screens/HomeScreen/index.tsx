@@ -20,7 +20,7 @@ const HomeScreen = () => {
         try {
           const response = await fetch('https://66d28529184dce1713cdbda8.mockapi.io/users');
           const data = await response.json();
-          const currentWeekBirthdays = filterCurrentWeekBirthdays(data);
+          const currentWeekBirthdays = filterUpcomingBirthdays(data);
           setBirthdays(currentWeekBirthdays);
         } catch (error) {
           console.error('Error fetching birthdays:', error);
@@ -30,21 +30,45 @@ const HomeScreen = () => {
       fetchData();
     }, [])
   );
-  const filterCurrentWeekBirthdays = (data) => {
+  const filterUpcomingBirthdays = (data) => {
     const today = new Date();
-    const startOfWeek = new Date(today.setDate(today.getDate() - today.getDay()));
-    const endOfWeek = new Date(today.setDate(today.getDate() + 6));
+    const startOfPeriod = new Date(today);
+    startOfPeriod.setDate(today.getDate() - 1);
+    startOfPeriod.setHours(23, 59, 59, 999);
+    
+    const endOfPeriod = new Date(today);
+    endOfPeriod.setDate(today.getDate() + 7); // 7 days from today
   
     const filteredBirthdays = data.filter((user) => {
       const [day, month, year] = user.tanggal_lahir.split('-');
-      const birthDate = new Date(today.getFullYear(), month - 1, day);
-  
-      return birthDate >= startOfWeek && birthDate <= endOfWeek;
+      // Create a birth date for this year
+      const birthDateThisYear = new Date(today.getFullYear(), month - 1, day);
+      // Create a birth date for next year
+      const birthDateNextYear = new Date(today.getFullYear() + 1, month - 1, day);
+      
+      // Check if the birthDate falls between startOfPeriod and endOfPeriod
+      return (birthDateThisYear >= startOfPeriod && birthDateThisYear <= endOfPeriod) ||
+             (birthDateNextYear >= startOfPeriod && birthDateNextYear <= endOfPeriod);
     });
     
-    return filteredBirthdays;
+    // Sort the filtered birthdays by date
+    const sortedBirthdays = filteredBirthdays.sort((a, b) => {
+      const [dayA, monthA] = a.tanggal_lahir.split('-');
+      const [dayB, monthB] = b.tanggal_lahir.split('-');
+      
+      const birthDateA = new Date(today.getFullYear(), monthA - 1, dayA);
+      const birthDateB = new Date(today.getFullYear(), monthB - 1, dayB);
+      
+      return birthDateA - birthDateB; // Sort in ascending order
+    });
+    
+    // Check if there are no upcoming birthdays
+    if (sortedBirthdays.length === 0) {
+      // You can handle the case where there are no upcoming birthdays here
+    }
+    
+    return sortedBirthdays;
   };
-  
   return (
     <View style={styles.container}>
       <View style={styles.profileContainer}>

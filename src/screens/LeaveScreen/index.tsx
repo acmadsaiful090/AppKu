@@ -130,7 +130,7 @@ const themedStyles = StyleService.create({
     position: 'absolute',
     bottom: height * 0.02,
     right: width * 0.04,
-    width: width * 0.12,
+    width: width * 0.13,
     height: height * 0.06,
     borderRadius: width * 0.06,
     justifyContent: 'center',

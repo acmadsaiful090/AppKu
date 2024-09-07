@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { View, ScrollView, Modal, Alert, Dimensions } from 'react-native';
 import { Layout, Button, Icon, StyleService, useStyleSheet, RangeCalendar } from '@ui-kitten/components';
-import calendarData from '../../assets/data/calendarData';
 import ScheduleCard from '../Components/Schedule/ScheduleCard';
 import CalendarDay from '../Components/Schedule/CalendarDay';
 import DetailsModal from '../Components/Schedule/DetailsModal';
@@ -18,6 +17,7 @@ const ScheduleScreen = () => {
   const [selectedId, setSelectedId] = useState(null);
   const [selectedRange, setSelectedRange] = useState({ startDate: '', endDate: '' });
   const [leaveHistory, setLeaveHistory] = useState([]);
+  const [calendarData, setCalendarData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -37,7 +37,23 @@ const ScheduleScreen = () => {
       }
     };
 
+    const fetchCalendarData = async () => {
+      try {
+        const response = await fetch('https://66d28529184dce1713cdbda8.mockapi.io/calendarData');
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        const data = await response.json();
+        setCalendarData(data);
+      } catch (error) {
+        setError(error.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
     fetchLeaveHistory();
+    fetchCalendarData();
   }, []);
 
   useEffect(() => {
@@ -161,7 +177,8 @@ const themedStyles = StyleService.create({
     paddingHorizontal: width * 0.04,
     paddingVertical: height * 0.02,
   },
-  datePicker: {borderRadius: width * 0.04,
+  datePicker: {
+    borderRadius: width * 0.04,
     marginHorizontal: width * 0.04,
     marginVertical: height * 0.02,
   },

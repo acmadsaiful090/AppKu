@@ -1,12 +1,11 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, Modal, StyleSheet, Dimensions } from 'react-native';
-import { useTheme } from '@ui-kitten/components'; // Assuming you use UI Kitten
+import { View, Text, Modal, StyleSheet, Dimensions, Pressable } from 'react-native';
+import { useTheme } from '@ui-kitten/components'; 
 
 const { width } = Dimensions.get('window');
 
 const CustomDropdown = ({ options, selectedIndex, onSelect, isVisible, onClose }) => {
-  const theme = useTheme(); // Access the theme
-
+  const theme = useTheme(); 
   return (
     <Modal
       visible={isVisible}
@@ -14,14 +13,12 @@ const CustomDropdown = ({ options, selectedIndex, onSelect, isVisible, onClose }
       onRequestClose={onClose}
     >
       <View style={styles.modalBackground}>
-        <View
-          style={[
-            styles.dropdownContainer,
-            { backgroundColor: theme['background-card-color'], borderColor: theme['border-card-color'] }
-          ]}
-        >
+        <View style={[
+          styles.dropdownContainer,
+          { backgroundColor: theme['background-card-color'], borderColor: theme['border-card-color'] }
+        ]}>
           {options.map((option, index) => (
-            <TouchableOpacity
+            <Pressable
               key={index}
               style={[
                 styles.dropdownItem,
@@ -32,8 +29,10 @@ const CustomDropdown = ({ options, selectedIndex, onSelect, isVisible, onClose }
                 onClose();
               }}
             >
-              <Text style={[styles.itemText, { color: theme['text-primary-color'] }]}>{option.type}</Text>
-            </TouchableOpacity>
+              <Text style={[styles.itemText, { color: theme['text-primary-color'] }]}>
+                {option.type}
+              </Text>
+            </Pressable>
           ))}
         </View>
       </View>

@@ -1,24 +1,53 @@
-import React from 'react';
-import { View, Dimensions } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { View, Dimensions, ActivityIndicator } from 'react-native';
 import { Layout, Text, StyleService, useStyleSheet } from '@ui-kitten/components';
-import calendarData from '../../../assets/data/calendarData';
 
 const { width: screenWidth } = Dimensions.get('window');
 
-const getCurrentDateData = () => {
-  const today = new Date().toISOString().split('T')[0];
-  return calendarData.find(day => day.date === today);
-};
-
-const getMonthName = (dateStr) => {
-  const date = new Date(dateStr);
-  const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-  return monthNames[date.getMonth()];
-};
-
 const ScheduleCard = React.memo(() => {
   const styles = useStyleSheet(themedStyles);
-  const currentDay = getCurrentDateData();
+  const [currentDay, setCurrentDay] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchScheduleData = async () => {
+      setLoading(true);
+      try {
+        const today = new Date().toISOString().split('T')[0];
+        const response = await fetch(`https://66d28529184dce1713cdbda8.mockapi.io/calendarData?date=${today}`);
+        const data = await response.json();
+        
+        if (data && data.length > 0) {
+          setCurrentDay(data[0]); // Assuming the API returns an array and you want the first item
+        } else {
+          setCurrentDay(null); // No schedule found
+        }
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchScheduleData();
+  }, []);
+
+  if (loading) {
+    return (
+      <Layout style={styles.todaySchedule}>
+        <ActivityIndicator size="large" color="#0000ff" />
+      </Layout>
+    );
+  }
+
+  if (error) {
+    return (
+      <Layout style={styles.todaySchedule}>
+        <Text category='h5' style={styles.title}>Error: {error}</Text>
+      </Layout>
+    );
+  }
 
   if (!currentDay) {
     return (
@@ -58,6 +87,13 @@ const ScheduleCard = React.memo(() => {
     </Layout>
   );
 });
+
+// Helper function to get month name
+const getMonthName = (dateStr) => {
+  const date = new Date(dateStr);
+  const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+  return monthNames[date.getMonth()];
+};
 
 const themedStyles = StyleService.create({
   todaySchedule: {
