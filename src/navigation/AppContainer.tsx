@@ -6,7 +6,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import AppNavigator from './AppNavigator';
 import AuthNavigator from './AuthNavigator';
 
-function AppContainer({ toggleTheme,currentTheme }) {
+function AppContainer({ toggleTheme, currentTheme }) {
   const [authState, setAuthState] = useState({ isLoggedIn: false, isLoading: true });
   const [currentRoute, setCurrentRoute] = useState('Home');
 
@@ -16,42 +16,28 @@ function AppContainer({ toggleTheme,currentTheme }) {
         const loggedIn = await AsyncStorage.getItem('isLoggedIn');
         setAuthState({ isLoggedIn: loggedIn === 'true', isLoading: false });
       } catch (error) {
-        console.error(error);
+        console.error('Failed to check login status', error);
         setAuthState({ isLoggedIn: false, isLoading: false });
       }
     };
     checkLoginStatus();
   }, []);
 
-  const handleLogin = useCallback(async () => {
+  const updateLoginStatus = useCallback(async (status) => {
     try {
-      await AsyncStorage.setItem('isLoggedIn', 'true');
-      setAuthState((prev) => ({ ...prev, isLoggedIn: true }));
+      await AsyncStorage.setItem('isLoggedIn', status.toString());
+      setAuthState((prev) => ({ ...prev, isLoggedIn: status }));
     } catch (error) {
-      console.error(error);
+      console.error(`Failed to ${status ? 'login' : 'logout'}`, error);
     }
   }, []);
 
-  const handleLogout = useCallback(async () => {
-    try {
-      await AsyncStorage.setItem('isLoggedIn', 'false');
-      setAuthState((prev) => ({ ...prev, isLoggedIn: false }));
-    } catch (error) {
-      console.error(error);
-    }
-  }, []);
-
-  if (authState.isLoading) {
-    return null; 
-  }
+  if (authState.isLoading) return null;
 
   return (
     <SafeAreaProvider>
       <NavigationContainer
-        onStateChange={(state) => {
-          const route = state.routes[state.index];
-          setCurrentRoute(route.name);
-        }}
+        onStateChange={(state) => setCurrentRoute(state.routes[state.index].name)}
       >
         <Layout style={{ flex: 1 }}>
           <SafeAreaView style={{ flex: 1 }}>
@@ -59,12 +45,12 @@ function AppContainer({ toggleTheme,currentTheme }) {
               <AppNavigator
                 currentRoute={currentRoute}
                 setCurrentRoute={setCurrentRoute}
-                onLogout={handleLogout}
+                onLogout={() => updateLoginStatus(false)}
                 toggleTheme={toggleTheme}
                 theme={currentTheme}
               />
             ) : (
-              <AuthNavigator onLogin={handleLogin} />
+              <AuthNavigator onLogin={() => updateLoginStatus(true)} />
             )}
           </SafeAreaView>
         </Layout>

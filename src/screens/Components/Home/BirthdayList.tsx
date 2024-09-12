@@ -5,27 +5,15 @@ import { Icon, StyleService, useStyleSheet, useTheme, Text } from '@ui-kitten/co
 const { width: screenWidth } = Dimensions.get('window');
 const calculateAge = (birthDate) => {
   const today = new Date();
-  const [day, month, year] = birthDate.split('-').map(Number); // Convert to numbers
-
-  // Create a birth date object
-  const birthDateObj = new Date(year, month - 1, day); // Month is 0-indexed in JavaScript
-
-  // Calculate age
+  const [day, month, year] = birthDate.split('-').map(Number);
+  const birthDateObj = new Date(year, month - 1, day);
   let age = today.getFullYear() - birthDateObj.getFullYear();
   const monthDifference = today.getMonth() - birthDateObj.getMonth();
-
-  // Adjust age if the birthday hasn't occurred yet this year
   if (monthDifference < 0 || (monthDifference === 0 && today.getDate() < day)) {
     age--;
   }
-
-  // Get the current day
   const todayDay = today.getDate();
-
-  // Calculate the difference in days, ignoring month and year
   const differenceInDays = Math.abs(day - todayDay);
-
-  // Return age and difference
   return { age, differenceInDays };
 };
 const BirthdayList = ({ item }) => {

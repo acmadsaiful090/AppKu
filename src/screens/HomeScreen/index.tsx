@@ -76,7 +76,7 @@ const HomeScreen = () => {
       </View>
       <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.scrollViewContent}>
         <Attendance />
-        <Text style={styles.sectionTitle}>Ulang Tahun Minggu Ini</Text>
+        <Text style={styles.sectionTitle}>Birthdays this week</Text>
         {birthdays.length > 0 ? (
           <FlatList
             horizontal
@@ -87,8 +87,8 @@ const HomeScreen = () => {
           />
         ) : (
           <View style={styles.noBirthdayCard}>
-            <Text style={styles.noBirthdayText}>Tidak ada yang berulang</Text>
-            <Text style={styles.noBirthdayText}>tahun minggu ini</Text>
+            <Text style={styles.noBirthdayText}>No one has a birthday</Text>
+            <Text style={styles.noBirthdayText}>this week</Text>
           </View>
         )}
         <Text style={styles.sectionTitle}>Info Dari HRD</Text>

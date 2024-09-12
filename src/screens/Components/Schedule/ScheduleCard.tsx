@@ -60,7 +60,7 @@ const ScheduleCard = React.memo(() => {
 
   return (
     <Layout style={styles.todaySchedule}>
-      <Text category='h5' style={styles.title}>Jadwal Hari Ini</Text>
+      <Text category='h5' style={styles.title}>Today's schedule</Text>
       <View style={styles.scheduleInfo}>
         <View style={styles.centeredContent}>
           <Text category='h6' style={styles.day}>
