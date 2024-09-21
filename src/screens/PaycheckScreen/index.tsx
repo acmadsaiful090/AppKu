@@ -6,6 +6,7 @@ import { useFocusEffect } from '@react-navigation/native';
 import PayCheckItem from '../Components/Payment/PayCheckItem';
 import PaycheckDetailsModal from '../Components/Payment/PaycheckDetailsModal';
 import Profile from '../Components/Home/Profile';
+import YearDropdown from '../../components/YearDropdown'; // Import the custom year dropdown
 
 const { width, height } = Dimensions.get('window');
 
@@ -18,6 +19,7 @@ const PaycheckScreen = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [paychecks, setPaychecks] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [selectedYear, setSelectedYear] = useState(new Date().getFullYear()); // Default to current year
 
   const fetchPaychecks = async () => {
     try {
@@ -52,8 +54,14 @@ const PaycheckScreen = () => {
     setSelectedPaycheck(null);
   };
 
-  const totalPages = Math.ceil(paychecks.length / ITEMS_PER_PAGE);
-  const paginatedPaychecks = paychecks.slice((currentPage - 1) * ITEMS_PER_PAGE, currentPage * ITEMS_PER_PAGE);
+  // Filter paychecks by the selected year
+  const filteredPaychecks = paychecks.filter((paycheck) => {
+    const paycheckYear = new Date(paycheck.date.split('-').reverse().join('-')).getFullYear();
+    return paycheckYear === selectedYear;
+  });
+
+  const totalPages = Math.ceil(filteredPaychecks.length / ITEMS_PER_PAGE);
+  const paginatedPaychecks = filteredPaychecks.slice((currentPage - 1) * ITEMS_PER_PAGE, currentPage * ITEMS_PER_PAGE);
 
   if (loading) {
     return (
@@ -68,7 +76,16 @@ const PaycheckScreen = () => {
       <View style={styles.profileContainer}>
         <Profile />
       </View>
-      <Text category="h4" style={styles.subHeader}>Riwayat Gaji</Text>
+      <View style={styles.header}>
+        <Text category="h4" style={styles.subHeader}>Riwayat Gaji</Text>
+        <YearDropdown 
+          selectedYear={selectedYear} 
+          onSelectYear={(year) => {
+            setSelectedYear(year);
+            setCurrentPage(1); // Reset to the first page when year changes
+          }} 
+        />
+      </View>
       <ScrollView
         contentContainerStyle={styles.scrollContainer}
         showsVerticalScrollIndicator={false}
@@ -77,7 +94,7 @@ const PaycheckScreen = () => {
         {paginatedPaychecks.map((paycheck) => (
           <PayCheckItem
             key={paycheck.id}
-            month={paycheck.month}
+            month={new Date(paycheck.date.split('-').reverse().join('-')).toLocaleString('default', { month: 'long' })}
             amount={paycheck.amount}
             date={paycheck.date}
             onPress={() => showPaycheckDetails(paycheck)}
@@ -120,6 +137,12 @@ const themedStyles = StyleService.create({
     borderBottomRightRadius: 25,
     borderBottomLeftRadius: 25,
     height: height * 0.2,
+  },
+  header: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingHorizontal: width * 0.04,
   },
   subHeader: {
     paddingHorizontal: width * 0.04, // 4% of screen width

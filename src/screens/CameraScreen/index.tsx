@@ -33,12 +33,13 @@ const getDistance = (lat1, lon1, lat2, lon2) => {
 const CameraScreen = ({ theme }) => {
   const styles = useStyleSheet(themedStyles);
   const navigation = useNavigation();
-  const [facing] = useState<CameraType>('front');
-  const [permission, requestPermission] = useCameraPermissions();
+  const [facing, setFacing] = useState<CameraType>('front');
+  const [cameraPermission, requestCameraPermission] = useCameraPermissions();
+  const [locationPermission, setLocationPermission] = useState(null);
   const [location, setLocation] = useState(null);
   const [jakartaTime, setJakartaTime] = useState(null);
   const isFocused = useIsFocused();
-  const cameraRef = useRef(null);
+  const cameraRef = useRef<CameraView>(null);
   const isEnabled = theme === 'light';
   const targetLocation = {
     latitude: -7.958658,
@@ -56,12 +57,13 @@ const CameraScreen = ({ theme }) => {
 
     const requestLocationPermission = async () => {
       const { status } = await Location.requestForegroundPermissionsAsync();
+      setLocationPermission(status);
       if (status !== 'granted') {
-        Alert.alert('Permission to access location was denied');
-        return;
+        Alert.alert('Location Permission Denied', 'Permission to access location is required to use this feature.');
+      } else {
+        const loc = await Location.getCurrentPositionAsync({});
+        setLocation(loc);
       }
-      const loc = await Location.getCurrentPositionAsync({});
-      setLocation(loc);
     };
     requestLocationPermission();
   }, []);
@@ -116,12 +118,27 @@ const CameraScreen = ({ theme }) => {
     }
   };
 
-  if (!permission) return <View />;
-  if (!permission.granted) {
+  if (!cameraPermission || locationPermission === null) return <View />;
+
+  if (!cameraPermission.granted || locationPermission !== 'granted') {
     return (
       <View style={styles.container}>
-        <Text style={styles.message}>We need your permission to show the camera</Text>
-        <Button onPress={requestPermission} title="Grant Permission" />
+        <Text style={styles.message}>
+          {cameraPermission.granted ? 
+            'We need location permission to show the camera' : 
+            'We need camera permission to show the camera'}
+        </Text>
+        <Button
+          onPress={() => {
+            if (!cameraPermission.granted) {
+              requestCameraPermission();
+            } else if (locationPermission !== 'granted') {
+              Location.requestForegroundPermissionsAsync();
+            }
+          }}
+        >
+          Grant Permission
+        </Button>
       </View>
     );
   }
@@ -135,17 +152,17 @@ const CameraScreen = ({ theme }) => {
           style={styles.closeIcon} 
           fill={isEnabled ? "#1F1F1F" : "#F2F6FF"} 
         />
-        </Pressable>
+      </Pressable>
       <View style={styles.circleContainer}>
         <View style={styles.circle}>
-          {isFocused && <CameraView style={styles.camera} ref={cameraRef} />}
+          {isFocused && <CameraView style={styles.camera} facing={facing} ref={cameraRef} />}
         </View>
       </View>
       <Image source={Facial} style={styles.icon} />
       <Text style={styles.text}>Arahkan wajahmu ke arah bingkai</Text>
       <Text style={[styles.statusText, isLocationValid ? styles.validLocation : styles.invalidLocation]}>
         {isLocationValid ? 'Valid Location' : 'Invalid Location'}
-      </Text>   
+      </Text>
       <Text style={styles.statusText}>
         Time: {jakartaTime || 'Loading...'}
       </Text>
@@ -194,7 +211,7 @@ const themedStyles = StyleService.create({
     color: 'text-basic-color',
     textAlign: 'center',
   },
-  statusText:{
+  statusText: {
     width: '100%',
     alignItems: 'flex-start',
     fontSize: 13,

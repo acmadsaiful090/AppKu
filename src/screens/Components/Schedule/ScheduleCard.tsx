@@ -40,7 +40,6 @@ const ScheduleCard = React.memo(() => {
       </Layout>
     );
   }
-
   if (error) {
     return (
       <Layout style={styles.todaySchedule}>
@@ -48,7 +47,6 @@ const ScheduleCard = React.memo(() => {
       </Layout>
     );
   }
-
   if (!currentDay) {
     return (
       <Layout style={styles.todaySchedule}>
@@ -57,7 +55,6 @@ const ScheduleCard = React.memo(() => {
       </Layout>
     );
   }
-
   return (
     <Layout style={styles.todaySchedule}>
       <Text category='h5' style={styles.title}>Today's schedule</Text>
