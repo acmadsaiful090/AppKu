@@ -9,6 +9,6 @@ dayjs.extend(isToday);
 dayjs.extend(weekOfYear);
 dayjs.extend(relativeTime);
 
-dayjs.locale("en");
+dayjs.locale("id");
 
 export default dayjs;

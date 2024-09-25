@@ -59,7 +59,7 @@ const ApplyLeaveScreen = () => {
   };
 
   const handleApplyLeave = async () => {
-    if (!selectedLeaveType || !reason) {
+    if (!reason) {
       Alert.alert('Error', 'Please fill all the fields.');
       return;
     }
@@ -107,9 +107,19 @@ const ApplyLeaveScreen = () => {
   };
 
   const handleDateSelect = (date) => {
+    const today = new Date();
     if (selectedDateField === 'start') {
+      if (date < today) {
+        Alert.alert('Invalid Date', 'Start date cannot be earlier than today.');
+        return;
+      }
       setStartDate(date);
+      setEndDate(date > endDate ? date : endDate); 
     } else if (selectedDateField === 'end') {
+      if (date < startDate) {
+        Alert.alert('Invalid Date', 'End date cannot be earlier than start date.');
+        return;
+      }
       setEndDate(date);
     }
     setCalendarVisible(false);

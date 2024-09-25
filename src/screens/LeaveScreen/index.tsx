@@ -113,7 +113,7 @@ const LeaveScreen = () => {
 
       <DetailsHistoryModal
         visible={modalVisible}
-        selectedId={selectedId} // Pass selectedId here
+        selectedId={selectedId}
         onClose={() => setModalVisible(false)}
       />
     </Layout>

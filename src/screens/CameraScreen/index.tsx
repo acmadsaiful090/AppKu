@@ -7,8 +7,6 @@ import * as FileSystem from 'expo-file-system';
 import Facial from '../../assets/icons/Facial_Recognition.png';
 import moment from 'moment-timezone';
 import {
-  ApplicationProvider,
-  StyleService,
   useStyleSheet,
   Icon,
   Button,
@@ -17,62 +15,49 @@ import {
 
 const { width, height } = Dimensions.get('window');
 
+const RADIUS = 20;
+const TARGET_LOCATION = { latitude: -7.958658, longitude: 112.637873 };
+
 const getDistance = (lat1, lon1, lat2, lon2) => {
   const toRad = (value) => (value * Math.PI) / 180;
   const R = 6371e3; // Earth radius in meters
-  const φ1 = toRad(lat1);
-  const φ2 = toRad(lat2);
-  const Δφ = toRad(lat2 - lat1);
-  const Δλ = toRad(lon2 - lon1);
+  const φ1 = toRad(lat1), φ2 = toRad(lat2);
+  const Δφ = toRad(lat2 - lat1), Δλ = toRad(lon2 - lon1);
 
   const a = Math.sin(Δφ / 2) ** 2 + Math.cos(φ1) * Math.cos(φ2) * Math.sin(Δλ / 2) ** 2;
-  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-  return R * c; // Distance in meters
+  return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a)); // Distance in meters
 };
 
 const CameraScreen = ({ theme }) => {
   const styles = useStyleSheet(themedStyles);
   const navigation = useNavigation();
-  const [facing, setFacing] = useState<CameraType>('front');
+  const isFocused = useIsFocused();
+  const cameraRef = useRef(null);
+  
   const [cameraPermission, requestCameraPermission] = useCameraPermissions();
   const [locationPermission, setLocationPermission] = useState(null);
   const [location, setLocation] = useState(null);
   const [jakartaTime, setJakartaTime] = useState(null);
-  const isFocused = useIsFocused();
-  const cameraRef = useRef<CameraView>(null);
-  const isEnabled = theme === 'light';
-  const targetLocation = {
-    latitude: -7.958658,
-    longitude: 112.637873,
-    radius: 20,
-  };
+
+  const isLocationValid = location && getDistance(location.coords.latitude, location.coords.longitude, TARGET_LOCATION.latitude, TARGET_LOCATION.longitude) <= RADIUS;
 
   useEffect(() => {
-    if (__DEV__) {
-      Alert.alert("Debugging Mode Active", "Please turn off debugging mode to use the camera feature.", [{
-        text: "OK",
-        onPress: () => navigation.goBack(),
-      }]);
-    }
-
-    const requestLocationPermission = async () => {
+    const fetchPermissions = async () => {
       const { status } = await Location.requestForegroundPermissionsAsync();
       setLocationPermission(status);
-      if (status !== 'granted') {
-        Alert.alert('Location Permission Denied', 'Permission to access location is required to use this feature.');
-      } else {
+      if (status === 'granted') {
         const loc = await Location.getCurrentPositionAsync({});
         setLocation(loc);
       }
     };
-    requestLocationPermission();
+    fetchPermissions();
   }, []);
 
   useEffect(() => {
     if (isFocused) {
       const fetchJakartaTime = async () => {
         try {
-          const response = await fetch('http://worldtimeapi.org/api/timezone/Asia/Jakarta');
+          const response = await fetch('https://timeapi.io/api/time/current/zone?timeZone=Asia%2FJakarta');
           const data = await response.json();
           setJakartaTime(moment(data.datetime).format('HH:mm'));
         } catch (error) {
@@ -85,19 +70,8 @@ const CameraScreen = ({ theme }) => {
     }
   }, [isFocused]);
 
-  const checkLocation = (userLocation) => {
-    if (!userLocation) return false;
-    const distance = getDistance(
-      userLocation.coords.latitude,
-      userLocation.coords.longitude,
-      targetLocation.latitude,
-      targetLocation.longitude
-    );
-    return distance <= targetLocation.radius;
-  };
-
   const handleCapture = async () => {
-    if (!checkLocation(location)) {
+    if (!isLocationValid) {
       Alert.alert("Invalid Location", "You are outside the designated area. Please move to the correct location.");
       return;
     }
@@ -124,38 +98,21 @@ const CameraScreen = ({ theme }) => {
     return (
       <View style={styles.container}>
         <Text style={styles.message}>
-          {cameraPermission.granted ? 
-            'We need location permission to show the camera' : 
-            'We need camera permission to show the camera'}
+          {cameraPermission.granted ? 'We need location permission to show the camera' : 'We need camera permission to show the camera'}
         </Text>
-        <Button
-          onPress={() => {
-            if (!cameraPermission.granted) {
-              requestCameraPermission();
-            } else if (locationPermission !== 'granted') {
-              Location.requestForegroundPermissionsAsync();
-            }
-          }}
-        >
-          Grant Permission
-        </Button>
+        <Button onPress={requestCameraPermission}>Grant Permission</Button>
       </View>
     );
   }
 
-  const isLocationValid = checkLocation(location);
   return (
     <View style={styles.container}>
       <Pressable style={styles.closeButton} onPress={() => navigation.goBack()}>
-        <Icon 
-          name='close-outline' 
-          style={styles.closeIcon} 
-          fill={isEnabled ? "#1F1F1F" : "#F2F6FF"} 
-        />
+        <Icon name='close-outline' style={styles.closeIcon} fill={theme === 'light' ? "#1F1F1F" : "#F2F6FF"} />
       </Pressable>
       <View style={styles.circleContainer}>
         <View style={styles.circle}>
-          {isFocused && <CameraView style={styles.camera} facing={facing} ref={cameraRef} />}
+          {isFocused && <CameraView style={styles.camera} facing="front" ref={cameraRef} />}
         </View>
       </View>
       <Image source={Facial} style={styles.icon} />
@@ -163,9 +120,7 @@ const CameraScreen = ({ theme }) => {
       <Text style={[styles.statusText, isLocationValid ? styles.validLocation : styles.invalidLocation]}>
         {isLocationValid ? 'Valid Location' : 'Invalid Location'}
       </Text>
-      <Text style={styles.statusText}>
-        Time: {jakartaTime || 'Loading...'}
-      </Text>
+      <Text style={styles.statusText}>Time: {jakartaTime}</Text>
       <View style={styles.buttonContainer}>
         <Pressable style={styles.cameraButton} onPress={handleCapture}>
           <Icon name='camera' fill='white' style={styles.cameraIcon} />
@@ -175,7 +130,7 @@ const CameraScreen = ({ theme }) => {
   );
 };
 
-const themedStyles = StyleService.create({
+const themedStyles = {
   container: {
     flex: 1,
     justifyContent: 'center',
@@ -185,7 +140,7 @@ const themedStyles = StyleService.create({
   },
   circleContainer: {
     alignItems: 'center',
-    marginBottom: 1,
+    marginBottom: 16,
   },
   circle: {
     width: width * 0.65,
@@ -195,21 +150,22 @@ const themedStyles = StyleService.create({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: 'background-basic-color-10',
-    marginBottom: 16,
   },
   camera: {
     width: '100%',
     height: '100%',
   },
   icon: {
-    width: 80,
-    height: 80,
+    width: 50,
+    height: 50,
     zIndex: 1,
+    marginBottom:20,
   },
   text: {
     fontSize: 16,
     color: 'text-basic-color',
     textAlign: 'center',
+    marginBottom:'20%',
   },
   statusText: {
     width: '100%',
@@ -225,7 +181,7 @@ const themedStyles = StyleService.create({
   },
   buttonContainer: {
     position: 'absolute',
-    bottom: 10,
+    bottom: '3%',
     flexDirection: 'row',
     width: '100%',
     justifyContent: 'center',
@@ -250,6 +206,6 @@ const themedStyles = StyleService.create({
     width: 32,
     height: 32,
   },
-});
+};
 
 export default CameraScreen;

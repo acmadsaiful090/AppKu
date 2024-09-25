@@ -1,9 +1,7 @@
 import React from 'react';
-
 const useCountDown = (initValue: number): [number, () => void] => {
   const [time, setTime] = React.useState<number>(initValue);
   const timeRef = React.useRef<any>(null);
-
   React.useEffect(() => {
     timeRef.current = setInterval(() => {
       decrementTime();
@@ -12,7 +10,6 @@ const useCountDown = (initValue: number): [number, () => void] => {
       clearInterval(timeRef.current);
     };
   });
-
   const decrementTime = React.useCallback(() => {
     setTime((prev: number) => {
       if (prev === 0) {
@@ -23,12 +20,10 @@ const useCountDown = (initValue: number): [number, () => void] => {
       }
     });
   }, []);
-
   const reset = React.useCallback(() => {
     setTime(initValue);
   }, []);
 
   return [time, reset];
 };
-
 export default useCountDown;

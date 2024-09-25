@@ -1,5 +1,4 @@
 import numeral from "numeral";
-
 export const formatDefault = (amount: string, currency = "$") => {
   let textResult = `${currency}`;
   try {
