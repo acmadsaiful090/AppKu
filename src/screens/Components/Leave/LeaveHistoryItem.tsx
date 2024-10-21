@@ -7,7 +7,7 @@ const { width: screenWidth } = Dimensions.get('window');
 const LeaveHistoryItem = ({ item, onPress }) => {
   const styles = useStyleSheet(themedStyles);
 
-  const backgroundColor = 'background-card-color';
+  // Use the ternary for conditional styling
   const borderColor = item.status === 'In Progress' ? '#007BFF' : 'transparent';
   const statusColor = {
     'In Progress': '#007BFF',
@@ -17,21 +17,21 @@ const LeaveHistoryItem = ({ item, onPress }) => {
 
   return (
     <Pressable onPress={() => onPress(item.id)}>
-      <View style={[styles.container, {borderColor, borderWidth: borderColor !== 'transparent' ? 1 : 0 }]}>
+      <View style={[styles.container, { borderColor, borderWidth: borderColor !== 'transparent' ? 1 : 0 }]}>
         <View style={styles.infoItem}>
           <View style={styles.infoText}>
-            <Text category='s2'>{item.leaveType}</Text>
-            <Text category='c1'>Start: {item.start}</Text>
-            <Text category='c1'>End: {item.end}</Text>
+            <Text category="s2">{item.leaveType}</Text>
+            <Text category="c1">Start: {item.start}</Text>
+            <Text category="c1">End: {item.end}</Text>
           </View>
           <View style={styles.statusText}>
-            <Text category='c1' style={{ color: statusColor }}>Status: {item.status}</Text>
-            <Text category='c1'>Applied: {item.applied}</Text>
+            <Text category="c1" style={{ color: statusColor }}>Status: {item.status}</Text>
+            <Text category="c1">Applied: {item.applied}</Text>
           </View>
         </View>
         <View style={styles.reasonText}>
-          <Text category='c1'>Reason:</Text>
-          <Text category='c1'>{item.reason}</Text>
+          <Text category="c1">Reason:</Text>
+          <Text category="c1">{item.reason}</Text>
         </View>
       </View>
     </Pressable>

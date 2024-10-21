@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { ScrollView, View, Dimensions, ActivityIndicator } from 'react-native';
-import { Layout, Text, StyleService, useStyleSheet, Button } from '@ui-kitten/components';
+import { Layout, Text, StyleService, useStyleSheet, Button,Icon } from '@ui-kitten/components';
 import { useFocusEffect } from '@react-navigation/native';
 
 import PayCheckItem from '../Components/Payment/PayCheckItem';
@@ -70,6 +70,13 @@ const PaycheckScreen = () => {
       </Layout>
     );
   }
+    const renderArrowLeftIcon = (style) => (
+      <Icon {...style} name="arrow-left-outline" />
+    );
+  
+    const renderArrowRightIcon = (style) => (
+      <Icon {...style} name="arrow-right-outline" />
+    );
 
   return (
     <Layout style={styles.container}>
@@ -102,22 +109,20 @@ const PaycheckScreen = () => {
         ))}
       </ScrollView>
       <View style={styles.pagination}>
-        <Button
-          appearance='ghost'
-          disabled={currentPage === 1}
-          onPress={() => setCurrentPage(currentPage - 1)}
-        >
-          Previous
-        </Button>
-        <Text>{`${currentPage} / ${totalPages}`}</Text>
-        <Button
-          appearance='ghost'
-          disabled={currentPage === totalPages}
-          onPress={() => setCurrentPage(currentPage + 1)}
-        >
-          Next
-        </Button>
-      </View>
+      <Button
+        appearance="ghost"
+        disabled={currentPage === 1}
+        onPress={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+        accessoryLeft={renderArrowLeftIcon}
+      />
+      <Text>{`${currentPage} / ${totalPages}`}</Text>
+      <Button
+        appearance="ghost"
+        disabled={currentPage === totalPages}
+        onPress={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
+        accessoryLeft={renderArrowRightIcon}
+      />
+    </View>
       <PaycheckDetailsModal
         visible={visible}
         onClose={closeModal}
@@ -153,9 +158,9 @@ const themedStyles = StyleService.create({
   },
   pagination: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
     alignItems: 'center',
-    marginVertical: height * 0.02, // 2% of screen height
+    justifyContent: 'space-between',
+    padding: 10,
   },
 });
 

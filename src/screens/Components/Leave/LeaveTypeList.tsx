@@ -52,5 +52,4 @@ const themedStyles = StyleService.create({
     marginRight: screenWidth * 0.02,
   },
 });
-
 export default LeaveTypeList;

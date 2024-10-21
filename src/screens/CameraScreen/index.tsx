@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState, useRef, useCallback } from 'react';
 import { useNavigation, useIsFocused } from '@react-navigation/native';
 import { CameraView, CameraType, useCameraPermissions } from 'expo-camera';
 import { View, Image, Pressable, Alert, Dimensions } from 'react-native';
@@ -14,16 +14,16 @@ import {
 } from '@ui-kitten/components';
 
 const { width, height } = Dimensions.get('window');
-
 const RADIUS = 20;
 const TARGET_LOCATION = { latitude: -7.958658, longitude: 112.637873 };
 
+// Helper function to calculate distance between two coordinates
 const getDistance = (lat1, lon1, lat2, lon2) => {
   const toRad = (value) => (value * Math.PI) / 180;
-  const R = 6371e3; // Earth radius in meters
+  const R = 6371e3; // Earth's radius in meters
   const φ1 = toRad(lat1), φ2 = toRad(lat2);
   const Δφ = toRad(lat2 - lat1), Δλ = toRad(lon2 - lon1);
-
+  
   const a = Math.sin(Δφ / 2) ** 2 + Math.cos(φ1) * Math.cos(φ2) * Math.sin(Δλ / 2) ** 2;
   return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a)); // Distance in meters
 };
@@ -33,37 +33,45 @@ const CameraScreen = ({ theme }) => {
   const navigation = useNavigation();
   const isFocused = useIsFocused();
   const cameraRef = useRef(null);
-  
+
   const [cameraPermission, requestCameraPermission] = useCameraPermissions();
   const [locationPermission, setLocationPermission] = useState(null);
   const [location, setLocation] = useState(null);
-  const [jakartaTime, setJakartaTime] = useState(null);
+  const [jakartaTime, setJakartaTime] = useState(moment().format('HH:mm'));
 
-  const isLocationValid = location && getDistance(location.coords.latitude, location.coords.longitude, TARGET_LOCATION.latitude, TARGET_LOCATION.longitude) <= RADIUS;
+  const isLocationValid = useCallback(() => {
+    return location && getDistance(
+      location.coords.latitude, 
+      location.coords.longitude, 
+      TARGET_LOCATION.latitude, 
+      TARGET_LOCATION.longitude
+    ) <= RADIUS;
+  }, [location]);
 
   useEffect(() => {
-    const fetchPermissions = async () => {
+    const fetchPermissionsAndLocation = async () => {
       const { status } = await Location.requestForegroundPermissionsAsync();
       setLocationPermission(status);
+      
       if (status === 'granted') {
         const loc = await Location.getCurrentPositionAsync({});
         setLocation(loc);
       }
     };
-    fetchPermissions();
-  }, []);
 
-  useEffect(() => {
+    const fetchJakartaTime = async () => {
+      try {
+        const response = await fetch('https://timeapi.io/api/time/current/zone?timeZone=Asia%2FJakarta');
+        const data = await response.json();
+        setJakartaTime(moment(data.datetime).format('HH:mm'));
+      } catch (error) {
+        console.error("Error fetching Jakarta time:", error);
+      }
+    };
+
+    fetchPermissionsAndLocation();
+    
     if (isFocused) {
-      const fetchJakartaTime = async () => {
-        try {
-          const response = await fetch('https://timeapi.io/api/time/current/zone?timeZone=Asia%2FJakarta');
-          const data = await response.json();
-          setJakartaTime(moment(data.datetime).format('HH:mm'));
-        } catch (error) {
-          console.error("Error fetching Jakarta time:", error);
-        }
-      };
       fetchJakartaTime();
       const interval = setInterval(fetchJakartaTime, 1000);
       return () => clearInterval(interval);
@@ -71,7 +79,7 @@ const CameraScreen = ({ theme }) => {
   }, [isFocused]);
 
   const handleCapture = async () => {
-    if (!isLocationValid) {
+    if (!isLocationValid()) {
       Alert.alert("Invalid Location", "You are outside the designated area. Please move to the correct location.");
       return;
     }
@@ -117,8 +125,8 @@ const CameraScreen = ({ theme }) => {
       </View>
       <Image source={Facial} style={styles.icon} />
       <Text style={styles.text}>Arahkan wajahmu ke arah bingkai</Text>
-      <Text style={[styles.statusText, isLocationValid ? styles.validLocation : styles.invalidLocation]}>
-        {isLocationValid ? 'Valid Location' : 'Invalid Location'}
+      <Text style={[styles.statusText, isLocationValid() ? styles.validLocation : styles.invalidLocation]}>
+        {isLocationValid() ? 'Valid Location' : 'Invalid Location'}
       </Text>
       <Text style={styles.statusText}>Time: {jakartaTime}</Text>
       <View style={styles.buttonContainer}>
@@ -159,13 +167,13 @@ const themedStyles = {
     width: 50,
     height: 50,
     zIndex: 1,
-    marginBottom:20,
+    marginBottom: 20,
   },
   text: {
     fontSize: 16,
     color: 'text-basic-color',
     textAlign: 'center',
-    marginBottom:'20%',
+    marginBottom: '20%',
   },
   statusText: {
     width: '100%',

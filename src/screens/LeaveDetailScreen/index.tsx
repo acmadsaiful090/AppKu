@@ -88,8 +88,7 @@ const LeaveDetailScreen = () => {
 };
 const themedStyles = StyleService.create({
   container: {
-    backgroundColor: 'background-color', // background-basic-color-1000
-    flex: 1,
+    backgroundColor: 'background-color',
     alignItems: 'center',
     justifyContent: 'center',
     padding: width * 0.04,

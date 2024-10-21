@@ -4,6 +4,8 @@ import { StyleService, useStyleSheet, Icon, Text } from '@ui-kitten/components';
 import Logo from '../../assets/images/logo/logo-header.png';
 import SettingsModal from '../../components/SettingsModal';
 
+const { width: screenWidth, height: screenHeight } = Dimensions.get('window');
+
 const Header = ({ title, onLogout, toggleTheme, theme }) => {
   const styles = useStyleSheet(themedStyles);
   const [modalVisible, setModalVisible] = useState(false);
@@ -50,7 +52,7 @@ const themedStyles = StyleService.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    padding: Dimensions.get('window').width * 0.015,
+    padding: screenWidth * 0.015,
     backgroundColor: 'background-header-color',
     position: 'relative',
   },
@@ -59,27 +61,27 @@ const themedStyles = StyleService.create({
     alignItems: 'center',
   },
   logo: {
-    width: Dimensions.get('window').width * 0.1,
-    height: Dimensions.get('window').width * 0.1,
+    width: screenWidth * 0.1,
+    height: screenWidth * 0.1,
   },
   logoText: {
     color: 'text-header-color',
-    fontSize: Dimensions.get('window').width * 0.015,
+    fontSize: screenWidth * 0.015,
     fontWeight: '900',
   },
   title: {
     position: 'absolute',
     left: '50%',
-    transform: [{ translateX: -Dimensions.get('window').width * 0.25 }],
+    transform: [{ translateX: -screenWidth * 0.25 }],
     color: 'text-header-color',
     fontWeight: 'bold',
-    fontSize: Dimensions.get('window').width * 0.05,
+    fontSize: screenWidth * 0.05,
     textAlign: 'center',
-    width: Dimensions.get('window').width * 0.5,
+    width: screenWidth * 0.5,
   },
   icon: {
-    width: Dimensions.get('window').width * 0.08,
-    height: Dimensions.get('window').width * 0.08,
+    width: screenWidth * 0.08,
+    height: screenWidth * 0.08,
   },
 });
 

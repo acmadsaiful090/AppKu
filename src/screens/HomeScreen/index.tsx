@@ -28,47 +28,30 @@ const HomeScreen = () => {
       };
 
       fetchData();
+      return () => setBirthdays([]); // Clear birthdays on screen blur
     }, [])
   );
+
   const filterUpcomingBirthdays = (data) => {
     const today = new Date();
-    const startOfPeriod = new Date(today);
-    startOfPeriod.setDate(today.getDate() - 1);
-    startOfPeriod.setHours(23, 59, 59, 999);
-    
-    const endOfPeriod = new Date(today);
-    endOfPeriod.setDate(today.getDate() + 7); // 7 days from today
-  
-    const filteredBirthdays = data.filter((user) => {
-      const [day, month, year] = user.tanggal_lahir.split('-');
-      // Create a birth date for this year
-      const birthDateThisYear = new Date(today.getFullYear(), month - 1, day);
-      // Create a birth date for next year
-      const birthDateNextYear = new Date(today.getFullYear() + 1, month - 1, day);
-      
-      // Check if the birthDate falls between startOfPeriod and endOfPeriod
-      return (birthDateThisYear >= startOfPeriod && birthDateThisYear <= endOfPeriod) ||
-             (birthDateNextYear >= startOfPeriod && birthDateNextYear <= endOfPeriod);
-    });
-    
-    // Sort the filtered birthdays by date
-    const sortedBirthdays = filteredBirthdays.sort((a, b) => {
-      const [dayA, monthA] = a.tanggal_lahir.split('-');
-      const [dayB, monthB] = b.tanggal_lahir.split('-');
-      
-      const birthDateA = new Date(today.getFullYear(), monthA - 1, dayA);
-      const birthDateB = new Date(today.getFullYear(), monthB - 1, dayB);
-      
-      return birthDateA - birthDateB; // Sort in ascending order
-    });
-    
-    // Check if there are no upcoming birthdays
-    if (sortedBirthdays.length === 0) {
-      // You can handle the case where there are no upcoming birthdays here
-    }
-    
-    return sortedBirthdays;
+    const startOfPeriod = new Date(today.setDate(today.getDate() - 1)); // Include today's birthdays
+    const endOfPeriod = new Date();
+    endOfPeriod.setDate(startOfPeriod.getDate() + 7); // Upcoming 7 days
+
+    return data
+      .filter(user => {
+        const [day, month] = user.tanggal_lahir.split('-');
+        const birthDateThisYear = new Date(new Date().getFullYear(), month - 1, day);
+
+        return birthDateThisYear >= startOfPeriod && birthDateThisYear <= endOfPeriod;
+      })
+      .sort((a, b) => {
+        const [dayA, monthA] = a.tanggal_lahir.split('-');
+        const [dayB, monthB] = b.tanggal_lahir.split('-');
+        return new Date(new Date().getFullYear(), monthA - 1, dayA) - new Date(new Date().getFullYear(), monthB - 1, dayB);
+      });
   };
+
   return (
     <View style={styles.container}>
       <View style={styles.profileContainer}>

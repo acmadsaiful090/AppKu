@@ -57,13 +57,11 @@ const ApplyLeaveScreen = () => {
   const handleSelectLeaveType = (index) => {
     setSelectedLeaveType(index);
   };
-
   const handleApplyLeave = async () => {
     if (!reason) {
       Alert.alert('Error', 'Please fill all the fields.');
       return;
     }
-
     const newLeave = {
       reason,
       leaveType: leaveTypes[selectedLeaveType].type,

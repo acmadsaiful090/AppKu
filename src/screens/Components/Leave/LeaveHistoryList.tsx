@@ -59,5 +59,4 @@ const themedStyles = StyleService.create({
     borderRadius: screenWidth * 0.02,
   },
 });
-
 export default LeaveTypeList;
